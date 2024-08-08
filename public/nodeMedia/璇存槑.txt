@@ -1,0 +1,23 @@
+NodePlayer.min.js ---------- 常规版,包含h.264+aac/nellymoser/g.711 解码器.
+NodePlayerWorker.min.js ---------- worker解码器, 这个库无需引入,当useWorker()调用后会自动加载.
+
+NodePlayer-full.min.js ----- 全解码版本,包含h.264/h.265+aac/nellymoser/g.711/speex/mp3/opus 解码器.
+NodePlayerWorker-full.min.js ---------- 包含h.264/h.265的worker解码器, 这个库无需引入,当useWorker()调用后会自动加载.
+
+NodePlayer-simd.min.js ----- 全解码SIMD版本,包含h.264/h.265+aac/nellymoser/g.711/speex/mp3/opus 解码器.
+NodePlayerWorker-simd.min.js ---------- SIMD的worker解码器, 这个库无需引入, 当useWorker()调用后会自动加载.
+
+压缩是指gzip命令压缩js，可提高web加载速度。
+部分web服务开启压缩模块后，访问时服务的自动压缩。
+但比较建议预压缩，避免并发访问时过高消耗cpu。
+
+本试用开发包10分钟自动断开连接，其它与正式版功能完全一样，正式使用需商用授权。
+以http-flv协议播放时如果没有画面，请打开chrome控制台查看是否有错误，如果有CORS错误的话，需要服务端开启跨域访问。
+ws-flv协议默认不存在跨域问题，可优先尝试。
+ 
+由于wasm程序不能由本地路径加载，因此双击打开index.html文件无法使用，需要配合http服务来加载
+
+完整文档：http://www.nodemedia.cn/doc/web/#/1?page_id=1
+
+商务技术咨询:
+QQ : 281269007

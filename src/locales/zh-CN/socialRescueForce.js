@@ -1,0 +1,15 @@
+export default {
+  'socialRescueForce.title': '社会救援力量',
+  'socialRescueForce.name': '社会救援力量',
+  'socialRescueForce.name.tip': '请输入社会救援力量名称',
+  'socialRescueForce.type': '类型',
+  'socialRescueForce.type.tip': '请输入类型',
+  'socialRescueForce.phone': '电话号码',
+  'socialRescueForce.phone.tip': '请输入电话号码',
+  'socialRescueForce.position': '资源位置',
+  'socialRescueForce.position.tip': '请输入资源位置',
+  'socialRescueForce.time': '耗时(小时)',
+  'socialRescueForce.time.tip': '请输入耗时',
+  'socialRescueForce.distance': '距离(km)',
+  'socialRescueForce.distance.tip': '请输入距离',
+};

@@ -1,0 +1,28 @@
+tippecanoe -o /home/mapserver/tool/tippecanoe/mbtiles/cx_0309_v1.mbtiles -z20 -Z08 -s EPSG:4326 \
+-d12 -D12 -f -pS -pk -pf \
+-L '{"file":"/home/mapserver/tool/tippecanoe/geojsons/cx/3/door_3.geojson", "layer":"door_3", "description":""}' \
+-L '{"file":"/home/mapserver/tool/tippecanoe/geojsons/cx/3/3_background.geojson", "layer":"background_3", "description":""}' \
+-L '{"file":"/home/mapserver/tool/tippecanoe/geojsons/cx/3/guanlang1.geojson", "layer":"guanlang_3", "description":""}' \
+-L '{"file":"/home/mapserver/tool/tippecanoe/geojsons/cx/3/roadpoly_3_v2.geojson", "layer":"road_3", "description":""}' \
+-L '{"file":"/home/mapserver/tool/tippecanoe/geojsons/cx/3/wall_2.geojson", "layer":"wall_3", "description":""}' \
+-L '{"file":"/home/mapserver/tool/tippecanoe/geojsons/cx/3/xiaofanggw.geojson", "layer":"xiaofanggw_3", "description":""}' \
+-L '{"file":"/home/mapserver/tool/tippecanoe/geojsons/cx/3/zhuangzhi_circle.geojson", "layer":"zhuangzhi_circle_3", "description":""}' \
+-L '{"file":"/home/mapserver/tool/tippecanoe/geojsons/cx/3/zhuangzhi_kuai_2.geojson", "layer":"zhuangzhi_kuai_2_3", "description":""}' \
+-L '{"file":"/home/mapserver/tool/tippecanoe/geojsons/cx/3/zhuangzhi_kuai_3.geojson", "layer":"zhuangzhi_kuai_3_3", "description":""}' \
+-L '{"file":"/home/mapserver/tool/tippecanoe/geojsons/cx/3/zhuangzhi_v2.geojson", "layer":"zhuangzhi_v2_3", "description":""}' \
+-L '{"file":"/home/mapserver/tool/tippecanoe/geojsons/cx/3/texts_bds1.geojson", "layer":"texts_bds1_3", "description":""}' \
+-L '{"file":"/home/mapserver/tool/tippecanoe/geojsons/cx/3/texts_bds2.geojson", "layer":"texts_bds2_3", "description":""}' \
+-L '{"file":"/home/mapserver/tool/tippecanoe/geojsons/cx/4/door_4.geojson", "layer":"door_4", "description":""}' \
+-L '{"file":"/home/mapserver/tool/tippecanoe/geojsons/cx/4/4_background.geojson", "layer":"background_4", "description":""}' \
+-L '{"file":"/home/mapserver/tool/tippecanoe/geojsons/cx/4/guanlang.geojson", "layer":"guanlang_4", "description":""}' \
+-L '{"file":"/home/mapserver/tool/tippecanoe/geojsons/cx/4/road_poly_4.geojson", "layer":"road_4", "description":""}' \
+-L '{"file":"/home/mapserver/tool/tippecanoe/geojsons/cx/4/wall_4_v2.geojson", "layer":"wall_4", "description":""}' \
+-L '{"file":"/home/mapserver/tool/tippecanoe/geojsons/cx/4/4#_xiaofangGW.geojson", "layer":"xiaofanggw_4", "description":""}' \
+-L '{"file":"/home/mapserver/tool/tippecanoe/geojsons/cx/4/zhuangzhi_circle.geojson", "layer":"zhuangzhi_circle_4", "description":""}' \
+-L '{"file":"/home/mapserver/tool/tippecanoe/geojsons/cx/4/zhuangzhi_kuai_2.geojson", "layer":"zhuangzhi_kuai_2_4", "description":""}' \
+-L '{"file":"/home/mapserver/tool/tippecanoe/geojsons/cx/4/zhuangzhi_V2.geojson", "layer":"zhuangzhi_v2_4", "description":""}' \
+-L '{"file":"/home/mapserver/tool/tippecanoe/geojsons/cx/4/zhuangzhi_kuai_3.geojson", "layer":"zhuangzhi_kuai_3_4", "description":""}' \
+-L '{"file":"/home/mapserver/tool/tippecanoe/geojsons/cx/4/texts_bds_1.geojson", "layer":"texts_bds1_4", "description":""}' \
+-L '{"file":"/home/mapserver/tool/tippecanoe/geojsons/cx/4/tests_bds_2.geojson", "layer":"texts_bds2_4", "description":""}' \
+-L '{"file":"/home/mapserver/tool/tippecanoe/geojsons/cx/4/zhuangzhi_bds_2.geojson", "layer":"zhuangzhi_bds_2", "description":""}' \
+-L '{"file":"/home/mapserver/tool/tippecanoe/geojsons/cx/4/zhuangzhi_bds_1.geojson", "layer":"zhuangzhi_bds_1", "description":""}' \

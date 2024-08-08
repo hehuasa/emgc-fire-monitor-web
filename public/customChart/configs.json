@@ -1,0 +1,28 @@
+{
+    "configsData": [
+        {
+            "id": "f8b94b10-4dbe-4619-b425-5c1081d9bb90",
+            "type": "bar",
+            "config": {
+                "bgColor": "",
+                "width": 300,
+                "height": 300,
+                "top": 0,
+                "left": 0,
+                "fontSize": 26
+            }
+        },
+        {
+            "id": "4e8c4c9c-128a-4a55-9532-3ad6af1235da",
+            "type": "foldLine",
+            "config": {
+                "bgColor": "",
+                "width": 500,
+                "height": 424,
+                "top": 300,
+                "left": 300,
+                "fontSize": 26
+            }
+        }
+    ]
+}

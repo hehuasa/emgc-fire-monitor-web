@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>NodePublisher.js Camera Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+        }
+
+        .box {
+            margin: 8px 0;
+            display: flex;
+        }
+
+        .fl1 {
+            flex: 1;
+        }
+
+        .fl0 {
+            flex: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="max-width:980px;margin:0 auto">
+        <h3><a href="http://www.nodemedia.cn" target="_blank">NodePublisher.js Camera Demo</a></h3>
+        <div style="width:100%; padding-bottom:56%;position:relative;">
+            <video id="video" autoplay muted
+                style="width:100%;height:100%;position:absolute;background-color: black;"></video>
+        </div>
+        <div>
+            <div class="box">
+                <input id="url" class="fl1" value="wss://192.168.0.2:8443/live/stream.flv" />
+                <button class="fl0" onclick="startFunc()">Start</button>
+                <button class="fl0" onclick="stopFunc()">Stop</button>
+            </div>
+
+            <div class="box">
+                <div class="fl1">
+                    <label>Camera:</label>
+                    <select id="videoSource" onchange="cameraChange(event);">
+
+                    </select>
+                </div>
+                <div class="fl1">
+                    <label>Microphone:</label>
+                    <select id="audioSource" onchange="micChange(event);">
+                    </select>
+                </div>
+                <div class="fl1">
+                    <label>CryptoKey:</label>
+                    <input id="key" class="fl1" value="" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="./NodePlayer.min.js"></script>
+    <script>
+        var url = document.getElementById("url");
+        var key = document.getElementById("key");
+        var nodePublisher;
+        const audioSelect = document.querySelector('select#audioSource');
+        const videoSelect = document.querySelector('select#videoSource');
+        const selectors = [audioSelect, videoSelect];
+        NodePublisher.load(async () => {
+            nodePublisher = new NodePublisher();
+
+            let deviceInfos = await nodePublisher.listDevices();
+            if (!deviceInfos) {
+                console.log("No device available, please load this page using HTTPS");
+                return;
+            }
+
+            gotDevices(deviceInfos);
+            nodePublisher.setAudioSource();
+            nodePublisher.setVideoSource("video");
+
+            nodePublisher.setAudioConfig("mp4a.40.2", 96_000, 1, 48000);
+            nodePublisher.setVideoConfig("avc1.640028", 1280, 720, 30, 60, 2_000_000);
+
+            // nodePublisher.sendSEI(new Uint8Array([1, 2, 3, 4, 5]));
+            nodePublisher.on("start", () => {
+                console.log("Publisher on start");
+            });
+
+            nodePublisher.on("stop", () => {
+                console.log("Publisher on stop");
+            });
+
+            nodePublisher.on("error", (err) => {
+                console.log("Publisher on error", err);
+            });
+        });
+
+        function gotDevices(deviceInfos) {
+            // Handles being called several times to update labels. Preserve values.
+            const values = selectors.map(select => select.value);
+            selectors.forEach(select => {
+                while (select.firstChild) {
+                    select.removeChild(select.firstChild);
+                }
+            });
+            for (let i = 0; i !== deviceInfos.length; ++i) {
+                const deviceInfo = deviceInfos[i];
+                const option = document.createElement('option');
+                option.value = deviceInfo.deviceId;
+                if (deviceInfo.kind === 'audioinput') {
+                    option.text = deviceInfo.label || `microphone ${audioSelect.length + 1}`;
+                    audioSelect.appendChild(option);
+                } else if (deviceInfo.kind === 'videoinput') {
+                    option.text = deviceInfo.label || `camera ${videoSelect.length + 1}`;
+                    videoSelect.appendChild(option);
+                }
+            }
+            selectors.forEach((select, selectorIndex) => {
+                if (Array.prototype.slice.call(select.childNodes).some(n => n.value === values[selectorIndex])) {
+                    select.value = values[selectorIndex];
+                }
+            });
+        }
+
+        function cameraChange(t) {
+            console.log("cameraChange", event.target.value);
+            nodePublisher.setVideoSource("video", event.target.value);
+        }
+
+        function micChange() {
+
+        }
+
+        function startFunc() {
+            /**
+             * 设置加密密码,必须是16字节
+             */
+            nodePublisher.setCryptoKey(key.value);
+            nodePublisher.start(url.value);
+        }
+
+        function stopFunc() {
+            nodePublisher.stop();
+        }
+    </script>
+</body>
+
+</html>

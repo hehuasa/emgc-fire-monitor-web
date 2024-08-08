@@ -1,0 +1,18 @@
+export default {
+  'setting.open': '开',
+  'setting.close': '关',
+  'setting.alarm': '接收报警设置',
+  'setting.alarm.autoLocation': '自动定位开关: ',
+  'setting.alarm.autoRes': '同步打开资源信息窗: ',
+  // 'setting.alarm.autoVideo': '2. 视频联动: ',
+  'setting.alarm.countDownTime': '提醒倒计时(s): ',
+  'setting.alarm.intervalTime': '定位间隔时间(s): ',
+  'setting.focus': '重点关注',
+  'setting.focus.switch': '开关: ',
+  'setting.person': '个人设置',
+  'setting.person.center': '个人信息',
+  'setting.logout': '退出登录',
+  'setting.handleAlarm': '手动报警',
+  'setting.emergency': '应急事件',
+  'setting.alarm.tips': '报警提示',
+};

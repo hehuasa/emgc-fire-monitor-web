@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="88" height="88" viewBox="0 0 88 88">
+  <defs>
+    <filter id="椭圆_6" x="0" y="0" width="88" height="88" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="椭圆_7" x="18.5" y="15.5" width="51" height="51" filterUnits="userSpaceOnUse">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="2.5" result="blur-2"/>
+      <feFlood flood-opacity="0.102"/>
+      <feComposite operator="in" in2="blur-2"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="组_5337" data-name="组 5337" transform="translate(-1801 -896)">
+    <g id="组_329" data-name="组 329" transform="translate(54 79)">
+      <g transform="matrix(1, 0, 0, 1, 1747, 817)" filter="url(#椭圆_6)">
+        <circle id="椭圆_6-2" data-name="椭圆 6" cx="35" cy="35" r="35" transform="translate(9 6)" fill="#fff"/>
+      </g>
+      <g transform="matrix(1, 0, 0, 1, 1747, 817)" filter="url(#椭圆_7)">
+        <circle id="椭圆_7-2" data-name="椭圆 7" cx="18" cy="18" r="18" transform="translate(26 23)" fill="#fff"/>
+      </g>
+    </g>
+    <g id="组_331" data-name="组 331" transform="translate(-7566.93 -2487)">
+      <path id="联合_10" data-name="联合 10" d="M.066,31.777V27.253L0,19.67H3.228a23.546,23.546,0,0,0,.6-5.286A23.322,23.322,0,0,0,1.979,5.244,23.5,23.5,0,0,0,.116,1.709L2.365,0A26.178,26.178,0,0,1,4.888,4.922a26.176,26.176,0,0,1,1.753,9.462,26.171,26.171,0,0,1-1.753,9.461,26.216,26.216,0,0,1-4.82,7.934l0,0Z" transform="translate(9432.896 3408)" fill="#a2a2a2"/>
+      <path id="联合_11" data-name="联合 11" d="M.066,0V4.526L0,12.11H3.228a23.547,23.547,0,0,1,.6,5.286,23.322,23.322,0,0,1-1.844,9.139A23.5,23.5,0,0,1,.116,30.07l2.25,1.709a26.178,26.178,0,0,0,2.523-4.922A26.176,26.176,0,0,0,6.641,17.4,26.171,26.171,0,0,0,4.888,7.936,26.216,26.216,0,0,0,.068,0l0,0Z" transform="translate(9390.571 3439.78) rotate(180)" fill="#a2a2a2"/>
+    </g>
+    <g id="组_332" data-name="组 332" transform="translate(-7570.5 -2486.226)">
+      <path id="路径_1180" data-name="路径 1180" d="M9315.911,3398.933l3.645-2.707,3.731,2.707" transform="translate(95.588 -1)" fill="none" stroke="#909090" stroke-width="1"/>
+      <path id="路径_1181" data-name="路径 1181" d="M9315.911,3396.226l3.645,2.707,3.731-2.707" transform="translate(95.588 51.846)" fill="none" stroke="#909090" stroke-width="1"/>
+    </g>
+    <g id="组_333" data-name="组 333" transform="translate(-7570 -2486)">
+      <path id="路径_1182" data-name="路径 1182" d="M9415,3407.323v-2.286" fill="none" stroke="#dadada" stroke-width="1"/>
+      <path id="路径_1183" data-name="路径 1183" d="M9415,3440.855v0Z" fill="none" stroke="#dadada" stroke-width="1"/>
+    </g>
+    <g id="组_334" data-name="组 334" transform="translate(5267.946 -8478.054) rotate(90)">
+      <path id="路径_1182-2" data-name="路径 1182" d="M9415,3407.323v-2.286" fill="none" stroke="#dadada" stroke-width="1"/>
+      <path id="路径_1183-2" data-name="路径 1183" d="M9415,3440.855v0Z" fill="none" stroke="#dadada" stroke-width="1"/>
+    </g>
+  </g>
+</svg>

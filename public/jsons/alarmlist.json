@@ -1,0 +1,482 @@
+{
+  "code": 200,
+  "data": [
+    {
+      "iotAlarmId": "98221857-749e-4458-9982-dfdafa404d0e",
+      "alarmId": "1661555379220865025",
+      "alarmNo": "20230525101047002",
+      "alarmType": "GAS",
+      "alarmTypeName": "有毒及可燃气体报警",
+      "alarmAreaName": "采气井口区",
+      "alarmAreaId": "14",
+      "alarmFirstTime": "2023-05-25 10:10:47",
+      "coordinate": {
+        "type": "LineString",
+        "coordinates": [
+          [103.904603418, 31.051202594],
+          [103.904599487, 31.051548299]
+        ]
+      },
+      "alarmLastTime": "2023-05-25 10:14:50",
+      "address": "井口区可燃气体检测",
+      "floorLevel": "1",
+      "alarmLevel": "09",
+      "deptId": "2",
+      "deptName": "4#采气脱硫站",
+      "alarmUserId": null,
+      "alarmUserName": null,
+      "linkPhone": null,
+      "alarmLevelRefer": "HA"
+    },
+    {
+      "iotAlarmId": "18a94547-2bfb-4306-bd96-012e0cecd9dc",
+      "alarmId": "1661555693722361858",
+      "alarmNo": "20230525101202001",
+      "alarmType": "GAS",
+      "alarmTypeName": "有毒及可燃气体报警",
+      "alarmAreaName": "采气井口区",
+      "alarmAreaId": "14",
+      "alarmFirstTime": "2023-05-25 10:12:02",
+      "coordinate": {
+        "type": "LineString",
+        "coordinates": [
+          [103.904603418, 31.051202594],
+          [103.904599487, 31.051548299]
+        ]
+      },
+      "alarmLastTime": "2023-05-25 10:14:50",
+      "address": "井口区H2S检测",
+      "floorLevel": "1",
+      "alarmLevel": "09",
+      "deptId": "2",
+      "deptName": "4#采气脱硫站",
+      "alarmUserId": null,
+      "alarmUserName": null,
+      "linkPhone": null,
+      "alarmLevelRefer": "HHA"
+    },
+    {
+      "iotAlarmId": "9889ec94-19dd-4ec2-ba0b-53c4485ebec5",
+      "alarmId": "1661359836691521538",
+      "alarmNo": "20230524211346002",
+      "alarmType": "GAS",
+      "alarmTypeName": "有毒及可燃气体报警",
+      "alarmAreaName": "天然气净化装置",
+      "alarmAreaId": "1",
+      "alarmFirstTime": "2023-05-24 21:13:46",
+      "coordinate": {
+        "type": "Point",
+        "coordinates": [103.90391104, 31.05149576]
+      },
+      "alarmLastTime": "2023-05-25 10:14:50",
+      "address": "R-1015EL000平台",
+      "floorLevel": "1",
+      "alarmLevel": "09",
+      "deptId": "2",
+      "deptName": "4#采气脱硫站",
+      "alarmUserId": null,
+      "alarmUserName": null,
+      "linkPhone": null,
+      "alarmLevelRefer": "HHA"
+    },
+    {
+      "iotAlarmId": "f2ed3318-9b56-49ac-a21a-75fdc4d15ca3",
+      "alarmId": "1661555697937637378",
+      "alarmNo": "20230525101203001",
+      "alarmType": "GAS",
+      "alarmTypeName": "有毒及可燃气体报警",
+      "alarmAreaName": "采气井口区",
+      "alarmAreaId": "14",
+      "alarmFirstTime": "2023-05-25 10:12:03",
+      "coordinate": {
+        "type": "LineString",
+        "coordinates": [
+          [103.904603418, 31.051202594],
+          [103.904599487, 31.051548299]
+        ]
+      },
+      "alarmLastTime": "2023-05-25 10:14:50",
+      "address": "井口区可燃气体检测",
+      "floorLevel": "1",
+      "alarmLevel": "09",
+      "deptId": "2",
+      "deptName": "4#采气脱硫站",
+      "alarmUserId": null,
+      "alarmUserName": null,
+      "linkPhone": null,
+      "alarmLevelRefer": "HHA"
+    },
+    {
+      "iotAlarmId": "b512a990-9998-4e8a-aa1a-a9d0e94e3a29",
+      "alarmId": "1661359836683132930",
+      "alarmNo": "20230524211346001",
+      "alarmType": "GAS",
+      "alarmTypeName": "有毒及可燃气体报警",
+      "alarmAreaName": "天然气净化装置",
+      "alarmAreaId": "1",
+      "alarmFirstTime": "2023-05-24 21:13:46",
+      "coordinate": {
+        "type": "Point",
+        "coordinates": [103.90391104, 31.05149576]
+      },
+      "alarmLastTime": "2023-05-25 10:14:50",
+      "address": "R-1015EL000平台",
+      "floorLevel": "1",
+      "alarmLevel": "09",
+      "deptId": "2",
+      "deptName": "4#采气脱硫站",
+      "alarmUserId": null,
+      "alarmUserName": null,
+      "linkPhone": null,
+      "alarmLevelRefer": "HA"
+    },
+    {
+      "iotAlarmId": "cadd8be3-e8bf-410f-8a9a-5126299ebd91",
+      "alarmId": "1661555379204087810",
+      "alarmNo": "20230525101047001",
+      "alarmType": "GAS",
+      "alarmTypeName": "有毒及可燃气体报警",
+      "alarmAreaName": "采气井口区",
+      "alarmAreaId": "14",
+      "alarmFirstTime": "2023-05-25 10:10:47",
+      "coordinate": {
+        "type": "LineString",
+        "coordinates": [
+          [103.904603418, 31.051202594],
+          [103.904599487, 31.051548299]
+        ]
+      },
+      "alarmLastTime": "2023-05-25 10:14:50",
+      "address": "井口区H2S检测",
+      "floorLevel": "1",
+      "alarmLevel": "09",
+      "deptId": "2",
+      "deptName": "4#采气脱硫站",
+      "alarmUserId": null,
+      "alarmUserName": null,
+      "linkPhone": null,
+      "alarmLevelRefer": "HA"
+    },
+    {
+      "iotAlarmId": "fc12deec-7ae4-43b3-8318-a0244c62bea6",
+      "alarmId": "1661540743805231106",
+      "alarmNo": "20230525091237001",
+      "alarmType": "LT_ALA",
+      "alarmTypeName": "炉膛报警",
+      "alarmAreaName": "动力锅炉单元",
+      "alarmAreaId": "9",
+      "alarmFirstTime": "2023-05-25 09:12:37",
+      "coordinate": {
+        "type": "Point",
+        "coordinates": [103.90381392, 31.05278715]
+      },
+      "alarmLastTime": "2023-05-25 10:14:49",
+      "address": "B-101A高温炉膛内",
+      "floorLevel": "1",
+      "alarmLevel": "09",
+      "deptId": "2",
+      "deptName": "4#采气脱硫站",
+      "alarmUserId": null,
+      "alarmUserName": null,
+      "linkPhone": null,
+      "alarmLevelRefer": "燃烧器熄灭报警(燃烧器)"
+    },
+    {
+      "iotAlarmId": "21e97e99-31db-480d-9c50-572e13425c0f",
+      "alarmId": "1661540743813619713",
+      "alarmNo": "20230525091237002",
+      "alarmType": "LT_ALA",
+      "alarmTypeName": "炉膛报警",
+      "alarmAreaName": "动力锅炉单元",
+      "alarmAreaId": "9",
+      "alarmFirstTime": "2023-05-25 09:12:37",
+      "coordinate": {
+        "type": "Point",
+        "coordinates": [103.90381979, 31.05294941]
+      },
+      "alarmLastTime": "2023-05-25 10:14:49",
+      "address": "B-101B高温炉膛内",
+      "floorLevel": "1",
+      "alarmLevel": "09",
+      "deptId": "2",
+      "deptName": "4#采气脱硫站",
+      "alarmUserId": null,
+      "alarmUserName": null,
+      "linkPhone": null,
+      "alarmLevelRefer": "燃烧器熄灭报警(燃烧器)"
+    },
+    {
+      "iotAlarmId": "985fa06d-1a98-4302-9f98-66ecabc82f1b",
+      "alarmId": "1661392824527577089",
+      "alarmNo": "20230524232451001",
+      "alarmType": "PON",
+      "alarmTypeName": "周界入侵报警",
+      "alarmAreaName": "围墙西",
+      "alarmAreaId": "18",
+      "alarmFirstTime": "2023-05-24 23:24:51",
+      "coordinate": {
+        "type": "LineString",
+        "coordinates": [
+          [103.90351522, 31.052941922],
+          [103.903510028, 31.053394662]
+        ]
+      },
+      "alarmLastTime": "2023-05-25 10:14:45",
+      "address": "西围墙",
+      "floorLevel": "1",
+      "alarmLevel": "09",
+      "deptId": "2",
+      "deptName": "4#采气脱硫站",
+      "alarmUserId": null,
+      "alarmUserName": null,
+      "linkPhone": null,
+      "alarmLevelRefer": "2"
+    },
+    {
+      "iotAlarmId": "dc533872-1df4-4689-9cb7-3488fdcd6a18",
+      "alarmId": "1661527451342823426",
+      "alarmNo": "20230525081948001",
+      "alarmType": "PON",
+      "alarmTypeName": "周界入侵报警",
+      "alarmAreaName": "围墙东3",
+      "alarmAreaId": "22",
+      "alarmFirstTime": "2023-05-25 08:19:48",
+      "coordinate": {
+        "type": "LineString",
+        "coordinates": [
+          [103.905024362, 31.052884723],
+          [103.905033236, 31.052109881]
+        ]
+      },
+      "alarmLastTime": "2023-05-25 10:14:34",
+      "address": "东围墙",
+      "floorLevel": "1",
+      "alarmLevel": "09",
+      "deptId": "2",
+      "deptName": "4#采气脱硫站",
+      "alarmUserId": null,
+      "alarmUserName": null,
+      "linkPhone": null,
+      "alarmLevelRefer": "2"
+    },
+    {
+      "iotAlarmId": "ba10f1de-52ac-46ba-8a20-563313f33921",
+      "alarmId": "1661500616592678914",
+      "alarmNo": "20230525063310001",
+      "alarmType": "PON",
+      "alarmTypeName": "周界入侵报警",
+      "alarmAreaName": "围墙西",
+      "alarmAreaId": "18",
+      "alarmFirstTime": "2023-05-25 06:33:10",
+      "coordinate": {
+        "type": "LineString",
+        "coordinates": [
+          [103.90351522, 31.052941922],
+          [103.903510028, 31.053394662]
+        ]
+      },
+      "alarmLastTime": "2023-05-25 10:13:00",
+      "address": "西围墙",
+      "floorLevel": "1",
+      "alarmLevel": "09",
+      "deptId": "2",
+      "deptName": "4#采气脱硫站",
+      "alarmUserId": null,
+      "alarmUserName": null,
+      "linkPhone": null,
+      "alarmLevelRefer": "3"
+    },
+    {
+      "iotAlarmId": "df9507af-75ad-44ba-b546-6f72aa441e3d",
+      "alarmId": "1661517931019329537",
+      "alarmNo": "20230525074158001",
+      "alarmType": "PON",
+      "alarmTypeName": "周界入侵报警",
+      "alarmAreaName": "围墙东1",
+      "alarmAreaId": "20",
+      "alarmFirstTime": "2023-05-25 07:41:58",
+      "coordinate": {
+        "type": "LineString",
+        "coordinates": [
+          [103.905497322, 31.051833541],
+          [103.90550754, 31.050940817]
+        ]
+      },
+      "alarmLastTime": "2023-05-25 10:11:59",
+      "address": "东围墙",
+      "floorLevel": "1",
+      "alarmLevel": "09",
+      "deptId": "2",
+      "deptName": "4#采气脱硫站",
+      "alarmUserId": null,
+      "alarmUserName": null,
+      "linkPhone": null,
+      "alarmLevelRefer": "2"
+    },
+    {
+      "iotAlarmId": "1fee78b4-9455-4193-a872-e8fed28a566b",
+      "alarmId": "1661508680913870850",
+      "alarmNo": "20230525070513001",
+      "alarmType": "PON",
+      "alarmTypeName": "周界入侵报警",
+      "alarmAreaName": "围墙北大门及警卫室",
+      "alarmAreaId": "17",
+      "alarmFirstTime": "2023-05-25 07:05:13",
+      "coordinate": {
+        "type": "LineString",
+        "coordinates": [
+          [103.904669734, 31.053404734],
+          [103.905070746, 31.053408205]
+        ]
+      },
+      "alarmLastTime": "2023-05-25 10:00:06",
+      "address": "北围墙",
+      "floorLevel": "1",
+      "alarmLevel": "09",
+      "deptId": "2",
+      "deptName": "4#采气脱硫站",
+      "alarmUserId": null,
+      "alarmUserName": null,
+      "linkPhone": null,
+      "alarmLevelRefer": "2"
+    },
+    {
+      "iotAlarmId": "1bc8b0a2-58ac-4477-919d-8de43871b234",
+      "alarmId": "1661529130737950722",
+      "alarmNo": "20230525082629001",
+      "alarmType": "PON",
+      "alarmTypeName": "周界入侵报警",
+      "alarmAreaName": "围墙东3",
+      "alarmAreaId": "22",
+      "alarmFirstTime": "2023-05-25 08:26:29",
+      "coordinate": {
+        "type": "LineString",
+        "coordinates": [
+          [103.905070746, 31.053408205],
+          [103.905076735, 31.052885167],
+          [103.905024362, 31.052884723]
+        ]
+      },
+      "alarmLastTime": "2023-05-25 09:58:36",
+      "address": "东围墙",
+      "floorLevel": "1",
+      "alarmLevel": "09",
+      "deptId": "2",
+      "deptName": "4#采气脱硫站",
+      "alarmUserId": null,
+      "alarmUserName": null,
+      "linkPhone": null,
+      "alarmLevelRefer": "3"
+    },
+    {
+      "iotAlarmId": "4ec58f2c-dc1e-4276-8a64-4f7b4a66de66",
+      "alarmId": "1661524407691599873",
+      "alarmNo": "20230525080743001",
+      "alarmType": "PON",
+      "alarmTypeName": "周界入侵报警",
+      "alarmAreaName": "围墙东3",
+      "alarmAreaId": "22",
+      "alarmFirstTime": "2023-05-25 08:07:42",
+      "coordinate": {
+        "type": "LineString",
+        "coordinates": [
+          [103.905024362, 31.052884723],
+          [103.905033236, 31.052109881]
+        ]
+      },
+      "alarmLastTime": "2023-05-25 09:50:00",
+      "address": "东围墙",
+      "floorLevel": "1",
+      "alarmLevel": "09",
+      "deptId": "2",
+      "deptName": "4#采气脱硫站",
+      "alarmUserId": null,
+      "alarmUserName": null,
+      "linkPhone": null,
+      "alarmLevelRefer": "3"
+    },
+    {
+      "iotAlarmId": "3fd38705-6015-41bd-9593-c11102df6efb",
+      "alarmId": "1661522382778097666",
+      "alarmNo": "20230525075940001",
+      "alarmType": "PON",
+      "alarmTypeName": "周界入侵报警",
+      "alarmAreaName": "围墙东3",
+      "alarmAreaId": "22",
+      "alarmFirstTime": "2023-05-25 07:59:40",
+      "coordinate": {
+        "type": "LineString",
+        "coordinates": [
+          [103.905070746, 31.053408205],
+          [103.905076735, 31.052885167],
+          [103.905024362, 31.052884723]
+        ]
+      },
+      "alarmLastTime": "2023-05-25 09:48:03",
+      "address": "东围墙",
+      "floorLevel": "1",
+      "alarmLevel": "09",
+      "deptId": "2",
+      "deptName": "4#采气脱硫站",
+      "alarmUserId": null,
+      "alarmUserName": null,
+      "linkPhone": null,
+      "alarmLevelRefer": "2"
+    },
+    {
+      "iotAlarmId": "b5a2c098-976a-42be-b61e-69d01a072472",
+      "alarmId": "1661492721465516033",
+      "alarmNo": "20230525060148001",
+      "alarmType": "PON",
+      "alarmTypeName": "周界入侵报警",
+      "alarmAreaName": "围墙东2",
+      "alarmAreaId": "21",
+      "alarmFirstTime": "2023-05-25 06:01:48",
+      "coordinate": {
+        "type": "LineString",
+        "coordinates": [
+          [103.905036445, 31.05182963],
+          [103.905497322, 31.051833541]
+        ]
+      },
+      "alarmLastTime": "2023-05-25 09:40:21",
+      "address": "东围墙",
+      "floorLevel": "1",
+      "alarmLevel": "09",
+      "deptId": "2",
+      "deptName": "4#采气脱硫站",
+      "alarmUserId": null,
+      "alarmUserName": null,
+      "linkPhone": null,
+      "alarmLevelRefer": "2"
+    },
+    {
+      "iotAlarmId": "894a1c41-8cc7-422f-b5fa-a1301bb3a592",
+      "alarmId": "1661521433988784130",
+      "alarmNo": "20230525075554001",
+      "alarmType": "PON",
+      "alarmTypeName": "周界入侵报警",
+      "alarmAreaName": "围墙东3",
+      "alarmAreaId": "22",
+      "alarmFirstTime": "2023-05-25 07:55:54",
+      "coordinate": {
+        "type": "LineString",
+        "coordinates": [
+          [103.905033236, 31.052109881],
+          [103.905036445, 31.05182963]
+        ]
+      },
+      "alarmLastTime": "2023-05-25 07:56:18",
+      "address": "东围墙",
+      "floorLevel": "1",
+      "alarmLevel": "09",
+      "deptId": "2",
+      "deptName": "4#采气脱硫站",
+      "alarmUserId": null,
+      "alarmUserName": null,
+      "linkPhone": null,
+      "alarmLevelRefer": "2"
+    }
+  ],
+  "msg": ""
+}

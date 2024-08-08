@@ -1,0 +1,47 @@
+bg    背景色图层
+tdI   天地图栅格底图（用于辅助定位，默认关闭）
+tdText    天地图文字标注底图（用于辅助定位，默认关闭）
+
+background_4    4号场站背景色
+road_4    4号场站道路图层
+zhuangzhi_v1_4    4号场站装置图层
+jianzhu_v1_4   4号场站建筑图层
+zhuangzhi_kuai_v2_4    4号场站建筑 （装置内的小建筑）图层
+zhuangzhi_kuai_v3_4    4号场站设备图层
+zhuangzhi_circle_4    4号场站罐、圆图层
+guanlang_4    4号场站管廊图层
+xiaofanggw_4    4号场站消防管网图层
+wall_4    4号场站围墙图层
+door_4    4号场站门禁图层
+baseLine_4    4号场站原始cad线图层
+
+zhuangzhi_v1_text_4   4号场站装置文字标注图层
+jianzhu_v1_text_4     4号场站建筑文字标注图层
+zhuangzhi_kuai_v2_text_4   4号场站建筑 （装置内的小建筑）文字标注图层
+zhuangzhi_circle_text_4   4号场站罐、圆文字标注图层
+zhuangzhi_kuai_v3_text_4    4号场站设备文字标注图层
+door_text_4   4号场站门禁文字标注图层
+texts_4   4号场站其余文字标注图层
+
+background_3    3号场站背景色
+road_3    3号场站道路图层
+zhuangzhi_v1_3    3号场站装置图层
+jianzhu_v1_3    3号场站建筑图层
+zhuangzhi_kuai_v2_3   3号场站建筑 （装置内的小建筑）图层
+zhuangzhi_kuai_v3_3   3号场站设备图层
+zhuangzhi_circle_3    3号场站罐、圆图层
+guanlang_3      3号场站管廊图层
+xiaofanggw_3    3号场站消防管网图层
+wall_3    3号场站围墙图层
+door_3    3号场站门禁图层
+baseLine_3    3号场站原始cad线图层
+
+zhuangzhi_v1_text_3   3号场站装置文字标注图层
+jianzhu_v1_text_3     3号场站建筑文字标注图层
+zhuangzhi_kuai_v2_text_3   3号场站建筑 （装置内的小建筑）文字标注图层
+zhuangzhi_circle_text_3   3号场站罐、圆文字标注图层
+zhuangzhi_kuai_v3_text_3    3号场站设备文字标注图层
+door_text_3   3号场站门禁文字标注图层
+texts_3   3号场站其余文字标注图层
+
+
