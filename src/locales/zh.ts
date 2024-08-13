@@ -1,5 +1,7 @@
 //基本的英文
 import base from './zh-CN/base';
+import map from './zh-CN/map';
+
 import alarm from './zh-CN/alarm';
 import emergency from './zh-CN/emergency';
 import largeScreen from './zh-CN/largeScreen';
@@ -11,6 +13,7 @@ import loginZh from './login/zh';
 const json = {
   base,
   alarm,
+  map,
   emergency,
   largeScreen,
   personnelLocate,

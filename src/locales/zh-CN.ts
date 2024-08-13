@@ -99,11 +99,6 @@ const zh_cn = {
   jumpTo: '跳至',
   page: '页',
 
-  broadcasting: '扩音广播',
-  accessControl: '门禁控制',
-  accessConfirm: '是否打开',
-  oneKeyForOpening: '一键开门',
-
   toPlayVoiceFiles: '待播放语音文件',
   confirmBroadcasting: '确定广播',
 

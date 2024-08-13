@@ -1,4 +1,4 @@
-export default {
+const map = {
   // mapSearch
   'map.mapSearch.search.placeholder': '请输入关键字',
   'map.mapSearch.searchType.fire': '火灾探测',
@@ -38,3 +38,4 @@ export default {
   'map.select.tips': '请在地图区域进行操作',
   'map.select.status.tips': '地图选择状态切换',
 };
+export default map;

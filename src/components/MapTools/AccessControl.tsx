@@ -16,15 +16,16 @@ import {
   ModalOverlay,
   useTheme,
 } from '@chakra-ui/react';
-import { FeatureCollection, featureCollection, Point, point } from '@turf/turf';
+import { featureCollection, point } from '@turf/turf';
+import { Point, FeatureCollection } from 'geojson'
 import { useMemoizedFn } from 'ahooks';
 import { stringify } from 'qs';
 import { useRef } from 'react';
-import { useIntl } from 'react-intl';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { ILayerItem } from './LayerList';
 
 import dynamic from 'next/dynamic';
+import { useTranslations } from 'next-intl';
 
 const ModalWarp = dynamic(() => import('@/components/emergencyCommand/modalWarp'), { ssr: false });
 
@@ -37,7 +38,9 @@ const AccessControl = ({ theme = 'shallow', onCloseFn, eventId }: Props) => {
   const locales = useRecoilValue(localesModal);
   const [visible, setVisible] = useRecoilState(accessControltVisibleModel);
   const mapRef = useRef<maplibregl.Map | null>(null);
-  const { formatMessage } = useIntl();
+
+  const t = useTranslations('map');
+
   const iconIsHover = useRef(false);
   const themeStyle = useTheme();
 
@@ -131,7 +134,7 @@ const AccessControl = ({ theme = 'shallow', onCloseFn, eventId }: Props) => {
     });
   };
 
-  const resLayerClick = (e: any) => {
+  const resLayerClick = (e: { features: unknown[]; }) => {
     if (e.features && e.features[0]) {
       const res = e.features[0] as unknown as {
         properties: { open: boolean };
@@ -176,7 +179,7 @@ const AccessControl = ({ theme = 'shallow', onCloseFn, eventId }: Props) => {
           _hover={{}}
           onClick={() => {
             confirmModal({
-              title: formatMessage({ id: 'accessConfirm' }),
+              title: t('accessConfirm'),
               theme: themeStyle,
               locales: locales,
               isDark: theme === 'deep',
@@ -194,7 +197,7 @@ const AccessControl = ({ theme = 'shallow', onCloseFn, eventId }: Props) => {
             });
           }}
         >
-          {formatMessage({ id: 'oneKeyForOpening' })}
+          {t('oneKeyForOpening')}
         </Button>
       </Box>
     );
@@ -221,7 +224,7 @@ const AccessControl = ({ theme = 'shallow', onCloseFn, eventId }: Props) => {
                 p="0 20px"
               >
                 <Box fontSize={'18px'} fontWeight="bold" userSelect="none">
-                  {formatMessage({ id: 'accessControl' })}
+                  {t('accessControl')}
                 </Box>
                 <CircleClose onClick={onClose} fontSize="24px" cursor="pointer" />
               </Flex>
@@ -229,7 +232,7 @@ const AccessControl = ({ theme = 'shallow', onCloseFn, eventId }: Props) => {
             {theme === 'shallow' ? (
               _renderBody()
             ) : (
-              <ModalWarp onClose={onClose} title="门禁控制">
+              <ModalWarp onClose={onClose} title={t("accessControl")}>
                 {_renderBody()}
               </ModalWarp>
             )}
