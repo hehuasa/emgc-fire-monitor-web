@@ -20,14 +20,15 @@ import { IArea, isSpaceQueryingModel, MapContext, UpdateAlarmfnContext } from '@
 import { genAlarmClusterData, genAlarmIcons, genAlarmLineIcons } from '@/utils/mapUtils';
 import { request } from '@/utils/request';
 import { genUmapIcons } from '@/utils/umapUtils';
-import { Box, Flex } from '@chakra-ui/react';
-import { featureCollection, FeatureCollection, Point, Polygon } from '@turf/turf';
-import { useMount, useUnmount } from 'ahooks';
+import { Box } from '@chakra-ui/react';
+import { featureCollection } from '@turf/turf';
+import { useUnmount } from 'ahooks';
 import dynamic from 'next/dynamic';
 import { stringify } from 'qs';
 import { useEffect, useRef, useState } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import UeMap from './UeMap';
+import { FeatureCollection, Polygon } from 'geojson';
 
 const MapToolBar = dynamic(() => import('@/components/MapTools/MaptoolBar'), { ssr: false });
 const BaseMap = dynamic(() => import('./Map'), { ssr: false });
@@ -367,19 +368,12 @@ const Page = () => {
     setMapLoaded(false);
     isGetAlarmList.current = false;
   };
-  useMount(() => {
-    if (window) {
-      window.gpsTimer = null;
-    }
-  });
+
   useUnmount(() => {
     disable2dMap();
     disable3dMap();
 
-    if (gpsTimer) {
-      clearInterval(gpsTimer);
-      gpsTimer = null;
-    }
+
   });
   return (
     <Box
@@ -393,28 +387,6 @@ const Page = () => {
     >
       <Wenet />
 
-      {process.env.NEXT_PUBLIC_ANALYTICS_debug3d && (
-        <Flex
-          position="absolute"
-          bottom="72"
-          right={9}
-          boxShadow="0px 3px 6px 1px rgba(0,0,0,0.16)"
-          borderRadius="10px"
-          justifyContent="center"
-          align="center"
-          w="10"
-          h="10"
-          zIndex={2}
-          bg="pri.white.100"
-          cursor="pointer"
-          _hover={{ stroke: 'pri.blue.100' }}
-          onClick={() => {
-            changeMapType(mapType);
-          }}
-        >
-          {mapType === '3d' ? <Box>2d</Box> : <Box>3d</Box>}
-        </Flex>
-      )}
 
       {mapType === '2d' && <BaseMap getMapObj={getMapObj} />}
       {mapType === '2d' && mapLoaded && mapRef.current && (
