@@ -1,97 +1,31 @@
-//手机和座机
-export const phoneReg = /(^1[3|4|5|6|7|8|9]\d{9}$)|(^((\d{3,4}-)|\d{3.4}-)?\d{7,8}$)/;
-//手机
-export const cellphoneReg = /^1[3|4|5|6|7|8|9]\d{9}$/;
-//座机
-export const fixedphoneReg = /^((\d{3,4}-)|\d{3.4}-)?\d{7,8}$/;
-//邮箱
-export const emailReg = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(.[a-zA-Z0-9_-]+)+$/;
+/**
+ * @description正则验证
+ */
 
-export function teleOrPhone(phone: string, message?: string) {
-  if (!phone.trim()) return;
-  const str = message ? message : '请输入手机或者座机号码';
+import { FormInstance as WebFormInstance } from 'antd/es/form';
+import { StoreValue } from 'antd/es/form/interface';
+import { FormInstance as AppFormInstance } from 'antd-mobile/es/components/form';
 
-  const res = phoneReg.test(phone);
-  if (!res) {
-    return str;
-  }
-}
+//密码规则
+const passwordRule = {
+  pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/,
+  message: '密码设定规则：密码的长度不能小于12位，密码要由数字、大小写字母和特殊符号混合组成。',
+};
 
-//去掉空格符合
-export function blankSpace<T>(content: string, _: T, message: string) {
-  const mewContrnt = content.trim();
-  if (!mewContrnt) {
-    return message;
-  }
-  return;
-}
+//手机正则
+export const mobileRule = /^1\d{10}$/;
 
-//邮箱验证
-export function emailValidate<T>(content: string, _: T, message: string) {
-  if (content === null || content === 'null') {
-    return;
-  }
-  if (!content.trim()) {
-    return;
-  }
-  if (!emailReg.test(content)) {
-    return message;
-  }
-}
-
-//手机验证
-export function cellphoneValidate<T>(content: string, _: T, message: string) {
-  if (content === null || content === 'null') {
-    return;
-  }
-  if (!content.trim()) {
-    return;
-  }
-  if (!cellphoneReg.test(content)) {
-    return message;
-  }
-}
-
-//座机验证
-export function fixedphoneValidate<T>(content: string, _: T, message: string) {
-  if (content === null || content === 'null') {
-    return;
-  }
-  if (!content.trim()) {
-    return;
-  }
-  if (!fixedphoneReg.test(content)) {
-    return message;
-  }
-}
-
-//正整数
-export function positiveIntegerValidate<T>(content: string | number, _: T, message: string) {
-  if (content === null || content === 'null') {
-    return;
-  }
-  const newContent = content + '';
-  if (!newContent.trim()) {
-    return;
-  }
-  if (!/^[0-9]*[1-9][0-9]*$/.test(newContent)) {
-    return message;
-  }
-}
-//只能输入m~n位的数字：。"^\d{m,n}$"
-export function appointNumberValidate<T>(
-  content: string | number,
-  _: T,
+//验证密码是否一致
+const checkIfPasswordsMatch = (
+  value: StoreValue,
+  form: AppFormInstance | WebFormInstance<any>,
   message: string,
-  min: number,
-  max: number
-) {
-  const newContent = content + '';
-  if (!newContent.trim()) {
-    return;
+  passwordName: string
+) => {
+  if (value && value !== form.getFieldValue(passwordName)) {
+    return Promise.reject(message);
   }
+  return Promise.resolve();
+};
 
-  if (!(content >= min && content <= max)) {
-    return message;
-  }
-}
+export { passwordRule, checkIfPasswordsMatch };
