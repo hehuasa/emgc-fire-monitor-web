@@ -28,7 +28,8 @@ import { stringify } from 'qs';
 import { useEffect, useRef, useState } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import UeMap from './UeMap';
-import { FeatureCollection, Polygon } from 'geojson';
+import { FeatureCollection, Point, Polygon } from 'geojson';
+import { Scene } from '@antv/l7';
 
 const MapToolBar = dynamic(() => import('@/components/MapTools/MaptoolBar'), { ssr: false });
 const BaseMap = dynamic(() => import('./Map'), { ssr: false });
@@ -51,6 +52,9 @@ export interface IAlarmClusterItem {
 const Page = () => {
   const [mapLoaded, setMapLoaded] = useState(false);
   const mapRef = useRef<null | maplibregl.Map>(null);
+  const mapSceneRef = useRef<null | Scene>(null);
+  const [mapScene, setMapScene] = useState<null | Scene>(null);
+
   const [mapObj, setMapObj] = useState<null | maplibregl.Map>(null);
   const spaceQuerySquare = useRecoilValue(isSpaceQueryingModel);
   const [mapType, setMapType] = useState<'3d' | '2d'>(

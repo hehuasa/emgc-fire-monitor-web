@@ -1,8 +1,8 @@
 import AreaFloors from '@/app/(emgc)/emgc/montior/operation/AreaFloors';
 import { CircleClose, MapPositionNameIcon, PhoneIcon } from '@/components/Icons';
-import BaseMap, { mapOp } from '@/components/Map';
-import Marker from '@/components/Map/marker';
-import Popup from '@/components/Map/popup';
+import { mapOp } from '@/components/Map';
+import Marker from '@/components/L7Map/Marker';
+import Popup from '@/components/L7Map/Popup';
 import {
   alarmTypeModel,
   currentAlarmModel,
@@ -18,33 +18,33 @@ import { request } from '@/utils/request';
 import { Box, Flex, HStack, Text } from '@chakra-ui/react';
 import {
   center,
-  FeatureCollection,
+
   featureCollection,
-  LineString,
   lineString,
-  Point,
   point,
   polygon,
-  Polygon,
-  Position,
 } from '@turf/turf';
 import { useMemoizedFn, useUnmount } from 'ahooks';
-import { LngLatLike, MapMouseEvent } from 'maplibre-gl';
+
 import React, { useEffect, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { IAlarmClusterItem } from '../page';
 import LaryerInit from './LaryerInit';
 import RightClickMenu from './RightClickMenu';
+import MapLibreMap from '@/components/L7Map/MapLibreMap';
+import { Scene } from '@antv/l7';
 
 const { clusterZoom, flyToZoom } = mapOp;
 
 interface IProps {
-  getMapObj: ({ map }: { map: maplibregl.Map }) => void;
+  getMapObj: ({ scene }: { scene: Scene }) => void;
 }
 
 const Map = ({ getMapObj }: IProps) => {
   const mapRef = useRef<null | maplibregl.Map>(null);
+  const mapSceneRef = useRef<null | Scene>(null);
+  const [mapScene, setMapScene] = useState<null | Scene>(null);
   const setCallNumberShow = useSetRecoilState(callNumberVisibleModel);
   const [mapLoaded, setMapLoaded] = useState(false);
   const [currentAlarm, setCurrentAlarmDeatil] = useRecoilState(currentAlarmModel);
@@ -120,15 +120,15 @@ const Map = ({ getMapObj }: IProps) => {
     alarmGroupRef.current = alarmTypes;
   }, [alarmTypes]);
 
-  const getMapObj_ = ({ map }: { map: maplibregl.Map }) => {
-    mapRef.current = map;
+  const getMapObj_ = (scene: Scene) => {
+    mapSceneRef.current = scene;
 
-    getMapObj({ map });
+    getMapObj({ scene });
     setMapLoaded(true);
 
     // 地图右键点击
-    map.on('contextmenu', genMapRightMenuFun);
-    map.on('click', genMapClick);
+    scene.on('contextmenu', genMapRightMenuFun);
+    scene.on('click', genMapClick);
   };
   useUnmount(() => {
     // 清理注册的地图事件
@@ -444,8 +444,8 @@ const Map = ({ getMapObj }: IProps) => {
   return (
     <>
       {/*   {showPopup && mapRef.current && currentAreaClusterData && ( */}
-      <BaseMap getMapObj={getMapObj_} />
-      {mapLoaded && mapRef.current && (
+      <MapLibreMap getMapScence={getMapObj_} />
+      {mapLoaded && mapSceneRef.current && (
         <LaryerInit
           map={mapRef.current}
           handleAreaClick={handleAreaClick}
@@ -456,28 +456,26 @@ const Map = ({ getMapObj }: IProps) => {
 
       {showPopup && mapRef.current && currentAreaClusterData && (
         <Popup
-          maxWidth="none"
-          closeButton={false}
-          map={mapRef.current}
+
+          lngLat={popuplnglat}
           onClose={handlePopupClose}
-          longitude={popuplnglat[0]}
-          latitude={popuplnglat[1]}
+
         >
-          <Box
+          <div
             onMouseEnter={() => {
               hoveAreaCluster(currentAreaClusterData, popuplnglat);
             }}
             onMouseLeave={handlePopupClose}
-            fontSize="16px"
-            borderRadius="10px"
-            pt="3"
-            px="4"
-            boxShadow="0px 3px 6px 1px rgba(0,0,0,0.16);"
+            className='text-base rounded-lg pt-3 px-4'
+            style={{
+              boxShadow: '0px 3px 6px 1px rgba(0,0,0,0.16);',
+            }}
+
           >
             {currentAreaClusterData.countDetails.map((item, index) => {
               return (
-                <Box key={item.alarmTypeName + index}>
-                  <Flex justify="space-between" align="center" h="7.5">
+                <div key={item.alarmTypeName + index}>
+                  <div className='flex justify-between items-center h-7'>
                     <HStack>
                       <Box borderRadius="50%" bg="pri.red.100" w="1.5" h="1.5"></Box>
                       <HStack>
@@ -489,8 +487,8 @@ const Map = ({ getMapObj }: IProps) => {
                     <Box ml="2" color="pri.red.100">
                       {item.count}
                     </Box>
-                  </Flex>
-                </Box>
+                  </div>
+                </div>
               );
             })}
             {alarmStatus == '01' && (
@@ -509,7 +507,9 @@ const Map = ({ getMapObj }: IProps) => {
                 {formatMessage({ id: 'alarm.deal.muti' })}
               </Box>
             )}
-          </Box>
+
+
+          </div>
         </Popup>
       )}
 
@@ -638,27 +638,7 @@ const Map = ({ getMapObj }: IProps) => {
           </Flex>
         </Marker>
       )}
-      {mapRef.current && (
-        <Marker
-          rotation={-0.2}
-          longitude={103.82467406402108}
-          latitude={30.99311652277494}
-          map={mapRef.current}
-        >
-          <Flex alignItems="center">
-            <MapPositionNameIcon fontSize={'24px'} />
-            <Text
-              color="#0078EC"
-              fontFamily="Microsoft YaHei-Bold, Microsoft YaHei"
-              fontSize="20px"
-              fontWeight="bold"
-              textShadow="2px 2px rgba(0,0,0,0.16)"
-            >
-              3号场站
-            </Text>
-          </Flex>
-        </Marker>
-      )}
+
     </>
   );
 };
