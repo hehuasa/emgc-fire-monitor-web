@@ -14,7 +14,7 @@ const useMenuAuthor = () => {
   const estimateMenuAuthor = useMemoizedFn((menu: IMenuItem[]) => {
     const isAuthor = !!menu.find((item) => pathname?.includes(item.url));
     if (!isAuthor) {
-      router.push('/login');
+      // router.push('/login');
     }
   });
 

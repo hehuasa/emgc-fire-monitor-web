@@ -77,8 +77,7 @@ const NavLink = ({
 
   }
   const menus = genMenus(links);
-  console.info('============links==============', links);
-  console.info('============menus==============', menus);
+
 
   return <ConfigProvider
     theme={{

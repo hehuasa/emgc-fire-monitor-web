@@ -315,8 +315,6 @@ export const request = async <T>({
       localStorage.setItem(`x-auth-token`, resToken);
     }
 
-    console.log('----------------------------------------', res);
-
     if (res.status === 401) {
       go401();
     }

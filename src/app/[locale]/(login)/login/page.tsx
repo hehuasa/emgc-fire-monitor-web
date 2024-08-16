@@ -54,7 +54,7 @@ const Login = () => {
 	const [activeKey, setActiveKey] = useState('1');
 
 	const router = useRouter();
-	const [_, setUserInfo] = useLocalStorageState<null | IUserRes>('userInfo', {
+	const [_, setUserInfo] = useLocalStorageState<null | IUserRes>('emgc_web_currentUserInfo', {
 		defaultValue: null,
 	});
 
@@ -326,7 +326,9 @@ const Login = () => {
 				});
 
 				if (loginRes && loginRes.code === 200) {
-					router.push('/homepage');
+
+					setUserInfo(loginRes.data);
+					router.push('/zh/montior/operation');
 					// if (loginRes.data.success) {
 					// 	const newInfo = formatUserInfo(loginRes.data.loginUser);
 					// 	setUserInfo(newInfo);
@@ -362,7 +364,7 @@ const Login = () => {
 					if (res.data.success) {
 						const newInfo = formatUserInfo(res.data.loginUser);
 						setUserInfo(newInfo);
-						router.push('/homepage');
+						router.push('/zh/montior/operation');
 					} else {
 						messageApi.open({
 							type: 'error',

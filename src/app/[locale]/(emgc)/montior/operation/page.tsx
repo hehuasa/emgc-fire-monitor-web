@@ -14,7 +14,7 @@ import {
   lastUpdateAlarmTimeModel,
   lastUpdateAlarmTimeWithNotNewModel,
 } from '@/models/alarm';
-import { IArea, isSpaceQueryingModel, MapContext, UpdateAlarmfnContext } from '@/models/map';
+import { IArea, isSpaceQueryingModel, MapSceneContext, UpdateAlarmfnContext } from '@/models/map';
 import { genAlarmClusterData, genAlarmIcons, genAlarmLineIcons } from '@/utils/mapUtils';
 import { request } from '@/utils/request';
 import { featureCollection } from '@turf/turf';
@@ -308,11 +308,11 @@ const Page = () => {
       <BaseMap getMapObj={getMapObj} />
       {mapLoaded && mapSceneRef.current && (
         <UpdateAlarmfnContext.Provider value={{ getAlalrmList, updateAlarmCluster }}>
-          <MapContext.Provider value={mapObj}>
+          <MapSceneContext.Provider value={mapScene}>
             <LeftPanel />
             <MapToolBar />
             <Videos />
-          </MapContext.Provider>
+          </MapSceneContext.Provider>
         </UpdateAlarmfnContext.Provider>
       )}
       {/* 广播 */}

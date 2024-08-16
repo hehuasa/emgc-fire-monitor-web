@@ -8,7 +8,6 @@ import CallNumberContainer, {
   Refs as IphoneSocketFun,
 } from '@/components/CallPhone/CreateContainer';
 import { Refs as earthquakeType } from '@/components/Earthquake';
-import Header from '@/components/Header/Header';
 import { IOritreeData } from '@/components/Montior/Tree';
 import { useMenuAuthor } from '@/customHooks';
 import {
@@ -25,6 +24,7 @@ import { useLocalStorageState, useMemoizedFn, useMount, useUnmount } from 'ahook
 import { usePathname, useRouter } from 'next/navigation';
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import { useRecoilState, useSetRecoilState } from 'recoil';
+import Header from '@/components/Header/Header';
 // import NoAuth from './NoAuth';
 
 const genParentName = (menu: IMenuItem) => {
@@ -283,7 +283,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
     } else {
       // 无权限或未登录
       if (res.noAuth) {
-        router.push('/login');
+        // router.push('/login');
       }
     }
   };
@@ -329,7 +329,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
     <Script strategy="afterInteractive" src="/wenet/js/recorder/engine/pcm.js"></Script>
     <Script strategy="afterInteractive" src="/wenet/js/SoundRecognizer.js"></Script> */}
         <Flex direction="column" h="full">
-          {<Header />}
+          <Header />
           {/* { hideHeader ? null } */}
 
           {/* <Button
