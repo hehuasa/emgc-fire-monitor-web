@@ -11,7 +11,6 @@ import {
 } from '@/models/alarm';
 import { UpdateAlarmfnContext } from '@/models/map';
 import { currentGpsInfoModel, currentGpsListModel, currentResModel } from '@/models/resource';
-import { Box, Tooltip } from '@chakra-ui/react';
 import { useMemoizedFn } from 'ahooks';
 import dynamic from 'next/dynamic';
 import { useContext, useEffect, useState } from 'react';
@@ -106,88 +105,90 @@ const LeftPanel = () => {
   });
 
   return (
-    <>
-      <Box
-        position="absolute"
-        top={0}
-        left={0}
-        zIndex={2}
-        p={fold ? '5px' : '4'}
-        w={100}
-        h="full"
-        bgColor="rgba(0, 0, 0, 0.1)"
-        backdropFilter="blur(20px)"
-        transform={`translateX(${fold ? '-100%' : '0'})`}
-        transition="transform 0.15s"
-      >
-        {/* <Box h="20" bg="red" onClick={dev_dealAlarms}></Box> */}
+    <div
+      className='absolute top-0 left-0 z-10 w-96 h-full bg-white/10 transition-[transform 0.15s] backdrop-blur-xl'
 
-        <Box
-          position="relative"
-          h={
-            currentGpsInfo === null && currentGpsList === null
-              ? 'calc(100% - 4.375rem)'
-              : 'calc(100% )'
-          }
+      style={{
+        transform: `translateX(${fold ? '-100%' : '0'})`,
+        padding: `${fold ? '5px' : '16px'}`
+
+      }}
+
+
+    >
+      {/* <Box h="20" bg="red" onClick={dev_dealAlarms}></Box> */}
+
+      <div
+        className='relative '
+        style={{
+          height: currentGpsInfo === null && currentGpsList === null
+            ? 'calc(100% - 4.375rem)'
+            : 'calc(100% )'
+        }}
+
+      >
+        <div className="tooltip tooltip-right cursor-pointer absolute top-4 z-20  " data-tip={
+          fold
+            ? formatMessage('alarm-list-unfold')
+            : formatMessage('alarm-list-fold')
+        }
+          style={{ right: fold ? '-34px' : '-43px', transition: 'left 0.2s ease-in-out' }}
         >
-          <Tooltip
-            label={
-              fold
-                ? formatMessage('alarm-list-unfold')
-                : formatMessage('alarm-list-fold')
-            }
-            placement="right"
-          >
-            <Box
-              cursor="pointer"
-              _hover={{ opacity: 0.9 }}
-              position="absolute"
-              right={fold ? '-8.5' : '-11.5'}
-              onClick={() => {
-                setFold(!fold);
-              }}
-              top="4"
-              h="26"
-              w="7.5"
-              zIndex={2}
-            />
-          </Tooltip>
-          <Box position="absolute" right={fold ? '-1' : '-4'} top="4">
-            <FoldIcon
-              position="absolute"
-              top={0}
-              left="0"
-              w="7.5"
-              h="26"
-              fill="rgba(0, 0, 0, 0.1)"
-            />
-            <ArrowLeftIcon
-              transform={fold ? 'translateX(-12px) rotate(180deg)' : ''}
-              position="absolute"
-              top={0}
-              left="0"
-              w="7.5"
-              h="26"
-            />
-          </Box>
-          <AlarmList showDetail={showAlarmDetail || showResDetail} fold={fold} />
-          {currentAlarm && <AlarmDetail fold={fold} />}
-          {currentGpsInfo && <GpsLocation fold={fold} />}
-          {currentRes && <RessourceDetail fold={fold} />}
-          {currentGpsList && <GpsLocationList fold={fold} />}
-        </Box>
-        {/* 按钮组 */}
-        {currentGpsInfo === null && currentGpsList === null && (
+          <div
+            className='hover:opacity-90 w-7 h-24'
+
+
+            onClick={() => {
+              setFold(!fold);
+            }}
+
+          />
+        </div>
+
+        <div className='absolute top-4 z-10 '
+          style={{
+            right: fold ? '-0.25rem' : '-1rem',
+            transition: 'right 0.2s ease-in-out',
+          }}
+        >
+          <FoldIcon
+            position="absolute"
+            top={0}
+            left="0"
+            w="7.5"
+            h="26"
+            fill="rgba(0, 0, 0, 0.1)"
+          />
+          <ArrowLeftIcon
+            transform={fold ? 'translateX(-12px) rotate(180deg)' : ''}
+            position="absolute"
+            top={0}
+            left="0"
+            w="7.5"
+            h="26"
+          />
+        </div>
+        <AlarmList showDetail={showAlarmDetail || showResDetail} fold={fold} />
+        {currentAlarm && <AlarmDetail fold={fold} />}
+        {currentGpsInfo && <GpsLocation fold={fold} />}
+        {currentRes && <RessourceDetail fold={fold} />}
+        {currentGpsList && <GpsLocationList fold={fold} />}
+      </div>
+      {/* 按钮组 */}
+      {
+        currentGpsInfo === null && currentGpsList === null && (
           <ItemButtonDefault
             showAlarmDetail={showAlarmDetail}
             showResDetail={showResDetail}
             alarmStatus={alarmStatus}
             setShowAlarmCharger={setshowAlarmCharger}
           />
-        )}
+        )
+      }
 
-        {/* 场站负责人 */}
-        {showAlarmCharger && currentAlarm && (
+      {/* 场站负责人 */}
+      {
+        showAlarmCharger && currentAlarm && (
           <AlarmCharger
             alarmType={currentAlarm.alarmType}
             areaId={currentAlarm.alarmAreaId}
@@ -195,21 +196,23 @@ const LeftPanel = () => {
               setshowAlarmCharger(false);
             }}
           />
-        )}
-        {showAlarmCharger && currentRes && (
+        )
+      }
+      {
+        showAlarmCharger && currentRes && (
           <AlarmCharger
             areaId={currentRes.areaId}
             handleClose={() => {
               setshowAlarmCharger(false);
             }}
           />
-        )}
-        {/* 报警处理 */}
-        <AlarmDealModal dealCallBack={dealCallBack} />
+        )
+      }
+      {/* 报警处理 */}
+      <AlarmDealModal dealCallBack={dealCallBack} />
 
-        {alarmFilterShow ? <AlarmFilter /> : null}
-      </Box>
-    </>
+      {alarmFilterShow ? <AlarmFilter /> : null}
+    </div >
   );
 };
 
