@@ -41,12 +41,13 @@ interface IProps {
   handleClusterMouseleave: () => void;
   genMapRightMenuFun: (e: IL7LayerEventTarget) => void;
   handleAreaClick: (e: IL7LayerEventTarget) => void;
+  layerInitCallBack: () => void; // 图层初始化完成后的回调
 }
 
 const source = initGeoJson();
 
 
-const LaryerInit = ({ scene, hoveAreaCluster, handleClusterMouseleave, handleAreaClick, genMapRightMenuFun }: IProps) => {
+const LaryerInit = ({ scene, hoveAreaCluster, handleClusterMouseleave, handleAreaClick, genMapRightMenuFun, layerInitCallBack }: IProps) => {
   // 监听是否进行查周边，用以是否阻止相关图层的鼠标事件
   const isSpaceQuerying = useRecoilValue(isSpaceQueryingModel);
   const isSpaceQueryingRef = useRef(isSpaceQuerying);
@@ -67,12 +68,17 @@ const LaryerInit = ({ scene, hoveAreaCluster, handleClusterMouseleave, handleAre
   useMount(() => {
 
 
+    console.info('=========LaryerInit===useMount==============');
     genAlarmIconLayer();
     genResLayers();
     genVideoIconLayer();
     genAlarmClusterLayer();
     genAreaLayers();
     genSreachResLayers();
+
+    if (layerInitCallBack) {
+      layerInitCallBack()
+    }
     // genHoverAreas();
     // genGpsLayer();
 

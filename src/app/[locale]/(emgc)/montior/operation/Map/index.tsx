@@ -34,6 +34,7 @@ import RightClickMenu from './RightClickMenu';
 import MapLibreMap from '@/components/L7Map/MapLibreMap';
 import { Scene } from '@antv/l7';
 import { useTranslations } from 'next-intl';
+import { FeatureCollection, LineString, Point, Polygon, Position } from 'geojson';
 
 const { clusterZoom, flyToZoom } = mapOp;
 
@@ -125,13 +126,16 @@ const Map = ({ getMapObj }: IProps) => {
   const getMapObj_ = (scene: Scene) => {
     mapSceneRef.current = scene;
 
-    getMapObj({ scene });
     setMapLoaded(true);
 
     // 地图右键点击
     // scene.on('contextmenu', genMapRightMenuFun);
     scene.on('click', genMapClick);
   };
+  const layerInitCallBack = () => {
+    getMapObj({ scene: mapSceneRef.current as Scene });
+
+  }
   useUnmount(() => {
     // 清理注册的地图事件
     if (mapRef.current) {
@@ -448,6 +452,7 @@ const Map = ({ getMapObj }: IProps) => {
           handleAreaClick={handleAreaClick}
           genMapRightMenuFun={genMapRightMenuFun}
           hoveAreaCluster={hoveAreaCluster}
+          layerInitCallBack={layerInitCallBack}
           handleClusterMouseleave={handleClusterMouseleave}
         />
       )}

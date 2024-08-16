@@ -135,15 +135,25 @@ const Page = () => {
       Polygon,
       IAlarmClusterItem
     >;
+    const alarmCluster_count = mapSceneRef.current?.getLayerByName("alarmCluster_count")
 
-    const alarmCluster_count = mapRef.current?.getSource(
-      'alarmCluster_count'
-    ) as maplibregl.GeoJSONSource;
+    const alarmCluster_circle = mapSceneRef.current?.getLayerByName("alarmCluster_circle")
 
-    if (alarmCluster_count && res.features) {
+
+    if (res.features) {
       const featureCollections = genAlarmClusterData(res.features);
-      alarmCluster_count.setData(featureCollections as GeoJSON.GeoJSON);
+      console.info('============featureCollections==============', featureCollections);
+      console.info('============alarmCluster_count==============', alarmCluster_count);
+      console.info('============alarmCluster_circle==============', alarmCluster_circle);
+
+      if (alarmCluster_count) {
+        alarmCluster_count.setData(featureCollections as GeoJSON.GeoJSON);
+      }
+      if (alarmCluster_circle) {
+        alarmCluster_circle.setData(featureCollections as GeoJSON.GeoJSON);
+      }
     }
+
   };
 
   const currentAlarmStatusRef = useRef(currentAlarmStatus);
