@@ -1,7 +1,6 @@
 'use client';
 import LeftPanel from '@/app/(emgc)/emgc/montior/operation/LeftPanel';
 import Videos from '@/app/(emgc)/emgc/montior/operation/Videos';
-import { mapOp } from '@/components/Map';
 import AccessControl from '@/components/MapTools/AccessControl';
 import Broadcast from '@/components/MapTools/Broadcast';
 import { IUeMap } from '@/components/UeMap';
@@ -224,20 +223,20 @@ const Page = () => {
       }
     }
   };
-  const getMapObj = ({ map }: { map: maplibregl.Map }) => {
-    console.log('getMapObj', map);
-    setMapObj(map);
-    mapRef.current = map;
-
+  const getMapObj = ({ scene }: { scene: Scene }) => {
+    // console.log('getMapObj', scene);
+    // setMapObj(map);
+    // mapRef.current = map;
+    setMapScene(scene)
     setMapLoaded(true);
 
     getAreaDatas();
 
     if (centerRef.current.lng) {
-      mapRef.current.flyTo({
-        center: [centerRef.current.lng, centerRef.current.lat],
-        zoom: mapOp.flyToZoom,
-      });
+      // mapRef.current.flyTo({
+      //   center: [centerRef.current.lng, centerRef.current.lat],
+      //   zoom: mapOp.flyToZoom,
+      // });
     }
   };
 
@@ -270,70 +269,6 @@ const Page = () => {
     height: 0,
   });
   // 3d地图，暂不做聚合相关
-  const getUeMapObj = ({ map }: { map: IUeMap }) => {
-    //console.clear();
-
-    ueMapRef.current = map;
-    setMapLoaded(true);
-    getAlalrmList({
-      currentAlarmStatus_: currentAlarmStatus,
-      alarmDepartment_: alarmDepartment,
-      alarmTypes_: alarmTypes.map((item) => item.alarmType).join(','),
-    });
-
-    // 2 3 d地图中心联动
-    if (centerRef.current.lat > 0 && ueMapRef.current.emitMessage) {
-      console.info('============centerRef.current==============', centerRef.current);
-      ueMapRef.current.emitMessage({
-        type: 'center',
-        values: centerRef.current,
-      });
-    }
-
-    // 3 d地图中心
-    if (ueMapRef.current && ueMapRef.current.addEventListener) {
-      ueMapRef.current.addEventListener('message', ({ detail }) => {
-        if (detail && detail === 'connecting!') {
-          return;
-        }
-        console.info('============detail==============', detail);
-
-        const msg = JSON.parse(detail);
-
-        console.info('============msg==============', msg);
-        if (msg && msg.type && msg.type === 'center') {
-          const obj = msg.values;
-
-          centerRef.current.lat = obj.lat;
-          centerRef.current.lng = obj.lng;
-        }
-      });
-    }
-  };
-
-  const changeMapType = (type: '2d' | '3d') => {
-    if (type === '2d' && mapRef.current) {
-      const center = mapRef.current.getCenter().toArray();
-      centerRef.current.lat = center[1];
-      centerRef.current.lng = center[0];
-      // mapRef.current = null
-    } else {
-      if (ueMapRef.current && ueMapRef.current.emitMessage) {
-        ueMapRef.current.emitMessage({
-          type: 'disconnect',
-          values: '',
-        });
-      }
-    }
-    if (type === '3d') {
-      disable3dMap();
-    } else {
-      disable2dMap();
-    }
-    requestAnimationFrame(() => {
-      setMapType(type === '3d' ? '2d' : '3d');
-    });
-  };
 
   const disable2dMap = () => {
     console.info('===========disable2dMap===============');
@@ -371,7 +306,7 @@ const Page = () => {
 
 
       <BaseMap getMapObj={getMapObj} />
-      {mapLoaded && mapRef.current && (
+      {mapLoaded && mapSceneRef.current && (
         <UpdateAlarmfnContext.Provider value={{ getAlalrmList, updateAlarmCluster }}>
           <MapContext.Provider value={mapObj}>
             <LeftPanel />

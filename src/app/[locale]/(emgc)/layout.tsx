@@ -320,19 +320,19 @@ const Layout = ({ children }: { children: ReactNode }) => {
 
   return (
     <>
-      {authRoute ? (
-        <Box h="full" overflow="hidden">
-          {/* {currentUserInfo && <WebSocketComponent currentUserInfo={currentUserInfo} />} */}
-          {/* <Script strategy="afterInteractive" src="/wenet/js/recorder/recorder-core.js"></Script>
+      {/* {authRoute ? ( */}
+      <Box h="full" overflow="hidden">
+        {/* {currentUserInfo && <WebSocketComponent currentUserInfo={currentUserInfo} />} */}
+        {/* <Script strategy="afterInteractive" src="/wenet/js/recorder/recorder-core.js"></Script>
     <Script strategy="afterInteractive" src="/wenet/js/recorder/extensions/lib.fft.js"></Script>
     <Script strategy="afterInteractive" src="/wenet/js/recorder/extensions/frequency.histogram.view.js"></Script>
     <Script strategy="afterInteractive" src="/wenet/js/recorder/engine/pcm.js"></Script>
     <Script strategy="afterInteractive" src="/wenet/js/SoundRecognizer.js"></Script> */}
-          <Flex direction="column" h="full">
-            {<Header />}
-            {/* { hideHeader ? null } */}
+        <Flex direction="column" h="full">
+          {<Header />}
+          {/* { hideHeader ? null } */}
 
-            {/* <Button
+          {/* <Button
             bg="test.100"
             onClick={() => {
               setTheme({
@@ -349,30 +349,30 @@ const Layout = ({ children }: { children: ReactNode }) => {
           >
             测试颜色替换
           </Button> */}
-            <audio
-              preload="auto"
-              id="alarmAudio"
-              src={`${process.env.NEXT_PUBLIC_ANALYTICS_BasePath}/audios/alarm0425.mp3`}
-            />
-            <audio
-              preload="auto"
-              id="earthquakeAudio"
-              loop
-              muted
-              src={`${process.env.NEXT_PUBLIC_ANALYTICS_BasePath}/audios/earthquake.mp3`}
-            />
-            <Box flex="1" overflow="hidden" position="relative">
+          <audio
+            preload="auto"
+            id="alarmAudio"
+            src={`${process.env.NEXT_PUBLIC_ANALYTICS_BasePath}/audios/alarm0425.mp3`}
+          />
+          <audio
+            preload="auto"
+            id="earthquakeAudio"
+            loop
+            muted
+            src={`${process.env.NEXT_PUBLIC_ANALYTICS_BasePath}/audios/earthquake.mp3`}
+          />
+          <Box flex="1" overflow="hidden" position="relative">
 
-              {authLoad && children}
-            </Box>
+            {authLoad && children}
+          </Box>
 
-            <CallNumberContainer ref={phoneSocket} />
-          </Flex>
-        </Box>
-      ) : (
-        null
+          <CallNumberContainer ref={phoneSocket} />
+        </Flex>
+      </Box>
+      {/* ) : (
+        1122333
         // <NoAuth />
-      )}
+      )} */}
     </>
   );
 };
