@@ -1,6 +1,4 @@
 'use client';
-import LeftPanel from '@/app/(emgc)/emgc/montior/operation/LeftPanel';
-import Videos from '@/app/(emgc)/emgc/montior/operation/Videos';
 import AccessControl from '@/components/MapTools/AccessControl';
 import Broadcast from '@/components/MapTools/Broadcast';
 import { IUeMap } from '@/components/UeMap';
@@ -237,6 +235,8 @@ const Page = () => {
     // console.log('getMapObj', scene);
     // setMapObj(map);
     // mapRef.current = map;
+
+    mapSceneRef.current = scene;
     setMapScene(scene)
     setMapLoaded(true);
 
@@ -319,9 +319,9 @@ const Page = () => {
       {mapLoaded && mapSceneRef.current && (
         <UpdateAlarmfnContext.Provider value={{ getAlalrmList, updateAlarmCluster }}>
           <MapSceneContext.Provider value={mapScene}>
-            <LeftPanel />
+            {/* <LeftPanel />
             <MapToolBar />
-            <Videos />
+            <Videos /> */}
           </MapSceneContext.Provider>
         </UpdateAlarmfnContext.Provider>
       )}
