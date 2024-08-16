@@ -14,7 +14,7 @@ const PersonalInfo = () => {
 
   //获取用户信息
   const getUserInfo = useCallback(async () => {
-    const infoStr: string = localStorage.getItem('currentUserInfo_cx_alarm') ?? '';
+    const infoStr: string = localStorage.getItem('emgc_web_currentUserInfo') ?? '';
     const userInfo = JSON.parse(infoStr);
     const { code, data } = await request({
       url: `/ms-system/user/get/detail/${userInfo.userId}`,

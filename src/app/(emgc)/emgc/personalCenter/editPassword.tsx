@@ -39,7 +39,7 @@ const EditPassword = () => {
   });
 
   const handleSubmitPassword = useMemoizedFn(async () => {
-    const infoStr: string = localStorage.getItem('currentUserInfo_cx_alarm') ?? '';
+    const infoStr: string = localStorage.getItem('emgc_web_currentUserInfo') ?? '';
     const userInfo = JSON.parse(infoStr);
     const oldPassword = getValues('oldPassword');
     const Password = getValues('Password');
@@ -73,7 +73,7 @@ const EditPassword = () => {
   });
 
   const handleReset = useCallback(async () => {
-    const infoStr: string = localStorage.getItem('currentUserInfo_cx_alarm') ?? '';
+    const infoStr: string = localStorage.getItem('emgc_web_currentUserInfo') ?? '';
     const userInfo = JSON.parse(infoStr);
     const { code, msg } = await request({
       url: `/ms-system/user/reset-pwd/${userInfo.userId}`,

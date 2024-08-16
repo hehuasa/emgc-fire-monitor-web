@@ -33,9 +33,9 @@ const genParentName = (menu: IMenuItem) => {
       item.parentNames = menu.parentNames
         ? [...menu.parentNames, { name: item.functionName, url: item.url }]
         : [
-            { name: menu.functionName, url: menu.url },
-            { name: item.functionName, url: item.url },
-          ];
+          { name: menu.functionName, url: menu.url },
+          { name: item.functionName, url: item.url },
+        ];
 
       genParentName(item);
     }
@@ -48,7 +48,7 @@ const SystemsManageLayout = ({ children }: { children: ReactNode }) => {
   const pathname = usePathname();
   const router = useRouter();
   const updateTokernTimer = useRef<NodeJS.Timer>();
-  const [currentUserInfo, _] = useLocalStorageState<null | IUserInfo>('currentUserInfo_cx_alarm');
+  const [currentUserInfo, _] = useLocalStorageState<null | IUserInfo>('emgc_web_currentUserInfo');
   const [menus, setMenuModel] = useRecoilState(menuModel);
   const setAllDeviceData = useSetRecoilState(allDeviceListModel);
   const [getTreeData, setTreeData] = useRecoilState(departmentDataTree);
@@ -91,9 +91,8 @@ const SystemsManageLayout = ({ children }: { children: ReactNode }) => {
 
   //TODO：未来通过node中间件缓存共享数据，比如账号信息等
   const getMenus = async () => {
-    const url = `/ms-system/menu/list-auth-menu?systemCode=SystemSign&userId=${
-      currentUserInfo ? currentUserInfo.userId : 0
-    }`;
+    const url = `/ms-system/menu/list-auth-menu?systemCode=SystemSign&userId=${currentUserInfo ? currentUserInfo.userId : 0
+      }`;
     // const url = '/api/menus';
 
     const res = await request<IMenuItem[]>({

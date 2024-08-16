@@ -14,9 +14,9 @@ const genParentName = (menu: IMenuItem) => {
       item.parentNames = menu.parentNames
         ? [...menu.parentNames, { name: item.functionName, url: item.url }]
         : [
-            { name: menu.functionName, url: menu.url },
-            { name: item.functionName, url: item.url },
-          ];
+          { name: menu.functionName, url: menu.url },
+          { name: item.functionName, url: item.url },
+        ];
       genParentName(item);
     }
   }
@@ -25,15 +25,14 @@ const genParentName = (menu: IMenuItem) => {
 const StationMessage = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
   const setMenuModel = useSetRecoilState(menuModel);
-  const [currentUserInfo, _] = useLocalStorageState<null | IUserInfo>('currentUserInfo_cx_alarm');
+  const [currentUserInfo, _] = useLocalStorageState<null | IUserInfo>('emgc_web_currentUserInfo');
   useMount(() => {
     getMenus();
   });
 
   const getMenus = async () => {
-    const url = `/ms-system/menu/list-auth-menu?systemCode=SystemSign&userId=${
-      currentUserInfo ? currentUserInfo.userId : 0
-    }`;
+    const url = `/ms-system/menu/list-auth-menu?systemCode=SystemSign&userId=${currentUserInfo ? currentUserInfo.userId : 0
+      }`;
     // const url = `/api/menus`;
     const res = await request<IMenuItem[]>({
       url,

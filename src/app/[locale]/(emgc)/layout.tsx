@@ -55,7 +55,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
   const setAllDict = useSetRecoilState(dictionaryModal);
   const [localAllDict, setLocalAllDict] = useLocalStorageState<objectType>('dictionary');
   const pathname = usePathname();
-  const [currentUserInfo, _] = useLocalStorageState<null | IUserInfo>('currentUserInfo_cx_alarm');
+  const [currentUserInfo, _] = useLocalStorageState<null | IUserInfo>('emgc_web_currentUserInfo');
   const setDepartment = useSetRecoilState(departModal);
   const setDepTreeModal = useSetRecoilState(depTreeModal);
   const updateTokernTimer = useRef<NodeJS.Timer>();

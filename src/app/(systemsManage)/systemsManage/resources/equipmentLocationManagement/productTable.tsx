@@ -89,7 +89,7 @@ const ProductTable = ({
 	const [switchDeviceLoading, setSwitchDeviceLoading] = useSafeState(false);
 	const openCancelRef = React.useRef<HTMLButtonElement>(null);
 	const methods = useForm();
-	const [currentUserInfo] = useLocalStorageState<null | IUserInfo>('currentUserInfo_cx_alarm');
+	const [currentUserInfo] = useLocalStorageState<null | IUserInfo>('emgc_web_currentUserInfo');
 	const buttonAuth = useRecoilValue(buttonAuthMenus);
 	// 按钮权限
 
@@ -422,8 +422,8 @@ const ProductTable = ({
 						position={'sticky'}
 						top={0}
 						zIndex={10}
-						//bg="backs.100"
-						//bg="red"
+					//bg="backs.100"
+					//bg="red"
 					>
 						{table.getHeaderGroups().map((headerGroup) => (
 							<Tr key={headerGroup.id} fontWeight="normal">

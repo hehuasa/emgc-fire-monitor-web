@@ -11,7 +11,7 @@ import { IUserInfo, IUserRes, LoginItems } from '../login/page';
 const SingleLogin = () => {
 	const setLoginStatus = useSetRecoilState(isLoginModel);
 	const [currentUserInfo, setCurrentUserInfo] = useLocalStorageState<null | IUserInfo>(
-		'currentUserInfo_cx_alarm',
+		'emgc_web_currentUserInfo',
 		{
 			defaultValue: null,
 		}

@@ -8,7 +8,7 @@ import { IUserInfo } from './login/page';
 const Page = () => {
   const router = useRouter();
 
-  const [currentUserInfo] = useLocalStorageState<null | IUserInfo>('currentUserInfo_cx_alarm');
+  const [currentUserInfo] = useLocalStorageState<null | IUserInfo>('emgc_web_currentUserInfo');
 
   useEffect(() => {
     console.log('初始化');

@@ -56,7 +56,7 @@ const Websocket = (_: object, refs: Ref<Refs>) => {
 
   // const pathname = usePathname();
   // const [alarmList, setAlarmList] = useRecoilState(alarmListModel);
-  const [currentUserInfo] = useLocalStorageState<null | IUserInfo>('currentUserInfo_cx_alarm');
+  const [currentUserInfo] = useLocalStorageState<null | IUserInfo>('emgc_web_currentUserInfo');
 
   const [currentAlarmDeatil, setCurrentAlarmDeatil] = useRecoilState(currentAlarmModel);
   const currentAlarmDeatilRef = useRef(currentAlarmDeatil);
@@ -191,8 +191,8 @@ const Websocket = (_: object, refs: Ref<Refs>) => {
               {isAdd && (
                 <Flex
                   flexWrap="wrap"
-                  // cursor="pointer"
-                  // onClick={go}
+                // cursor="pointer"
+                // onClick={go}
                 >
                   {newAlarm.alarmLastTime}
                   {newAlarm.alarmAreaName}
@@ -340,7 +340,7 @@ const Websocket = (_: object, refs: Ref<Refs>) => {
     const hostname = window.location.hostname;
 
     const protocol = window.location.protocol.indexOf('https') !== -1 ? 'wss' : 'ws';
-    const infoStr: string = localStorage.getItem('currentUserInfo_cx_alarm') ?? '{}';
+    const infoStr: string = localStorage.getItem('emgc_web_currentUserInfo') ?? '{}';
     const userInfo = JSON.parse(infoStr);
     const userId =
       currentUserInfo && currentUserInfo.userId ? currentUserInfo.userId : userInfo.userId;
@@ -363,7 +363,7 @@ const Websocket = (_: object, refs: Ref<Refs>) => {
     };
     const init = () => {
       if (socket.current) {
-        const infoStr: string = localStorage.getItem('currentUserInfo_cx_alarm') ?? '{}';
+        const infoStr: string = localStorage.getItem('emgc_web_currentUserInfo') ?? '{}';
         const userInfo = JSON.parse(infoStr);
         const userId =
           currentUserInfo && currentUserInfo.userId ? currentUserInfo.userId : userInfo.userId;

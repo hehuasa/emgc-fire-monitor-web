@@ -35,9 +35,9 @@ const genParentName = (menu: IMenuItem) => {
       item.parentNames = menu.parentNames
         ? [...menu.parentNames, { name: item.functionName, url: item.url }]
         : [
-            { name: menu.functionName, url: menu.url },
-            { name: item.functionName, url: item.url },
-          ];
+          { name: menu.functionName, url: menu.url },
+          { name: item.functionName, url: item.url },
+        ];
       genParentName(item);
     }
   }
@@ -56,7 +56,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
   const setAllDict = useSetRecoilState(dictionaryModal);
   const [localAllDict, setLocalAllDict] = useLocalStorageState<objectType>('dictionary');
   const pathname = usePathname();
-  const [currentUserInfo, _] = useLocalStorageState<null | IUserInfo>('currentUserInfo_cx_alarm');
+  const [currentUserInfo, _] = useLocalStorageState<null | IUserInfo>('emgc_web_currentUserInfo');
   const setDepartment = useSetRecoilState(departModal);
   const setDepTreeModal = useSetRecoilState(depTreeModal);
   const updateTokernTimer = useRef<NodeJS.Timer>();
@@ -249,9 +249,8 @@ const Layout = ({ children }: { children: ReactNode }) => {
 
   const getMenus = async () => {
     //TODO: 请求本地菜单调试
-    const url = `/ms-system/menu/list-auth-menu?systemCode=SystemSign&userId=${
-      currentUserInfo ? currentUserInfo.userId : 0
-    }`;
+    const url = `/ms-system/menu/list-auth-menu?systemCode=SystemSign&userId=${currentUserInfo ? currentUserInfo.userId : 0
+      }`;
     // const url = `/api/menus`;
     const res = await request<IMenuItem[]>({
       url,

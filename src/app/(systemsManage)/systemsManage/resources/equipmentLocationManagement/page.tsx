@@ -86,7 +86,7 @@ const ProductManage = () => {
 	});
 
 	const [currentUserInfo, setCurrentUserInfo] = useLocalStorageState<null | IUserInfo>(
-		'currentUserInfo_cx_alarm',
+		'emgc_web_currentUserInfo',
 		{
 			defaultValue: null,
 		}

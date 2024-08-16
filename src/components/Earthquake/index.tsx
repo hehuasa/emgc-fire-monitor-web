@@ -31,7 +31,7 @@ interface modalType {
 const EarthquakeModal = (_: object, refs: Ref<Refs>) => {
   const socketRef = useRef<WebSocket | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [currentUserInfo] = useLocalStorageState<null | IUserInfo>('currentUserInfo_cx_alarm');
+  const [currentUserInfo] = useLocalStorageState<null | IUserInfo>('emgc_web_currentUserInfo');
   const socketTimer = useRef(1000);
   const pingTimer = useRef<NodeJS.Timer | null>(null);
   const reconencTimer = useRef<NodeJS.Timer | null>(null);
@@ -67,13 +67,11 @@ const EarthquakeModal = (_: object, refs: Ref<Refs>) => {
 
     const protocol = window.location.protocol.indexOf('https') !== -1 ? 'wss' : 'ws';
     const url = dev
-      ? `${protocol}://${process.env.NEXT_PUBLIC_ANALYTICS_Pt_message}/websocket?userId=${
-          currentUserInfo ? currentUserInfo.userId : 0
-          // ? `ws://192.168.0.240/cx_pt_message/websocket?userId=${currentUserInfo ? currentUserInfo.userId : 0
-        }&clientType=${clientType}`
-      : `${protocol}://${process.env.NEXT_PUBLIC_ANALYTICS_Pt_message}/websocket?userId=${
-          currentUserInfo ? currentUserInfo.userId : 0
-        }&clientType=${clientType}`;
+      ? `${protocol}://${process.env.NEXT_PUBLIC_ANALYTICS_Pt_message}/websocket?userId=${currentUserInfo ? currentUserInfo.userId : 0
+      // ? `ws://192.168.0.240/cx_pt_message/websocket?userId=${currentUserInfo ? currentUserInfo.userId : 0
+      }&clientType=${clientType}`
+      : `${protocol}://${process.env.NEXT_PUBLIC_ANALYTICS_Pt_message}/websocket?userId=${currentUserInfo ? currentUserInfo.userId : 0
+      }&clientType=${clientType}`;
 
     socketRef.current = new WebSocket(url);
     const ping = () => {

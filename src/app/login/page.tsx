@@ -70,9 +70,9 @@ const genParentName = (menu: IMenuItem) => {
 			item.parentNames = menu.parentNames
 				? [...menu.parentNames, { name: item.functionName, url: item.url }]
 				: [
-						{ name: menu.functionName, url: menu.url },
-						{ name: item.functionName, url: item.url },
-				  ];
+					{ name: menu.functionName, url: menu.url },
+					{ name: item.functionName, url: item.url },
+				];
 			genParentName(item);
 		}
 	}
@@ -91,7 +91,7 @@ function Login() {
 	const setLoginStatus = useSetRecoilState(isLoginModel);
 	const { formatMessage } = useIntl();
 	const [currentUserInfo, setCurrentUserInfo] = useLocalStorageState<null | IUserInfo>(
-		'currentUserInfo_cx_alarm',
+		'emgc_web_currentUserInfo',
 		{
 			defaultValue: null,
 		}
