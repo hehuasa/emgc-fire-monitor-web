@@ -52,8 +52,8 @@ const alarm = {
   'alarm.result.test': '调试',
   'alarm.result.hitch': '故障',
 
-  'alarm.type.tips': '请选择报警类型',
-  'alarm.type.require': '报警类型必填',
+  'alarm-type-tips': '请选择报警类型',
+  'alarm-type-require': '报警类型必填',
   'alarm.level.simple': '级别',
   'alarm.level.tips': '请选择报警级别',
 

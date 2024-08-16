@@ -12,7 +12,7 @@ interface IProps {
 	isConfig?: boolean;
 }
 
-const MapLibreMap = ({ getMapScence, onMapLoaded, isConfig }: IProps) => {
+const MapLibreMap = ({ getMapScence, onMapLoaded }: IProps) => {
 	const sceneRef = useRef<Scene | null>(null);
 
 
@@ -29,7 +29,9 @@ const MapLibreMap = ({ getMapScence, onMapLoaded, isConfig }: IProps) => {
 			zoom: Number(process.env.NEXT_PUBLIC_ANALYTICS_MAPCenterZoom),
 			pitch: Number(process.env.NEXT_PUBLIC_ANALYTICS_MAPPitch),
 		};
+		console.info('============mapOps==============', mapOps);
 		const map = new maplibregl.Map(mapOps);
+		console.info('============map==============', map);
 
 		sceneRef.current = new Scene({
 			id: 'map',

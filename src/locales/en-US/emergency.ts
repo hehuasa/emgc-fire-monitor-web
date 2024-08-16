@@ -12,7 +12,7 @@ const emergency = {
   'emergency.base.death': 'death',
   'emergency.base.people': ' ',
   'emergency.base.with': 'With ',
-  'emergency.base.no': 'No ',
+  'emergency.base-no': 'No ',
   'emergency.base.explosion': 'Explosion',
   'emergency.base.methysis': 'Poisoning',
   'emergency.base.eventTime': 'Date',

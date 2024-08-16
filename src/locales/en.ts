@@ -11,7 +11,7 @@ import resource from './en-US/resource';
 //登录界面英文
 import loginEn from './login/en';
 const json = {
-  base,
+  ...base,
   map,
   alarm,
   emergency,

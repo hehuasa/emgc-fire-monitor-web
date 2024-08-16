@@ -4,20 +4,23 @@ import { request } from '@/utils/request';
 import { Box } from '@chakra-ui/react';
 import { useUnmount } from 'ahooks';
 import moment from 'moment';
+import { useLocale, useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
-import { useIntl } from 'react-intl';
 import { useRecoilValue } from 'recoil';
 import useSWR from 'swr';
 
 const RealTime = () => {
-	const { formatMessage } = useIntl();
+
+	const formatMessage = useTranslations("base");
+	const locale = useLocale();
+
 	const locales = useRecoilValue(localesModal);
 
 	const [time, setTime] = useState(0);
 	const timer = useRef<NodeJS.Timer | null>(null);
 	const [weekday, setWeekday] = useState('');
 
-	const { data } = useSWR({ url: '/ms-system/config/system_date' }, request<string>, {
+	const { data } = useSWR({ url: '/ms-gateway/ms-system/config/system_date' }, request<string>, {
 		refreshInterval: 3 * 1000 * 60,
 	});
 

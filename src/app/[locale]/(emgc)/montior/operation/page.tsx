@@ -5,7 +5,6 @@ import { mapOp } from '@/components/Map';
 import AccessControl from '@/components/MapTools/AccessControl';
 import Broadcast from '@/components/MapTools/Broadcast';
 import { IUeMap } from '@/components/UeMap';
-import Wenet from '@/components/Wenet';
 import {
   alarmDepartmentModel,
   alarmListModel,
@@ -19,15 +18,12 @@ import {
 import { IArea, isSpaceQueryingModel, MapContext, UpdateAlarmfnContext } from '@/models/map';
 import { genAlarmClusterData, genAlarmIcons, genAlarmLineIcons } from '@/utils/mapUtils';
 import { request } from '@/utils/request';
-import { genUmapIcons } from '@/utils/umapUtils';
-import { Box } from '@chakra-ui/react';
 import { featureCollection } from '@turf/turf';
 import { useUnmount } from 'ahooks';
 import dynamic from 'next/dynamic';
 import { stringify } from 'qs';
 import { useEffect, useRef, useState } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import UeMap from './UeMap';
 import { FeatureCollection, Point, Polygon } from 'geojson';
 import { Scene } from '@antv/l7';
 
@@ -88,23 +84,10 @@ const Page = () => {
     };
 
     const param = stringify(obj, { indices: false });
-    const res = await request<IAlarm[]>({ url: `/cx-alarm/alm/alarm/findList?${param}` });
+    const res = await request<IAlarm[]>({ url: `/ms-gateway/cx-alarm/alm/alarm/findList?${param}` });
 
     if (res.code === 200) {
       setAlarmList(res.data);
-      // 3d 地图绘制图标
-      if (ueMapRef.current && ueMapRef.current.emitMessage) {
-        const newList = genUmapIcons(res.data);
-        console.info('=========emitMessage=================', newList);
-        // setTimeout(() => {
-        ueMapRef.current.emitMessage({
-          type: 'alarmList',
-          values: newList,
-        });
-        // }, 5 * 1000);
-
-        return;
-      }
       // 函数式的方式绘制、或更新地图图标。原因是报警列表数据量可能很大，进行hook依赖监听成本高
       if (mapRef.current && mapRef.current.getSource) {
         const featureCollections = genAlarmIcons(res.data);
@@ -147,7 +130,7 @@ const Page = () => {
     };
 
     const param = stringify(obj, { indices: false });
-    const url = `/cx-alarm/alm/alarm/alarmMap?${param}`;
+    const url = `/ms-gateway/cx-alarm/alm/alarm/alarmMap?${param}`;
 
     const res = (await request({ url })) as unknown as FeatureCollection<
       Polygon,
@@ -170,10 +153,11 @@ const Page = () => {
   }, [currentAlarmStatus]);
 
   // 监听 lastUpdateAlarmTime， 更新地图报警聚合数据
+  console.info('============lastUpdateAlarmTime==============', lastUpdateAlarmTime);
   useEffect(() => {
     if (lastUpdateAlarmTime) {
       let alarmGroup = '';
-      if (mapRef.current) {
+      if (mapSceneRef.current) {
         const newG = alarmTypes.filter((val) => val.isChecked);
         for (const [index, { alarmType }] of newG.entries()) {
           alarmGroup += index < newG.length - 1 ? `${alarmType},` : `${alarmType}`;
@@ -188,13 +172,6 @@ const Page = () => {
           currentAlarmStatus_: currentAlarmStatusRef.current,
           alarmTypes_: alarmGroup,
           alarmDepartment_: alarmDepartment,
-        });
-      }
-      if (ueMapRef.current) {
-        getAlalrmList({
-          currentAlarmStatus_: currentAlarmStatusRef.current,
-          alarmDepartment_: alarmDepartment,
-          alarmTypes_: alarmGroup,
         });
       }
     }
@@ -234,7 +211,7 @@ const Page = () => {
   // 获取区域数据
   const getAreaDatas = async () => {
     if (mapRef.current) {
-      const url = `/cx-alarm/dc/area/areaMap`;
+      const url = `/ms-gateway/cx-alarm/dc/area/areaMap`;
       const res = (await request({ url })) as unknown as FeatureCollection<Polygon, IArea>;
       res.features = res.features?.filter((item) => item.geometry.type);
       const alarmCluster_fill = mapRef.current.getSource('area_fill') as maplibregl.GeoJSONSource;
@@ -379,21 +356,22 @@ const Page = () => {
 
 
   });
+
   return (
-    <Box
-      h="full"
-      position="relative"
-      css={{
-        '&  .maplibregl-canvas': {
-          cursor: spaceQuerySquare ? 'default' : 'pointer',
-        },
-      }}
+    <div
+      className='w-full h-full relative '
+
+    // css={{
+    //   '&  .maplibregl-canvas': {
+    //     cursor: spaceQuerySquare ? 'default' : 'pointer',
+    //   },
+    // }}
     >
-      <Wenet />
+      {/* <Wenet /> */}
 
 
-      {mapType === '2d' && <BaseMap getMapObj={getMapObj} />}
-      {mapType === '2d' && mapLoaded && mapRef.current && (
+      <BaseMap getMapObj={getMapObj} />
+      {mapLoaded && mapRef.current && (
         <UpdateAlarmfnContext.Provider value={{ getAlalrmList, updateAlarmCluster }}>
           <MapContext.Provider value={mapObj}>
             <LeftPanel />
@@ -402,45 +380,11 @@ const Page = () => {
           </MapContext.Provider>
         </UpdateAlarmfnContext.Provider>
       )}
-
-      {mapType === '3d' && <UeMap getMapObj={getUeMapObj} />}
-      {mapType === '3d' && (
-        <UpdateAlarmfnContext.Provider value={{ getAlalrmList, updateAlarmCluster }}>
-          <LeftPanel />
-          <MapToolBar />
-          <Videos />
-        </UpdateAlarmfnContext.Provider>
-      )}
-
-      {/* <Flex
-        position="absolute"
-        bottom="72"
-        right={9}
-        boxShadow="0px 3px 6px 1px rgba(0,0,0,0.16)"
-        borderRadius="10px"
-        justifyContent="center"
-        align="center"
-        w="10"
-        h="10"
-        zIndex={2}
-        bg="pri.white.100"
-        cursor="pointer"
-        _hover={{ stroke: 'pri.blue.100' }}
-        onClick={() => {
-          changeMapType(mapType);
-        }}
-      >
-        {mapType === '3d' ? <Box>2d</Box> : <Box>3d</Box>}
-      </Flex> */}
-
-      {/* <UeMap getUeMapObj={getUeMapObj} />
-      <LeftPanel />
-      <Videos /> */}
       {/* 广播 */}
       <Broadcast />
       {/* 门禁 */}
       <AccessControl />
-    </Box>
+    </div>
   );
 };
 

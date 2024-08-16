@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { IUserRes } from '../models/user';
+import { IMenuItem, IUserRes } from '../models/user';
 import { parse } from 'qs';
 
 export const dev = process.env.NODE_ENV !== 'production';
@@ -144,62 +144,27 @@ export const analysisUrlFormParam = (iframeUrl: string) => {
   };
 };
 
-/**
- *  移动端不需要展示的我的申请
- *  这里用对象表示，减少循环次数
- */
-
-interface NoNeedApplyItem {
-  [key: string]: boolean;
-}
-
-const appNoNeedApplyForArray = [
-  // 作业许可部分
-  'ZYXK_GB',
-  'ZYXK_QX',
-  //培训部分
-  'TRAIN_MATRIX',
-
-  //人员管理
-  'XMZC',
-  'BZZC',
-
-  //五星计划
-  //这条是垃圾数据，后期可能会删除
-  'FSP_AQFX',
-  'FSP_OAE',
-
-  //优创班组服务
-  'OIT_BLACKLIST',
-  'OIT_BLACKLISTREMOVE',
-];
-
-function arrayToObj(data: string[]) {
-  const obj: NoNeedApplyItem = {};
-
-  data.forEach((item) => {
-    obj[item] = true;
-  });
-
+//扁平化菜单结构
+export const flagMenuFn = (data: IMenuItem[]) => {
+  const obj: { [key: string]: IMenuItem } = {};
+  const fn = (data_: IMenuItem[]) => {
+    for (const item of data_) {
+      obj[item.functionCode!] = item;
+      if (item.children && item.children.length) {
+        fn(item.children);
+      }
+    }
+  };
+  fn(data);
   return obj;
-}
-export const appNoNeedToShowcaseApplyFor: NoNeedApplyItem = arrayToObj(appNoNeedApplyForArray);
+};
+//获取扁平化数据最外层的父节点functionCode
+export const menuGetOutNode = (flagData: { [key: string]: IMenuItem }, currentData: IMenuItem) => {
+  let father = currentData;
 
-/**
- *  web不需要展示的我的申请
- *  这里用对象表示，减少循环次数
- */
+  while (flagData[father.parentId]) {
+    father = flagData[father.parentId];
+  }
 
-const webNoNeedApplyForArray = [
-  ...appNoNeedApplyForArray,
-  'FSP_SAFE',
-  'FSP_RISK',
-  'FSP_OAE',
-  'FSP_BBSO',
-  'FSP_TRIC',
-
-  //临时人员
-  'LSTM',
-];
-
-export const webNoNeedToShowcaseApplyFor: NoNeedApplyItem = arrayToObj(webNoNeedApplyForArray);
+  return father;
+};

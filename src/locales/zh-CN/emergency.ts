@@ -12,7 +12,7 @@ const emergency = {
   'emergency.base.death': '亡',
   'emergency.base.people': '人',
   'emergency.base.with': '有',
-  'emergency.base.no': '无',
+  'emergency.base-no': '无',
   'emergency.base.explosion': '爆炸',
   'emergency.base.methysis': '中毒',
   'emergency.base.eventTime': '事件时间',

@@ -1,6 +1,5 @@
 import CustomSelect from '@/components/CustomSelect';
 import { BackIcon, ExportIcon } from '@/components/Icons';
-import TreeSelect from '@/components/Montior/TreeSelect';
 import { checkedAlarmIdsModel, dealAlarmModalVisibleModal, IAlarmTypeItem } from '@/models/alarm';
 import { depTreeModal } from '@/models/global';
 import { IArea } from '@/models/map';
@@ -44,7 +43,7 @@ const AlarmQuere = ({ handleSearch, exportFile, exportLoading, methods }: IProps
   // });
   const { register, handleSubmit, getValues } = methods;
   const getAlarmTypes = () => {
-    request<IAlarmTypeItem[]>({ url: '/cx-alarm/alm/alarm/getAlarmType' }).then((res) => {
+    request<IAlarmTypeItem[]>({ url: '/ms-gateway/cx-alarm/alm/alarm/getAlarmType' }).then((res) => {
       if (res.code === 200) {
         setAlarmType(res.data);
       }
@@ -57,7 +56,7 @@ const AlarmQuere = ({ handleSearch, exportFile, exportLoading, methods }: IProps
   });
 
   const getAreas = async () => {
-    const res = await request<IArea[]>({ url: '/cx-alarm/dc/area/getChildren?areaId=0' });
+    const res = await request<IArea[]>({ url: '/ms-gateway/cx-alarm/dc/area/getChildren?areaId=0' });
     if (domWarp.current) {
       scrollbar.current = SmoothScrollbar.init(domWarp.current);
     }

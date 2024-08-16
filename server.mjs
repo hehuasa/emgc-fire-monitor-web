@@ -2,10 +2,13 @@ import { createServer } from 'http';
 import { parse } from 'url';
 import next from 'next';
 import { createProxyMiddleware } from 'http-proxy-middleware';
+import dotenv from 'dotenv';
 
 const port = parseInt(process.env.PORT || '3000', 10);
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
+dotenv.config({ path: dev ? '.env.local' : '.env.production' });
+
 const handle = app.getRequestHandler();
 
 const createProxyMiddlewareFun = ({ target, pathRewrite, req, res }) => {
@@ -22,10 +25,10 @@ const createProxyMiddlewareFun = ({ target, pathRewrite, req, res }) => {
 };
 
 const proxyObj = {
-  '/ms-gateway': {
-    target: 'http://192.168.1.247:8001',
+  [`${process.env.NEXT_PUBLIC_ANALYTICS_BasePath}/ms-gateway`]: {
+    target: process.env.NEXT_PUBLIC_ANALYTICS_Ms_Gateway,
     pathRewrite: {
-      '^/ms-gateway': '',
+      [`^${process.env.NEXT_PUBLIC_ANALYTICS_BasePath}/ms-gateway`]: '',
     },
   },
 };
@@ -53,7 +56,8 @@ const middleProxy = (needProxy, req, res) => {
 const server = createServer(async (req, res) => {
   const parsedUrl = parse(req.url, true);
   const { pathname } = parsedUrl;
-
+  console.info('============pathname==============', pathname);
+  console.info('============proxyObj==============', proxyObj);
   const proxy = needProxy(pathname);
   if (proxy) {
     middleProxy(proxy, req, res);

@@ -2,7 +2,7 @@
 import { useLocale, useTranslations } from 'next-intl';
 import { useLocalStorageState, useMemoizedFn, useMount, useSafeState, useUnmount } from 'ahooks';
 
-import { Form, Input, Button, Tabs, message, Checkbox, Image as AntdIamge } from 'antd';
+import { Form, Input, Button, Tabs, message, Checkbox } from 'antd';
 import React, { useRef, useState } from 'react';
 import Image from 'next/image';
 import login_QR_code from '@/assets/login/login_QR_code.png';
@@ -179,7 +179,7 @@ const Login = () => {
 						<Input.Password type="password" placeholder={t('typePass')} />
 					</FormItem>
 
-					<div className="flex">
+					{/* <div className="flex">
 						<div className="flex-1 mr-2">
 							<FormItem
 								name="verfiyCode"
@@ -208,7 +208,7 @@ const Login = () => {
 								</>
 							) : null}
 						</div>
-					</div>
+					</div> */}
 				</>
 			),
 		},
@@ -285,7 +285,9 @@ const Login = () => {
 				const id = v4();
 
 				const pubKeyRes = await request<string>({
-					url: `/ms-system/login/getPubKey?id=${id}`,
+					// url: `/ms-system/login/getPubKey?id=${id}`,
+					url: `/ms-gateway/ms-login/user/getPubKey?id=${id}`,
+
 					options: {
 						dataReturnConfig: {
 							showErrorTip: true,
@@ -306,7 +308,8 @@ const Login = () => {
 					errMsg: string;
 					errCode: string;
 				}>({
-					url: `/ms-system/login/login_with_verify`,
+					// url: `/ms-system/login/login_with_verify`,
+					url: '/ms-gateway/ms-login/user/login',
 					options: {
 						headers: {
 							'content-type': 'application/json;charset=utf-8',
@@ -323,18 +326,19 @@ const Login = () => {
 				});
 
 				if (loginRes && loginRes.code === 200) {
-					if (loginRes.data.success) {
-						const newInfo = formatUserInfo(loginRes.data.loginUser);
-						setUserInfo(newInfo);
-						//设置租户ID
-						localStorage.setItem('tenant_id', loginRes.data.loginUser.tenantId);
-						router.push('/homepage');
-					} else {
-						messageApi.open({
-							type: 'error',
-							content: loginRes.data.errMsg,
-						});
-					}
+					router.push('/homepage');
+					// if (loginRes.data.success) {
+					// 	const newInfo = formatUserInfo(loginRes.data.loginUser);
+					// 	setUserInfo(newInfo);
+					// 	//设置租户ID
+					// 	localStorage.setItem('tenant_id', loginRes.data.loginUser.tenantId);
+
+					// } else {
+					// 	messageApi.open({
+					// 		type: 'error',
+					// 		content: loginRes.data.errMsg,
+					// 	});
+					// }
 				} else {
 					getCodeImg();
 					messageApi.error(loginRes.msg);

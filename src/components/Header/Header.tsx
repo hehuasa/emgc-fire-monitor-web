@@ -8,7 +8,7 @@ import Spi from '@/assets/system/SPI.png';
 import PhoneBookComponent from '@/components/PhoneBook';
 import RealTime from '@/components/RealTime';
 import { showAlarmToastModel } from '@/models/alarm';
-import { localesModal, notReadNumberModel } from '@/models/global';
+import { notReadNumberModel } from '@/models/global';
 import { isSpaceQueryingModel } from '@/models/map';
 import { searchParamModel, searchResModel } from '@/models/resource';
 import { menuModel } from '@/models/user';
@@ -58,21 +58,22 @@ import { parse, stringify } from 'qs';
 import { useRef, useState } from 'react';
 import { AiFillYoutube, AiOutlineLogout, AiOutlineUser } from 'react-icons/ai';
 import { BsPersonCircle } from 'react-icons/bs';
-import { useIntl } from 'react-intl';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import SwitchLanguage from '../SwitchLanguage';
 import UploadBtn from '../Upload/uploadBtn';
 import NavLink from './NavLink';
+import { useLocale, useTranslations } from 'next-intl';
 
 const Header = () => {
-  const [locales, setLocales] = useRecoilState(localesModal);
+
+  const locale = useLocale();
 
   const setSearchRes = useSetRecoilState(searchResModel);
   const setSearchParam = useSetRecoilState(searchParamModel);
 
   const setIsSpaceQuerying = useSetRecoilState(isSpaceQueryingModel);
   const [showAlarmToast, setShowAlarmToast] = useRecoilState(showAlarmToastModel);
-  const { formatMessage } = useIntl();
+  const formatMessage = useTranslations("base");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     isOpen: isOpenPhoneBook,
@@ -119,7 +120,7 @@ const Header = () => {
   const loginOut = async () => {
     router.replace('/login');
 
-    request({ url: '/ms-login/user/logout', options: { method: 'post' } });
+    request({ url: '/ms-gateway/ms-login/user/logout', options: { method: 'post' } });
     localStorage.setItem(
       process.env.NEXT_PUBLIC_ANALYTICS_cx_factoryType
         ? `${process.env.NEXT_PUBLIC_ANALYTICS_cx_factoryType}_clientType`
@@ -191,7 +192,7 @@ const Header = () => {
   // 获取未读消息数量
   const getUnRead = useMemoizedFn(async () => {
     const { code, data } = await request<number>({
-      url: `/ms-system/sys/message/query_no_read_count`,
+      url: `/ms-gateway/ms-system/sys/message/query_no_read_count`,
     });
     if (code === 200) {
       setNotReadNumber(data);
@@ -233,16 +234,14 @@ const Header = () => {
 
   return (
     <>
-      <Box
-        zIndex={100}
-        backgroundColor={
-          process.env.NEXT_PUBLIC_ANALYTICS_Ms_type === 'qs' ? 'pri.black.200' : 'pri.blue.100'
-        }
-        px={5}
-        boxShadow=" 0px 3px 20px 1px rgba(0,0,0,0.15);"
-        color="pri.white.100"
+      <div
+        className='z-50 px-5 text-white shadow-md bg-blue-600'
+
+
       >
-        <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
+        <div
+          className='h-16 flex items-center justify-between'
+        >
           <IconButton
             size={'md'}
             icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
@@ -258,14 +257,14 @@ const Header = () => {
               )}
 
               <Box color="pri.white.100" fontSize="20px" fontWeight="bold">
-                {formatMessage({ id: 'sysName' })}
+                {formatMessage('sysName')}
               </Box>
             </HStack>
           </Flex>
           <Flex>
             <Box
               // 国际化
-              mr={locales === 'zh' ? '60' : '20'}
+              mr={locale === 'zh' ? '60' : '20'}
               display={{ base: 'none', xl: 'flex' }}
             >
               {links.map((link) => (
@@ -333,7 +332,7 @@ const Header = () => {
                     justifyContent="flex-start"
                   >
                     <Icon as={AiOutlineUser} mr="4"></Icon>
-                    <Box lineHeight="24px">{formatMessage({ id: 'personalInfo' })}</Box>
+                    <Box lineHeight="24px">{formatMessage('personalInfo')}</Box>
                   </MenuItem>
                   {/*---------- 临时用于审核的演示代码 --------------------*/}
                   {/* {process.env.NEXT_PUBLIC_ANALYTICS_Ms_type == 'yb' && (
@@ -398,25 +397,25 @@ const Header = () => {
                     color="#fff"
                   >
                     <Icon as={AiOutlineLogout} mr="4"></Icon>
-                    <Box lineHeight="24px"> {formatMessage({ id: 'logout' })}</Box>
+                    <Box lineHeight="24px"> {formatMessage('logout')}</Box>
                   </MenuItem>
                 </MenuList>
               </Menu>
             </Flex>
           </Flex>
-        </Flex>
-      </Box>
+        </div>
+      </div>
       <Modal isOpen={modalOpen} onClose={handleCancel}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader py="0" textAlign="left" lineHeight="2.75rem" fontSize="lg">
-            {formatMessage({ id: 'logout' })}
+            {formatMessage('logout')}
           </ModalHeader>
           <ModalCloseButton h="11" top="0" lineHeight="2.75rem" />
           <ModalBody color="font.100" backgroundColor="backs.200" py="5" borderRadius={'md'}>
             <Flex alignItems={'center'}>
               <WarningTwoIcon color={'pri.red.300'} />
-              <Text ml={'2'}>{formatMessage({ id: 'logoutmsg' })} ！</Text>
+              <Text ml={'2'}>{formatMessage('logoutmsg')} ！</Text>
             </Flex>
           </ModalBody>
           <ModalFooter>
@@ -432,7 +431,7 @@ const Header = () => {
                 w="20"
                 onClick={handleCancel}
               >
-                {formatMessage({ id: 'cancel' })}
+                {formatMessage('cancel')}
               </Button>
               <Button
                 fontWeight="400"
@@ -443,7 +442,7 @@ const Header = () => {
                 w="20"
                 onClick={loginOut}
               >
-                {formatMessage({ id: 'ok' })}
+                {formatMessage('ok')}
               </Button>
             </Stack>
           </ModalFooter>

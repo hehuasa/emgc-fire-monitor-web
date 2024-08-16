@@ -2,6 +2,7 @@
 import { atom } from 'recoil';
 
 export interface IMenuItem {
+  functionCode: any;
   id: string;
   parentId: string;
   functionName: string;
@@ -141,7 +142,10 @@ export const flatModel = atom<IMenuItem[]>({
   key: 'flatmenu_',
   default: [],
 });
-
+export const flatMenuModel = atom<IMenuItem[]>({
+  key: 'flatMenu_',
+  default: [],
+});
 export interface IProjectItem {
   key: string;
   label: string;

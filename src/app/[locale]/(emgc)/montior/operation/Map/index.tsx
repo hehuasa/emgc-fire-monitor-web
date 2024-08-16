@@ -27,13 +27,13 @@ import {
 import { useMemoizedFn, useUnmount } from 'ahooks';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { useIntl } from 'react-intl';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { IAlarmClusterItem } from '../page';
-import LaryerInit from './LaryerInit';
+import LaryerInit, { IL7LayerEventTarget } from './LaryerInit';
 import RightClickMenu from './RightClickMenu';
 import MapLibreMap from '@/components/L7Map/MapLibreMap';
 import { Scene } from '@antv/l7';
+import { useTranslations } from 'next-intl';
 
 const { clusterZoom, flyToZoom } = mapOp;
 
@@ -43,6 +43,8 @@ interface IProps {
 
 const Map = ({ getMapObj }: IProps) => {
   const mapRef = useRef<null | maplibregl.Map>(null);
+  const formatMessage = useTranslations('alarm');
+
   const mapSceneRef = useRef<null | Scene>(null);
   const [mapScene, setMapScene] = useState<null | Scene>(null);
   const setCallNumberShow = useSetRecoilState(callNumberVisibleModel);
@@ -69,7 +71,7 @@ const Map = ({ getMapObj }: IProps) => {
 
   const [currentAreaData, setCurrentAreaData] = useState<IArea | null>(null);
 
-  const { formatMessage } = useIntl();
+
 
   // 地图气泡窗（聚合）
   const [showPopup, setShowPopup] = useState(false);
@@ -127,13 +129,13 @@ const Map = ({ getMapObj }: IProps) => {
     setMapLoaded(true);
 
     // 地图右键点击
-    scene.on('contextmenu', genMapRightMenuFun);
+    // scene.on('contextmenu', genMapRightMenuFun);
     scene.on('click', genMapClick);
   };
   useUnmount(() => {
     // 清理注册的地图事件
     if (mapRef.current) {
-      mapRef.current.off('contextmenu', genMapRightMenuFun);
+      // mapRef.current.off('contextmenu', genMapRightMenuFun);
       mapRef.current.off('click', genMapClick);
     }
   });
@@ -151,15 +153,15 @@ const Map = ({ getMapObj }: IProps) => {
     }
   };
   // 地图右键事件
-  const genMapRightMenuFun = (e: MapMouseEvent) => {
-    const latlng = e.lngLat;
-    const fe = e.target.queryRenderedFeatures(e.point, { layers: ['area_fill_hide'] });
-    if (fe && fe[0]) {
-      rightMenuAreaName.current.areaName = fe[0].properties.areaName;
-      rightMenuAreaName.current.areaId = fe[0].properties.areaId;
-      rightMenuAreaName.current.latlng = latlng.toArray();
+  const genMapRightMenuFun = (e: IL7LayerEventTarget) => {
 
-      setRightMenulnglat(latlng.toArray());
+
+    if (e.feature && e.feature.properties) {
+      rightMenuAreaName.current.areaName = e.feature.properties.areaName;
+      rightMenuAreaName.current.areaId = e.feature.properties.areaId;
+      rightMenuAreaName.current.latlng = e.lngLat.toArray();
+
+      setRightMenulnglat(e.lngLat.toArray());
       changeMapRightMenuShow(true);
     }
   };
@@ -311,28 +313,23 @@ const Map = ({ getMapObj }: IProps) => {
   // 区域点击事件
   const handleAreaClick = useMemoizedFn(
     (
-      e: MapMouseEvent & {
-        features?: any;
-      },
-      features: any[]
+      e: IL7LayerEventTarget
     ) => {
       if (isSpaceQueryingRef.current) {
         return;
       }
-      if (e.defaultPrevented) {
-        return;
-      }
+
       if (showPopup) {
         return;
       }
       if (isIconRef.current) {
         return;
       }
-      if (features && features[0]) {
-        const area = features[0].properties;
+      if (e.feature && e.feature.properties) {
+        const area = e.feature.properties;
 
-        console.log('features', features);
-        area.centralPoint = JSON.parse(features[0].properties.centralPoint);
+        console.log('area', area);
+        // area.centralPoint = JSON.parse(features[0].properties.centralPoint);
         getAreaFloors(area, area.centralPoint.coordinates);
       }
     }
@@ -447,8 +444,9 @@ const Map = ({ getMapObj }: IProps) => {
       <MapLibreMap getMapScence={getMapObj_} />
       {mapLoaded && mapSceneRef.current && (
         <LaryerInit
-          map={mapRef.current}
+          scene={mapSceneRef.current}
           handleAreaClick={handleAreaClick}
+          genMapRightMenuFun={genMapRightMenuFun}
           hoveAreaCluster={hoveAreaCluster}
           handleClusterMouseleave={handleClusterMouseleave}
         />
@@ -504,7 +502,7 @@ const Map = ({ getMapObj }: IProps) => {
                   setDealAlarmVisible({ visible: true, param: { currentAreaClusterData } });
                 }}
               >
-                {formatMessage({ id: 'alarm.deal.muti' })}
+                {formatMessage('alarm.deal.muti')}
               </Box>
             )}
 
@@ -550,7 +548,7 @@ const Map = ({ getMapObj }: IProps) => {
             {currentAreaFloors.length > 0 && <AreaFloors map={mapRef.current} />}
             <HStack p={2} alignItems="flex-start" pb={0}>
               <Box color="pri.dark.300" justifyContent="flex-start">
-                {formatMessage({ id: 'alarm.director.user' })} :
+                {formatMessage('alarm.director.user')} :
               </Box>
               <HStack color="pri.dark.100" flex={1}>
                 {currentAreaData.chargeInfo?.split(',')?.map((item) => {
@@ -579,7 +577,7 @@ const Map = ({ getMapObj }: IProps) => {
               </HStack>
             </HStack>
             <HStack p={2}>
-              <Box color="pri.dark.300">{formatMessage({ id: 'alarm.director.org' })} : </Box>
+              <Box color="pri.dark.300">{formatMessage('alarm.director.org')} : </Box>
               <Box color="pri.dark.100">{currentAreaData.deptName}</Box>
             </HStack>
 
@@ -603,7 +601,7 @@ const Map = ({ getMapObj }: IProps) => {
                         }
                       }}
                     >
-                      {currentAreaData.chargeInfo?.split(',')?.length > 1 ? item : formatMessage({ id: 'alarm.director.call' })}
+                      {currentAreaData.chargeInfo?.split(',')?.length > 1 ? item : formatMessage('alarm.director.call')}
                       <PhoneIcon ml="1" color="pri.green.200" />
                     </Flex>
                   </React.Fragment>
