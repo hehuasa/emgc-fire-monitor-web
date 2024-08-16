@@ -411,23 +411,37 @@ const LaryerInit = ({ scene, hoveAreaCluster, handleClusterMouseleave, handleAre
 
   // 生成报警图标图层
   const genAlarmIconLayer = () => {
-
-
+    //=================================todo=> 动画图标后期实现，暂时写死一个动态获取的图标==================================
+    scene.addImage(
+      'FAS',
+      'https://gw.alipayobjects.com/zos/basement_prod/604b5e7f-309e-40db-b95b-4fac746c5153.svg',
+    );
+    scene.addImage(
+      'GAS',
+      'https://gw.alipayobjects.com/zos/basement_prod/30580bc9-506f-4438-8c1a-744e082054ec.svg',
+    );
+    scene.addImage(
+      '02',
+      'https://gw.alipayobjects.com/zos/basement_prod/7aa1f460-9f9f-499f-afdf-13424aa26bbf.svg',
+    );
     // 报警相关图层，点击事件允许透传
     const alarmIconLayer = new PointLayer({
-      name: "alarmIcon",
+      name: "alarmIconLayer",
       minZoom: clusterZoom,
       enablePropagation: true,
-    }).source(source).shape("circle")
+    }).source(source).shape("alarmType", (alarmType) => {
+      console.info('============alarmType==============', alarmType);
+      return alarmType
+    })
 
     const alarmLineLayer = new LineLayer({
-      name: "alarmLine",
+      name: "alarmLineLayer",
       minZoom: clusterZoom,
       enablePropagation: true
     }).color('#f00').source(source).size(2).shape("line")
 
     const alarmLineCenterPointLayer = new PointLayer({
-      name: "alarmLineCenterPoint",
+      name: "alarmLineCenterPointLayer",
       minZoom: clusterZoom,
       enablePropagation: true
     }).source(source).shape("circle")
@@ -553,12 +567,16 @@ const LaryerInit = ({ scene, hoveAreaCluster, handleClusterMouseleave, handleAre
 
 
     const alarmCluster_count = new PointLayer({
-      name: "alarmCluster_count"
+      name: "alarmCluster_count",
+      maxZoom: clusterZoom,
+
     }).source(source).shape("alarmCount", "text").style({
 
     });
     const alarmCluster_circle = new PointLayer({
-      name: "alarmCluster_circle"
+      name: "alarmCluster_circle",
+      maxZoom: clusterZoom,
+
     }).source(source).size(18).color('rgba(255, 170, 27, 1)').shape("circle").style({
       stroke: 'rgba(249, 42, 42, 0.16)',
       strokeWidth: 1,

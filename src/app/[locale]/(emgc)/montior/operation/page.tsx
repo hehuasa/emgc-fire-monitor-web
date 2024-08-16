@@ -86,17 +86,33 @@ const Page = () => {
     if (res.code === 200) {
       setAlarmList(res.data);
       // 函数式的方式绘制、或更新地图图标。原因是报警列表数据量可能很大，进行hook依赖监听成本高
-      if (mapRef.current && mapRef.current.getSource) {
-        const featureCollections = genAlarmIcons(res.data);
-        const source = mapRef.current.getSource('alarmIcon') as maplibregl.GeoJSONSource;
-        source?.setData(featureCollections as GeoJSON.GeoJSON);
+      if (mapSceneRef.current) {
+
+
+        const featurePointCollections = genAlarmIcons(res.data);
+        const featureLineCollections = genAlarmIcons(res.data);
+
+        console.info('============featurePointCollections==============', featurePointCollections);
+
+        const genAlarmLineIconsSources = genAlarmLineIcons(res.data);
+
+        const alarmIconLayer = mapSceneRef.current?.getLayerByName("alarmIconLayer")
+        const alarmLineLayer = mapSceneRef.current?.getLayerByName("alarmLineLayer")
+        const alarmLineCenterPointLayer = mapSceneRef.current?.getLayerByName("alarmLineCenterPointLayer")
+
+        featurePointCollections.features = featurePointCollections.features.filter((val) => val.geometry && val.geometry.type === 'Point')
+        featureLineCollections.features = featureLineCollections.features.filter((val) => val.geometry && val.geometry.type === 'LineString')
+
+        alarmIconLayer?.setData(featurePointCollections as GeoJSON.GeoJSON);
+        alarmLineLayer?.setData(featureLineCollections as GeoJSON.GeoJSON);
+        alarmLineCenterPointLayer?.setData(genAlarmLineIconsSources as GeoJSON.GeoJSON);
 
         // 周界报警，动画图层
-        const genAlarmLineIconsSources = genAlarmLineIcons(res.data);
-        const centerPointsource = mapRef.current.getSource(
-          'alarmLineCenterPoint'
-        ) as maplibregl.GeoJSONSource;
-        centerPointsource?.setData(genAlarmLineIconsSources as unknown as GeoJSON.GeoJSON);
+        // const genAlarmLineIconsSources = genAlarmLineIcons(res.data);
+        // const centerPointsource = mapRef.current.getSource(
+        //   'alarmLineCenterPoint'
+        // ) as maplibregl.GeoJSONSource;
+        // centerPointsource?.setData(genAlarmLineIconsSources as unknown as GeoJSON.GeoJSON);
 
         // const line = mapRef.current.getLayer("alarmLineAndPerson") as any;
         // if (line) {
