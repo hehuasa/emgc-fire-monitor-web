@@ -5,6 +5,7 @@ import { IMenuItem } from '@/models/user';
 import { menuGetOutNode } from '@/utils/util';
 import { Box, HStack } from '@chakra-ui/react';
 import { useMemoizedFn } from 'ahooks';
+import { ConfigProvider, Menu } from 'antd';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useRecoilState } from 'recoil';
@@ -24,10 +25,10 @@ const getFirstNode = (tree: IMenuItem[], func: (arg: IMenuItem) => number | unde
 };
 
 const NavLink = ({
-  link,
+  links,
   flagMenu,
 }: {
-  link: IMenuItem;
+  links: IMenuItem[];
   flagMenu: { [key: string]: IMenuItem };
 }) => {
   const [locales, setLocales] = useRecoilState(localesModal);
@@ -53,6 +54,54 @@ const NavLink = ({
       isFirstCheck = true;
     }
   }
+  const genMenus = (links: IMenuItem[]) => {
+    const arrays = [];
+
+    for (const link of links) {
+      const obj = {
+        ...link,
+        icon: null,
+        label: link.functionName,
+        key: link.functionCode,
+      }
+      if (link.children && link.children.length > 0) {
+        obj.children = genMenus(link.children)
+      } else {
+        obj.children = undefined
+
+      }
+      arrays.push(obj)
+
+    }
+    return arrays
+
+  }
+  const menus = genMenus(links);
+  console.info('============links==============', links);
+  console.info('============menus==============', menus);
+
+  return <ConfigProvider
+    theme={{
+      token: {
+        fontSize: 18
+      },
+      components: {
+        Menu: {
+          horizontalLineHeight: "64px",
+          horizontalItemHoverBg: "red",
+          activeBarHeight: 0,
+
+          itemBg: 'transparent',
+          popupBg: 'blue',
+          itemColor: "#fff",
+          // itemHoverBg: "red"
+          /* 这里是你的组件 token */
+        },
+      },
+    }}
+  >
+    <Menu selectedKeys={[]} mode="horizontal" items={menus} />
+  </ConfigProvider>
 
   return (
     <Box position="relative">
@@ -118,12 +167,12 @@ const NavLink = ({
 
         {/* 二级菜单 不包括系统管理 和应急准备*/}
         {!link.url.includes('systemsManage') &&
-        !link.url.includes('emgcPreparation') &&
-        !link.url.includes('dataManage') &&
-        process.env.NEXT_PUBLIC_ANALYTICS_Ms_type === 'cx' &&
-        show &&
-        link.children &&
-        link.children.length ? (
+          !link.url.includes('emgcPreparation') &&
+          !link.url.includes('dataManage') &&
+          process.env.NEXT_PUBLIC_ANALYTICS_Ms_type === 'cx' &&
+          show &&
+          link.children &&
+          link.children.length ? (
           <Box
             position="absolute"
             top={16}

@@ -11,14 +11,10 @@ import { showAlarmToastModel } from '@/models/alarm';
 import { notReadNumberModel } from '@/models/global';
 import { isSpaceQueryingModel } from '@/models/map';
 import { searchParamModel, searchResModel } from '@/models/resource';
-import { menuModel } from '@/models/user';
+import { IUserInfo, menuModel } from '@/models/user';
 import { request } from '@/utils/request';
 import { downFileByUrl, flagMenuFn, privateKey, publicKey } from '@/utils/util';
 import {
-  BellIcon,
-  CloseIcon,
-  HamburgerIcon,
-  InfoOutlineIcon,
   WarningTwoIcon,
 } from '@chakra-ui/icons';
 import {
@@ -26,16 +22,8 @@ import {
   Button,
   Center,
   Flex,
-  FormControl,
-  FormLabel,
   HStack,
-  Icon,
-  IconButton,
   Input,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -44,25 +32,26 @@ import {
   ModalHeader,
   ModalOverlay,
   Stack,
-  Switch,
   Text,
   useDisclosure,
   useNumberInput,
   VStack,
 } from '@chakra-ui/react';
-import { useMemoizedFn, useMount, useSafeState, useUnmount } from 'ahooks';
+import { useLocalStorageState, useMemoizedFn, useMount, useSafeState, useUnmount } from 'ahooks';
 import type { JSEncrypt } from 'jsencrypt';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { parse, stringify } from 'qs';
 import { useRef, useState } from 'react';
-import { AiFillYoutube, AiOutlineLogout, AiOutlineUser } from 'react-icons/ai';
-import { BsPersonCircle } from 'react-icons/bs';
+import { AiFillBell, AiOutlineLogout, AiOutlineUser } from 'react-icons/ai';
+import { FaCircleUser } from 'react-icons/fa6';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import SwitchLanguage from '../SwitchLanguage';
 import UploadBtn from '../Upload/uploadBtn';
 import NavLink from './NavLink';
 import { useLocale, useTranslations } from 'next-intl';
+
+import { Badge, Dropdown, MenuProps } from 'antd';
+import LocaleLink from '../LocaleLink';
 
 const Header = () => {
 
@@ -75,6 +64,8 @@ const Header = () => {
   const [showAlarmToast, setShowAlarmToast] = useRecoilState(showAlarmToastModel);
   const formatMessage = useTranslations("base");
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [currentUserInfo] = useLocalStorageState<null | IUserInfo>('emgc_web_currentUserInfo');
+
   const {
     isOpen: isOpenPhoneBook,
     onOpen: onOpenPhoneBook,
@@ -232,177 +223,77 @@ const Header = () => {
     }, 1500);
   });
 
+  const items: MenuProps['items'] = [
+    {
+      key: '1',
+      label: (
+        <LocaleLink href={'/emgc/personalCenter'} className='flex items-center'>
+          <AiOutlineUser className='mr-2' />
+          {formatMessage('personalInfo')}
+        </LocaleLink>
+
+      ),
+    },
+    {
+      key: '2',
+      label: (
+        <span
+          onClick={logOut}
+          className="flex items-center gap-1 text-base"
+        >
+          <AiOutlineLogout className='mr-2' />
+          {formatMessage('loginOut')}
+        </span>
+      ),
+    },
+  ];
   return (
     <>
-      <div
-        className='z-50 px-5 text-white shadow-md bg-blue-600'
+      <div className='z-50 px-5 text-white shadow-md bg-blue-600' >
+        <div className='h-16 flex items-center justify-between' >
 
 
-      >
-        <div
-          className='h-16 flex items-center justify-between'
-        >
-          <IconButton
-            size={'md'}
-            icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
-            aria-label={'Open Menu'}
-            display={{ xl: 'none' }}
-            onClick={isOpen ? onClose : onOpen}
-          />
+          <div className='flex items-center'>
+            <Image src={logo} alt="login" width="30" height="24" />
 
-          <Flex alignItems={'center'}>
-            <HStack height="9">
-              {process.env.NEXT_PUBLIC_ANALYTICS_cx_param1 !== '1' && (
-                <Image loader={() => logo.src} src={logo} alt="login" width="30" height="24" />
-              )}
+            <div className='text-xl font-bold ml-2 text-white'>
+              {formatMessage('sysName')}
+            </div>
+          </div>
+          <div className='flex'>
+            <div>
 
-              <Box color="pri.white.100" fontSize="20px" fontWeight="bold">
-                {formatMessage('sysName')}
-              </Box>
-            </HStack>
-          </Flex>
-          <Flex>
-            <Box
-              // 国际化
-              mr={locale === 'zh' ? '60' : '20'}
-              display={{ base: 'none', xl: 'flex' }}
-            >
-              {links.map((link) => (
-                <NavLink key={link.id} link={link} flagMenu={flagMenu} />
-              ))}
-            </Box>
-            <Flex alignItems={'center'} lineHeight="60px">
-              <Center onClick={openMessages} position={'relative'}>
-                <Icon as={BellIcon} mr="4" w="8" h="8" cursor="pointer" />
-                {notReadNumber > 0 && (
-                  <Box
-                    mr="4"
-                    w="2"
-                    h="2"
-                    position={'absolute'}
-                    top={0}
-                    right={'2px'}
-                    backgroundColor={'red'}
-                    borderRadius={'50%'}
-                  ></Box>
-                )}
-              </Center>
-              {/**
-               * 国际化
-               */}
-              {process.env.NEXT_PUBLIC_ANALYTICS_cx_param1 === '1' && (
-                <HStack mr="2">
-                  <SwitchLanguage />
-                </HStack>
-              )}
+              <NavLink links={links} flagMenu={flagMenu} />
+            </div>
 
-              <HStack mr="8">
-                <Box>
-                  <RealTime />
-                </Box>
-              </HStack>
+          </div>
+          <div className='flex items-center'>
 
-              <Center onClick={openVideoClient}>
-                <Icon as={AiFillYoutube} mr="4" w="8" h="8" cursor="pointer" />
-              </Center>
 
-              <Menu>
-                <MenuButton
-                  as={Button}
-                  rounded={'full'}
-                  variant={'link'}
-                  cursor={'pointer'}
-                  minW="2"
-                  minH="2"
-                >
-                  <Icon w={6} h={6} mr={1} as={BsPersonCircle} color="#fff" />
-                </MenuButton>
-                <MenuList
-                  zIndex={4}
-                  w="45"
-                  minW="45"
-                  bg="pri.blue.100"
-                  borderWidth={0}
-                  boxShadow="0 0 0 1px #fff"
-                >
-                  <MenuItem
-                    onClick={handleRouter}
-                    bg="pri.blue.100"
-                    color="#fff"
-                    justifyContent="flex-start"
-                  >
-                    <Icon as={AiOutlineUser} mr="4"></Icon>
-                    <Box lineHeight="24px">{formatMessage('personalInfo')}</Box>
-                  </MenuItem>
-                  {/*---------- 临时用于审核的演示代码 --------------------*/}
-                  {/* {process.env.NEXT_PUBLIC_ANALYTICS_Ms_type == 'yb' && (
-                    <>
-                      <MenuItem bg="pri.blue.100" color="#fff" justifyContent="flex-start">
-                        <Icon as={DownloadIcon} mr="4"></Icon>
-                        <Box onClick={onOpenEvlation}>安全评估</Box>
-                        <Link
-                          lineHeight="24px"
-                          _hover={{
-                            color: 'white',
-                          }}
-                          href={
-                            process.env.NODE_ENV == 'development'
-                              ? process.env.NEXT_PUBLIC_ANALYTICS_EVALUATION +
-                                `/output/evaluation.csv`
-                              : 'http://192.168.0.240/output/evaluation.csv'
-                          }
-                        >
-                          安全评估体系导出
-                        </Link>
-                      </MenuItem>
-                      <MenuItem bg="pri.blue.100" color="#fff" justifyContent="flex-start">
-                        <Icon as={CopyIcon} mr="4"></Icon>
-                        <Box onClick={onOpenPic}>报警优化</Box>
-                      </MenuItem>
-                      <MenuItem bg="pri.blue.100" color="#fff" justifyContent="flex-start">
-                        <Icon as={FaAlignRight} mr="4"></Icon>
-                        <Box onClick={onOpenSpi}>预警指数</Box>
-                      </MenuItem>
-                    </>
-                  )} */}
-                  {/* ------------------------------------------------ */}
-                  {process.env.NEXT_PUBLIC_ANALYTICS_Ms_type !== 'qs' && (
-                    <MenuItem
-                      bg="pri.blue.100"
-                      color="#fff"
-                      justifyContent="flex-start"
-                      closeOnSelect={false}
-                    >
-                      <Icon as={InfoOutlineIcon} mr="4"></Icon>
+            <div className='mr-4 '>
+              <LocaleLink href={'/stationMessage'} className='flex items-center'>
+                <Badge count={5}>
+                  <AiFillBell className='w-6 h-6 text-white' />
+                </Badge>
+              </LocaleLink>
+            </div>
 
-                      <FormControl display="flex" alignItems="center">
-                        <FormLabel htmlFor="showAlarmToast" mb="0" fontSize={'14px'}>
-                          {formatMessage({ id: 'alarm.alarmReminder' })}
-                        </FormLabel>
-                        <Switch
-                          id="showAlarmToast"
-                          size="sm"
-                          colorScheme="teal"
-                          isChecked={showAlarmToast}
-                          onChange={() => setShowAlarmToast(!showAlarmToast)}
-                        />
-                      </FormControl>
-                    </MenuItem>
-                  )}
 
-                  <MenuItem
-                    onClick={logOut}
-                    justifyContent="flex-start"
-                    bg="pri.blue.100"
-                    color="#fff"
-                  >
-                    <Icon as={AiOutlineLogout} mr="4"></Icon>
-                    <Box lineHeight="24px"> {formatMessage('logout')}</Box>
-                  </MenuItem>
-                </MenuList>
-              </Menu>
-            </Flex>
-          </Flex>
+            {/* <SwitchLanguage /> */}
+
+
+            <RealTime />
+
+            <Dropdown menu={{ items }}>
+              <div className="ml-5 flex items-center h-full cursor-pointer">
+                <div className="mr-2 w-5 h-5 text-[#3377FF]">
+                  <FaCircleUser fontSize={20} />
+                </div>
+                <div>{currentUserInfo?.userName}</div>
+              </div>
+            </Dropdown>
+
+          </div>
         </div>
       </div>
       <Modal isOpen={modalOpen} onClose={handleCancel}>

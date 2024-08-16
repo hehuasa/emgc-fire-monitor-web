@@ -49,6 +49,7 @@
     "autoprefixer": "^10.4.20",
     "better-sqlite3": "^11.1.2",
     "cross-env": "^7.0.3",
+    "dayjs": "^1.11.12",
     "dotenv": "^16.4.5",
     "echarts": "^5.5.1",
     "echarts-liquidfill": "^3.1.0",
