@@ -204,7 +204,7 @@ const GpsLocation = ({ fold }: IProps) => {
             <HStack>
               <Image alt="title" src={title} />
               <Box fontSize="lg" fontWeight="bold" color="pri.dark.100">
-                {formatMessage({ id: 'personnelLocate.Positioning' })}
+                {formatMessage('personnelLocate.Positioning')}
               </Box>
             </HStack>
           </Box>
@@ -219,7 +219,7 @@ const GpsLocation = ({ fold }: IProps) => {
           >
             <Box color="pri.dark.100" lineHeight="30px" mb="3.5">
               <Box paddingRight="10px" whiteSpace="nowrap">
-                {formatMessage({ id: 'personnelLocate.StartDate' })}
+                {formatMessage('personnelLocate.StartDate')}
               </Box>
               <FormControl mr="28px" alignItems="center" isInvalid={!!errors.startTime} w="auto">
                 <Input
@@ -231,7 +231,7 @@ const GpsLocation = ({ fold }: IProps) => {
                 <FormErrorMessage mt={0}>{errors.startTime?.message}</FormErrorMessage>
               </FormControl>
               <Box paddingRight="10px" whiteSpace="nowrap">
-                {formatMessage({ id: 'personnelLocate.EndDate' })}
+                {formatMessage('personnelLocate.EndDate')}
               </Box>
               <FormControl mr="28px" alignItems="center" w="auto">
                 <Input type="datetime-local" {...register('endTime')} />
@@ -250,42 +250,42 @@ const GpsLocation = ({ fold }: IProps) => {
                 }}
                 onClick={handleSubmit(submit)}
               >
-                {formatMessage({ id: 'personnelLocate.SearchTrack' })}
+                {formatMessage('personnelLocate.SearchTrack')}
               </Center>
 
               <HStack>
                 <Box paddingRight="10px" whiteSpace="nowrap">
-                  {formatMessage({ id: 'personnelLocate.detail.JobNo' })}
+                  {formatMessage('personnelLocate.detail.JobNo')}
                 </Box>
                 <Box>{currentGpsInfo?.idCardNo}</Box>
               </HStack>
               <HStack>
                 <Box paddingRight="10px" whiteSpace="nowrap">
-                  {formatMessage({ id: 'personnelLocate.detail.Name' })}
+                  {formatMessage('personnelLocate.detail.Name')}
                 </Box>
                 <Box>{currentGpsInfo?.userName}</Box>
               </HStack>
               <HStack>
                 <Box paddingRight="10px" whiteSpace="nowrap">
-                  {formatMessage({ id: 'personnelLocate.detail.Sex' })}
+                  {formatMessage('personnelLocate.detail.Sex')}
                 </Box>
                 <Box>{currentGpsInfo?.sex === '1' ? '男' : '女'}</Box>
               </HStack>
               <HStack>
                 <Box paddingRight="10px" whiteSpace="nowrap">
-                  {formatMessage({ id: 'personnelLocate.detail.Department' })}
+                  {formatMessage('personnelLocate.detail.Department')}
                 </Box>
                 <Box>{currentGpsInfo?.orgName}</Box>
               </HStack>
               <HStack>
                 <Box paddingRight="10px" whiteSpace="nowrap">
-                  {formatMessage({ id: 'personnelLocate.detail.Post' })}
+                  {formatMessage('personnelLocate.detail.Post')}
                 </Box>
                 <Box>{currentGpsInfo?.positionName ? currentGpsInfo?.positionName.join() : ''}</Box>
               </HStack>
               <HStack>
                 <Box paddingRight="10px" whiteSpace="nowrap">
-                  {formatMessage({ id: 'personnelLocate.detail.Phone' })}
+                  {formatMessage('personnelLocate.detail.Phone')}
                 </Box>
                 <Box>{currentGpsInfo?.mobile}</Box>
               </HStack>

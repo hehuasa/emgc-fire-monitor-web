@@ -21,7 +21,7 @@ const RealData = ({ realDatas }: IProps) => {
         <HStack>
           <Image alt="title" src={title} />
           <Box fontSize="lg" fontWeight="bold" color="pri.dark.100">
-            {formatMessage({ id: 'emgc.res.liveData' })}
+            {formatMessage('emgc.res.liveData')}
           </Box>
         </HStack>
       </Box>

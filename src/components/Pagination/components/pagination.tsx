@@ -214,7 +214,7 @@ export const PaginationComp = () => {
             disabled={props.disabled}
             size={props.size === 'lg' ? 'md' : props.size === 'xs' ? 'xs' : 'sm'}
           >
-            {props.pageSize}{formatMessage({ id: 'record' })} / {formatMessage({ id: 'page' })}
+            {props.pageSize}{formatMessage('record')} / {formatMessage('page')}
           </PagMenuButton>
           <MenuList>
             <MenuOptionGroup onChange={changePageSize}>
@@ -222,7 +222,7 @@ export const PaginationComp = () => {
                 .filter((opt: any) => opt !== props.pageSize)
                 .map((opt: any, oid: number) => (
                   <MenuItemOption fontSize={props.size} value={opt.toString()} key={`size${oid}`}>
-                    {opt}{formatMessage({ id: 'record' })} / {formatMessage({ id: 'page' })}
+                    {opt}{formatMessage('record')} / {formatMessage('page')}
                   </MenuItemOption>
                 ))}
             </MenuOptionGroup>
@@ -240,7 +240,7 @@ export const PaginationComp = () => {
           {...responsiveDisplay('pageJumper')}
         >
           <Text wordBreak="unset">
-            {formatMessage({ id: 'jumpTo' })}
+            {formatMessage('jumpTo')}
           </Text>
           <Input
             type="number"
@@ -257,7 +257,7 @@ export const PaginationComp = () => {
             }}
             size={props.size === 'lg' ? 'md' : props.size === 'xs' ? 'xs' : 'sm'}
           />
-          <Text wordBreak="unset"> {formatMessage({ id: 'page' })}
+          <Text wordBreak="unset"> {formatMessage('page')}
           </Text>
         </HStack>
       )}

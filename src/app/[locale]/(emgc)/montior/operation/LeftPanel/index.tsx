@@ -39,7 +39,7 @@ export interface IHisResData {
 }
 
 const LeftPanel = () => {
-  const formatMessage = useTranslations("base");
+  const formatMessage = useTranslations("alarm");
   const [fold, setFold] = useRecoilState(foldModel);
   const alarmFilterShow = useRecoilValue(alarmFilterModel);
   const [currentAlarm, setCurrentAlarm] = useRecoilState(currentAlarmModel);
@@ -133,8 +133,8 @@ const LeftPanel = () => {
           <Tooltip
             label={
               fold
-                ? formatMessage({ id: 'alarm.list.unfold' })
-                : formatMessage({ id: 'alarm.list.fold' })
+                ? formatMessage('alarm-list-unfold')
+                : formatMessage('alarm-list-fold')
             }
             placement="right"
           >

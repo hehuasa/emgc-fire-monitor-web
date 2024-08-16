@@ -99,10 +99,10 @@ const Content = (props: Props) => {
         <ModalWarp title={title} onClose={close}>
           <Box display="flex" justifyContent="center" pb="20px">
             <Button onClick={close} borderRadius="20px" mr="20px">
-              {formatMessage({ id: 'cancel' })}
+              {formatMessage('cancel')}
             </Button>
             <Button isLoading={isLoading} buttonType="active" onClick={handleOk}>
-              {formatMessage({ id: 'ok' })}
+              {formatMessage('ok')}
             </Button>
           </Box>
         </ModalWarp>

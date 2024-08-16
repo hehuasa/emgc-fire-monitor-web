@@ -47,7 +47,9 @@ const ItemButton = ({
   alarmStatus,
   setShowAlarmCharger,
 }: propType) => {
-  const formatMessage = useTranslations("base");
+  const formatMessage = useTranslations("alarm");
+  const formatMessageBase = useTranslations("base");
+
 
   const [addAlarmOpen, setAlarmOpen] = useRecoilState(handleAlarmModel);
 
@@ -130,7 +132,7 @@ const ItemButton = ({
                   setDealAlarmVisible({ visible: true });
                 }}
               >
-                {formatMessage({ id: 'alarm.deal' })}
+                {formatMessage('alarm-deal')}
               </Button>
             )}
 
@@ -148,7 +150,7 @@ const ItemButton = ({
                 setShowAlarmCharger(true);
               }}
             >
-              {formatMessage({ id: 'alarm.director.user' })}
+              {formatMessage('alarm-director-user')}
             </Button>
             <Button
               borderRadius="50px"
@@ -166,7 +168,7 @@ const ItemButton = ({
                 openHisAlarm();
               }}
             >
-              {formatMessage({ id: 'alarm.history' })}
+              {formatMessage('alarm-history')}
             </Button>
           </>
         ) : showResDetail ? (
@@ -186,7 +188,7 @@ const ItemButton = ({
                 setShowAlarmCharger(true);
               }}
             >
-              {formatMessage({ id: 'alarm.director.user' })}
+              {formatMessage('alarm-director-user')}
             </Button>
             <Button
               borderRadius="50px"
@@ -204,7 +206,7 @@ const ItemButton = ({
                 openHisAlarm();
               }}
             >
-              {formatMessage({ id: 'alarm.history' })}
+              {formatMessage('alarm-history')}
             </Button>
           </>
         ) : (
@@ -219,7 +221,7 @@ const ItemButton = ({
               }}
               color="pri.dark.100"
             >
-              {formatMessage({ id: 'selectAll' })}
+              {formatMessageBase('selectAll')}
             </Checkbox>
             <Box>
               {alarmStatus == '01' && (
@@ -235,7 +237,7 @@ const ItemButton = ({
                     setDealAlarmVisible({ visible: true });
                   }}
                 >
-                  {formatMessage({ id: 'alarm.deal.muti' })}
+                  {formatMessage('alarm-deal-muti')}
                 </Button>
               )}
 
@@ -252,7 +254,7 @@ const ItemButton = ({
                 px="4.5"
                 onClick={() => setAlarmOpen({ visible: true })}
               >
-                {formatMessage({ id: 'alarm.addAlarmByUser' })}
+                {formatMessage('alarm-addAlarmByUser')}
               </Button>
             </Box>
           </>
@@ -276,7 +278,7 @@ const ItemButton = ({
             fontSize="lg"
             bg="pri.white.100"
           >
-            {formatMessage({ id: 'alarm.addAlarmByUser' })}
+            {formatMessage('alarm-addAlarmByUser')}
           </ModalHeader>
           <ModalCloseButton h="11" top="0" lineHeight="2.75rem" />
           <ModalBody bg="pri.white.100" py="0" px="0" borderRadius="10px">
@@ -296,7 +298,7 @@ const ItemButton = ({
             fontSize="lg"
             bg="pri.gray.100"
           >
-            {formatMessage({ id: 'alarm.historyRecords' })}
+            {formatMessage('alarm-historyRecords')}
           </ModalHeader>
           <ModalCloseButton h="11" top="0" lineHeight="2.75rem" />
           <ModalBody backgroundColor="pri.white.100" px="5" py="0" borderBottomRadius="10px">
@@ -304,7 +306,7 @@ const ItemButton = ({
               <Box textAlign="center" width={'48'} m="auto">
                 <Image src={Null} quality="100" objectFit="cover" alt="空状态" />
                 <Text fontSize={'16px'} color="font.100" mb="6">
-                  {formatMessage({ id: 'alarm.nodata' })}
+                  {formatMessage('alarm-nodata')}
                 </Text>
               </Box>
             ) : (
@@ -312,11 +314,11 @@ const ItemButton = ({
                 {currentAlarm && (
                   <>
                     <HStack mt="4">
-                      <Box color="pri.drak.500">{formatMessage({ id: 'alarm.res.name' })} : </Box>
+                      <Box color="pri.drak.500">{formatMessage('alarm-res-name')} : </Box>
                       <Box color="pri.drak.100">{currentAlarm?.devName}</Box>
                     </HStack>
                     <HStack my="4">
-                      <Box color="pri.drak.500">{formatMessage({ id: 'alarm.place' })} : </Box>
+                      <Box color="pri.drak.500">{formatMessage('alarm-place')} : </Box>
                       <Box color="pri.drak.100">{currentAlarm?.address}</Box>
                     </HStack>
                   </>

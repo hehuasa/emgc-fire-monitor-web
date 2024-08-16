@@ -84,7 +84,7 @@ const VideoList = ({ showRealDatas, leaveVideo }: IProps) => {
         <HStack>
           <Image alt="title" src={title} />
           <Box fontSize="lg" fontWeight="bold" color="pri.dark.100">
-            {formatMessage({ id: 'resource.video.list' })}
+            {formatMessage('resource.video.list')}
           </Box>
         </HStack>
       </Box>

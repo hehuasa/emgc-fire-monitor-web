@@ -54,7 +54,7 @@ const LinkageQquipment = ({ closeShowType }: Props) => {
         cursor="pointer"
       >
         <VoiceIcon w="16px" />
-        <Box>{formatMessage({ id: 'broadcasting' })}</Box>
+        <Box>{formatMessage('broadcasting')}</Box>
       </HStack>
       <HStack
         onClick={() => {
@@ -71,7 +71,7 @@ const LinkageQquipment = ({ closeShowType }: Props) => {
         cursor="pointer"
       >
         <AccessControl w="16px" />
-        <Box>{formatMessage({ id: 'accessControl' })}</Box>
+        <Box>{formatMessage('accessControl')}</Box>
       </HStack>
     </Box>
   );

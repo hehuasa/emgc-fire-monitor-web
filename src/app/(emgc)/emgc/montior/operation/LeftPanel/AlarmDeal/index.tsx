@@ -373,18 +373,18 @@ const AlarmDeal = ({ dealCallBack }: Props) => {
             fontSize="lg"
             bg="pri.gray.100"
           >
-            {formatMessage({ id: 'alarm.deal' })}
+            {formatMessage('alarm.deal')}
           </ModalHeader>
           <ModalCloseButton h="11" top="0" lineHeight="2.75rem" />
           <ModalBody bg="pri.white.100" px="0" py="0">
             <Tabs variant="enclosed" index={tabIndex} onChange={setTabIndex}>
               <TabList borderRadius={0}>
-                <Tab borderRadius={0}>{formatMessage({ id: 'alarm.close' })}</Tab>
+                <Tab borderRadius={0}>{formatMessage('alarm.close')}</Tab>
 
                 {/* 批量处理暂时不显示升级成事件 */}
                 {currentAlarm ? (
                   <Tab borderRadius={0} isDisabled={!currentAlarm}>
-                    {formatMessage({ id: 'alarm.toEvent' })}
+                    {formatMessage('alarm.toEvent')}
                   </Tab>
                 ) : null}
               </TabList>
@@ -400,7 +400,7 @@ const AlarmDeal = ({ dealCallBack }: Props) => {
                     borderColor="pri.gray.200"
                   >
                     <Box w="22" whiteSpace="nowrap">
-                      *{formatMessage({ id: 'alarm.deal.result' })}:
+                      *{formatMessage('alarm.deal.result')}:
                     </Box>
                     <RadioGroup px="4" value={dealResult} onChange={setprocessResult}>
                       {alarmDealTypes.map((item) => {
@@ -424,7 +424,7 @@ const AlarmDeal = ({ dealCallBack }: Props) => {
                     onChange={(e) => {
                       setdealExplain(e.target.value);
                     }}
-                    placeholder={formatMessage({ id: 'alarm.remark.tips' })}
+                    placeholder={formatMessage('alarm.remark.tips')}
                     borderRadius="10px"
                   />
                 </TabPanel>
@@ -442,7 +442,7 @@ const AlarmDeal = ({ dealCallBack }: Props) => {
                       spacing={0}
                     >
                       <Box color="pri.red.100" w="80px" whiteSpace="nowrap">
-                        *{formatMessage({ id: 'alarm.deal.result' })}:
+                        *{formatMessage('alarm.deal.result')}:
                       </Box>
                       <RadioGroup value="1" px={4}>
                         <Radio
@@ -829,7 +829,7 @@ const AlarmDeal = ({ dealCallBack }: Props) => {
                 onClick={dealAlarm}
                 isLoading={buttonIsLoading}
               >
-                {formatMessage({ id: 'commit' })}
+                {formatMessage('commit')}
               </Button>
             ) : (
               <Button
@@ -841,7 +841,7 @@ const AlarmDeal = ({ dealCallBack }: Props) => {
                 onClick={handleSubmit(creatEvent)}
                 isLoading={buttonIsLoading}
               >
-                {formatMessage({ id: 'commit' })}
+                {formatMessage('commit')}
               </Button>
             )}
           </ModalFooter>
@@ -864,7 +864,7 @@ const AlarmDeal = ({ dealCallBack }: Props) => {
             fontSize="lg"
             bg="pri.gray.100"
           >
-            {formatMessage({ id: 'alarm.deal' })}
+            {formatMessage('alarm.deal')}
           </ModalHeader>
           <ModalCloseButton h="11" top="0" lineHeight="2.75rem" />
           <ModalBody bg="pri.white.100" px="0" py="0" borderBottomRadius="10px">

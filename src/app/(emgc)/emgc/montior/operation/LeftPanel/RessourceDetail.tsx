@@ -195,7 +195,7 @@ const RessourceDetail = ({ fold }: IProps) => {
             <HStack>
               <Image alt="title" src={title} />
               <Box fontSize="lg" fontWeight="bold">
-                {formatMessage({ id: 'resource.base.info' })}
+                {formatMessage('resource.base.info')}
               </Box>
             </HStack>
           </Box>
@@ -203,7 +203,7 @@ const RessourceDetail = ({ fold }: IProps) => {
             <Box color="pri.dark.100" lineHeight="30px" mb="3.5">
               <Flex>
                 <Box minW="18" whiteSpace="nowrap" color="pri.dark.100">
-                  {formatMessage({ id: 'resource.name' })} :
+                  {formatMessage('resource.name')} :
                 </Box>
                 <Box flex={1} color="pri.dark.500">
                   {resourceName}
@@ -212,7 +212,7 @@ const RessourceDetail = ({ fold }: IProps) => {
               </Flex>
               {/* <Flex>
                 <Box minW="18" whiteSpace="nowrap" color="pri.dark.100">
-                  {formatMessage({ id: 'emgc.res.type' })} :
+                  {formatMessage('emgc.res.type' )} :
                 </Box>
                 <Box flex={1} color="pri.dark.500">
                   资源类型
@@ -220,7 +220,7 @@ const RessourceDetail = ({ fold }: IProps) => {
               </Flex> */}
               <Flex>
                 <Box minW="18" whiteSpace="nowrap" color="pri.dark.100">
-                  {formatMessage({ id: 'resource.processNum' })} :
+                  {formatMessage('resource.processNum')} :
                 </Box>
                 <Box flex={1} color="pri.dark.500">
                   {resourceNo}
@@ -228,7 +228,7 @@ const RessourceDetail = ({ fold }: IProps) => {
               </Flex>
               <Flex>
                 <Box minW="18" whiteSpace="nowrap">
-                  {formatMessage({ id: 'resource.org' })} :
+                  {formatMessage('resource.org')} :
                 </Box>
                 <Box flex={1} color="pri.dark.500">
                   {deptName}
@@ -236,7 +236,7 @@ const RessourceDetail = ({ fold }: IProps) => {
               </Flex>
               <Flex>
                 <Box minW="18" whiteSpace="nowrap">
-                  {formatMessage({ id: 'resource.area' })} :
+                  {formatMessage('resource.area')} :
                 </Box>
                 <Box flex={1} color="pri.dark.500">
                   {areaName}
@@ -244,7 +244,7 @@ const RessourceDetail = ({ fold }: IProps) => {
               </Flex>
               <Flex>
                 <Box minW="18" whiteSpace="nowrap">
-                  {formatMessage({ id: 'resource.install' })} :
+                  {formatMessage('resource.install')} :
                 </Box>
                 <Box flex={1} color="pri.dark.500">
                   {address}
@@ -253,7 +253,7 @@ const RessourceDetail = ({ fold }: IProps) => {
               {currentRes?.layerId === '110' ? (
                 <Flex>
                   <Box minW="18" whiteSpace="nowrap">
-                    {formatMessage({ id: 'resource.door.status' })} :
+                    {formatMessage('resource.door.status')} :
                   </Box>
                   <Box flex={1} color="pri.dark.500">
                     关

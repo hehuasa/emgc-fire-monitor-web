@@ -136,7 +136,7 @@ const Tools = ({
           <SpaceSquare w="3.5" h="3.5" />
 
           <Box>
-            {formatMessage({ id: 'spacequery' })}({formatMessage({ id: 'rectangular' })})
+            {formatMessage('spacequery')}({formatMessage('rectangular')})
           </Box>
         </HStack>
         {mapLegend && (

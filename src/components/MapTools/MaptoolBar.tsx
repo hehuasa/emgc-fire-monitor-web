@@ -166,7 +166,7 @@ const MapToolBar = ({ theme = 'shallow' }: Props) => {
               >
                 <CtrlToolIcon mr="1" />
                 <Box userSelect="none" mr="1">
-                  {formatMessage({ id: 'interlockingEquipment' })}
+                  {formatMessage('interlockingEquipment')}
                 </Box>
                 <AngelIcon w="3" h="3" transform={showCtrlTool ? 'rotate(180deg)' : ''} />
               </Flex>
@@ -186,7 +186,7 @@ const MapToolBar = ({ theme = 'shallow' }: Props) => {
             >
               <CtrlToolIcon mr="1" />
               <Box userSelect="none" mr="1">
-                {formatMessage({ id: 'layers' })}
+                {formatMessage('layers')}
               </Box>
               <AngelIcon w="3" h="3" transform={showLayers ? 'rotate(180deg)' : ''} />
             </Flex>
@@ -207,7 +207,7 @@ const MapToolBar = ({ theme = 'shallow' }: Props) => {
             >
               <ToolIcon mr="1" />
               <Box userSelect="none" mr="1">
-                {formatMessage({ id: 'toolbox' })}
+                {formatMessage('toolbox')}
               </Box>
               <AngelIcon w="3" h="3" transform={showTools ? 'rotate(180deg)' : ''} />
             </Flex>

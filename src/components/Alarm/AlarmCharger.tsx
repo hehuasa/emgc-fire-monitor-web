@@ -33,7 +33,7 @@ const AlarmCharger = ({ areaId, alarmType, handleClose }: { areaId: string; alar
   return (
     <Box position="absolute" zIndex={2} right="-100" bottom="80" w="94" bg="pri.white.100" borderRadius="10px">
       <Flex borderTopRadius="10px" h="12" bg="pri.gray.100" lineHeight="48px" justify="space-between" align="center" px="5">
-        <Box color="pri.dark.100">{formatMessage({ id: 'alarm.director.user' })}</Box>
+        <Box color="pri.dark.100">{formatMessage('alarm.director.user')}</Box>
 
         <CircleClose cursor="pointer" w="5" h="5" onClick={handleClose} fill="pri.dark.500" />
       </Flex>
@@ -48,9 +48,9 @@ const AlarmCharger = ({ areaId, alarmType, handleClose }: { areaId: string; alar
             justify="center"
             align="center"
           >
-            <Image width={154} height={124} src={nodata} alt={formatMessage({ id: 'alarm.nodata' })} />
+            <Image width={154} height={124} src={nodata} alt={formatMessage('alarm.nodata')} />
             <Box fontSize="lg" color="pri.dark.500">
-              {/* {formatMessage({ id: 'alarm.nodata' })} */}
+              {/* {formatMessage('alarm.nodata' )} */}
               暂无场站负责人数据
             </Box>
           </Flex>

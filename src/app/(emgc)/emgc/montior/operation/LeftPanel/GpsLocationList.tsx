@@ -151,7 +151,7 @@ const GpsLocationList = ({ fold }: IProps) => {
         <HStack>
           <Image alt="title" src={title} />
           <Box fontSize="lg" fontWeight="bold" color="pri.dark.100">
-            {formatMessage({ id: 'personnelLocate.Title' })}
+            {formatMessage('personnelLocate.Title')}
           </Box>
         </HStack>
       </Box>
@@ -168,7 +168,7 @@ const GpsLocationList = ({ fold }: IProps) => {
           borderRadius="10px"
           color="emgc.black.100"
           borderWidth="1px"
-          placeholder={formatMessage({ id: 'personnelLocate.Seach' })}
+          placeholder={formatMessage('personnelLocate.Seach')}
           h="30px"
           w="80%"
           maxLength={50}
@@ -206,11 +206,11 @@ const GpsLocationList = ({ fold }: IProps) => {
           alignItems="center"
           color="pri.white.100"
         >
-          <Box w="15%">{formatMessage({ id: 'personnelLocate.Index' })}</Box>
-          <Box w="20%">{formatMessage({ id: 'personnelLocate.Name' })}</Box>
-          <Box w="25%">{formatMessage({ id: 'personnelLocate.Card' })}</Box>
-          <Box w="30%">{formatMessage({ id: 'personnelLocate.Department' })}</Box>
-          <Box w="20%">{formatMessage({ id: 'personnelLocate.Track' })}</Box>
+          <Box w="15%">{formatMessage('personnelLocate.Index')}</Box>
+          <Box w="20%">{formatMessage('personnelLocate.Name')}</Box>
+          <Box w="25%">{formatMessage('personnelLocate.Card')}</Box>
+          <Box w="30%">{formatMessage('personnelLocate.Department')}</Box>
+          <Box w="20%">{formatMessage('personnelLocate.Track')}</Box>
         </Flex>
         <Box
           pos="relative"

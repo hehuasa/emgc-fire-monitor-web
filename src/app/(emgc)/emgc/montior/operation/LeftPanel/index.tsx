@@ -133,8 +133,8 @@ const LeftPanel = () => {
           <Tooltip
             label={
               fold
-                ? formatMessage({ id: 'alarm.list.unfold' })
-                : formatMessage({ id: 'alarm.list.fold' })
+                ? formatMessage('alarm.list.unfold')
+                : formatMessage('alarm.list.fold')
             }
             placement="right"
           >

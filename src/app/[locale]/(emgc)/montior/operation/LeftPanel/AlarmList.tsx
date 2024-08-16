@@ -38,7 +38,8 @@ interface IProps {
 }
 
 const AlarmList = ({ fold, showDetail }: IProps) => {
-  const formatMessage = useTranslations("base");
+  const formatMessage = useTranslations("alarm");
+  const formatMessageBase = useTranslations("base");
 
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
@@ -142,8 +143,8 @@ const AlarmList = ({ fold, showDetail }: IProps) => {
           <HStack>
             <Image alt="title" src={title} />
             <Box fontSize="lg" fontWeight="bold" color="pri.dark.100">
-              {formatMessage({ id: 'alarm.list' })}
-              {`（${alarmList.length}  ${formatMessage({ id: 'alarms' })} ）`}
+              {formatMessage('alarm-list')}
+              {`（${alarmList.length}  ${formatMessageBase('alarms')} ）`}
             </Box>
           </HStack>
           <HStack
@@ -162,7 +163,7 @@ const AlarmList = ({ fold, showDetail }: IProps) => {
               //href="/emgc/montior/cameraDeviceManagement"
               //href="/emgc/montior/equipmentLocationManagement"
               >
-                {formatMessage({ id: 'more' })}
+                {formatMessageBase('more')}
               </Link>
             </Box>
             <MoreIcon w="2" h="2" transform="rotate(-90deg)" />
@@ -197,7 +198,7 @@ const AlarmList = ({ fold, showDetail }: IProps) => {
                 borderRadius="20px"
                 bg={alarmStatus === '01' ? 'pri.blue.100' : ''}
               >
-                {formatMessage({ id: 'alarm.undeal' })}
+                {formatMessage('alarm-undeal')}
               </Box>
               <Box
                 onClick={() => {
@@ -210,10 +211,10 @@ const AlarmList = ({ fold, showDetail }: IProps) => {
                 borderRadius="20px"
                 bg={alarmStatus === '02' ? 'pri.blue.100' : ''}
               >
-                {formatMessage({ id: 'alarm.dealing' })}
+                {formatMessage('alarm-dealing')}
               </Box>
             </Flex>
-            <Tooltip label={formatMessage({ id: 'alarm.filter' })} placement="right">
+            <Tooltip label={formatMessage('alarm-filter')} placement="right">
               <Box>
                 {alarmFilterShow ? (
                   <AlarmFilterChecked cursor="pointer" />
@@ -225,7 +226,7 @@ const AlarmList = ({ fold, showDetail }: IProps) => {
           </Flex>
           <Flex justifyContent="space-between" fontSize="16px" color="#778CA2" mt="15px">
             <Flex alignItems="center">
-              {formatMessage({ id: 'alarm.startTime' })}
+              {formatMessage('alarm-startTime')}
               <SortIcon
                 type="alarmFirstTime"
                 toggleSort={toggleSort}
@@ -233,11 +234,11 @@ const AlarmList = ({ fold, showDetail }: IProps) => {
               />
             </Flex>
             <Flex>
-              {formatMessage({ id: 'alarm.level' })}
+              {formatMessage('alarm-level')}
               <SortIcon type="alarmLevel" toggleSort={toggleSort} sortCondision={sortCondision} />
             </Flex>
             <Flex>
-              {formatMessage({ id: 'alarm.endTime' })}
+              {formatMessage('alarm-endTime')}
               <SortIcon
                 type="alarmLastTime"
                 toggleSort={toggleSort}
@@ -265,10 +266,10 @@ const AlarmList = ({ fold, showDetail }: IProps) => {
             width={154}
             height={124}
             src={nodata}
-            alt={formatMessage({ id: 'alarm.nodata' })}
+            alt={formatMessage('alarm-nodata')}
           />
           <Box fontSize="lg" color="pri.dark.500">
-            {formatMessage({ id: 'alarm.nodata' })}
+            {formatMessage('alarm-nodata')}
           </Box>
         </Flex>
       ) : (

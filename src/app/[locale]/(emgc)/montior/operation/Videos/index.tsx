@@ -282,7 +282,7 @@ const Videos = () => {
                     borderRadius={'20px'}
                     onClick={handleSubmit(openHistoryVideo)}
                   >
-                    {formatMessage({ id: 'ok' })}
+                    {formatMessage('ok')}
                   </Button>
                 </Flex>
                 <Box flex={1} bg="pri.dark.100">

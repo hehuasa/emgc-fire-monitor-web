@@ -277,7 +277,7 @@ const Search = ({ theme = 'shallow' }: IProps) => {
             onChange={(e) => {
               setInputVal(e.target.value);
             }}
-            placeholder={formatMessage({ id: 'searchPlaceHoder' })}
+            placeholder={formatMessage('searchPlaceHoder')}
             h="10"
             pr="20"
             maxLength={50}
@@ -365,7 +365,7 @@ const Search = ({ theme = 'shallow' }: IProps) => {
               color={theme === 'deep' ? 'emgc.white.100' : 'pri.dark.200'}
             >
               <Box fontSize="lg" mb="3" fontWeight={500}>
-                {formatMessage({ id: 'searchHistory' })}
+                {formatMessage('searchHistory')}
               </Box>
               <Box maxH="500px" overflowY="auto" layerStyle="scrollbarStyle">
                 {history.map((item, index) => {
@@ -401,7 +401,7 @@ const Search = ({ theme = 'shallow' }: IProps) => {
                 cursor="pointer"
                 onClick={resetHistory}
               >
-                {formatMessage({ id: 'clearSearch' })}
+                {formatMessage('clearSearch')}
               </Flex>
             </Flex>
           ) : (

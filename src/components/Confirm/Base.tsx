@@ -79,9 +79,9 @@ const Content = (props: Props) => {
         <ModalWarp onClose={close} title={title}>
           <Flex p="15px" justifyContent="center">
             <Box>
-              <EmgcFormBtn onClick={close}>{formatMessage({ id: 'cancel' })}</EmgcFormBtn>
+              <EmgcFormBtn onClick={close}>{formatMessage('cancel')}</EmgcFormBtn>
               <EmgcFormBtn isLoading={loading} onClick={openTheDoor} buttonType="active">
-                {formatMessage({ id: 'ok' })}
+                {formatMessage('ok')}
               </EmgcFormBtn>
             </Box>
           </Flex>
@@ -133,7 +133,7 @@ const Content = (props: Props) => {
                 color="#252631"
                 mr="20px"
               >
-                {formatMessage({ id: 'cancel' })}
+                {formatMessage('cancel')}
               </Button>
               <Button
                 isLoading={loading}
@@ -144,7 +144,7 @@ const Content = (props: Props) => {
                 bg="#0078EC"
                 color={pri['white.100']}
               >
-                {formatMessage({ id: 'ok' })}
+                {formatMessage('ok')}
               </Button>
             </Box>
           </Flex>

@@ -394,7 +394,7 @@ const Broadcast = ({ theme = 'shallow', onClose }: Props) => {
             p="0 20px"
           >
             <Box fontSize={'18px'} fontWeight="bold">
-              {formatMessage({ id: 'broadcasting' })}
+              {formatMessage('broadcasting')}
             </Box>
             <CircleClose onClick={onClose} fontSize="24px" cursor="pointer" />
           </Flex>
@@ -411,7 +411,7 @@ const Broadcast = ({ theme = 'shallow', onClose }: Props) => {
               <Flex h="44px" alignItems="center">
                 <Image alt="title" src={title} />
                 <Box ml="10px" color={theme === 'deep' ? 'rgba(0, 216, 255, 1)' : ''}>
-                  {formatMessage({ id: 'area' })}
+                  {formatMessage('area')}
                 </Box>
               </Flex>
               <Box h={546} borderRadius="10px" overflow="hidden">
@@ -479,10 +479,10 @@ const Broadcast = ({ theme = 'shallow', onClose }: Props) => {
                 }}
               /> */}
               {/* <Box fontSize="14px" mr="42px">
-                {formatMessage({ id: 'selectAll' })}
+                {formatMessage('selectAll' )}
               </Box> */}
               <Box fontSize="14px" mr="10px">
-                {formatMessage({ id: 'broadcastMode' })}：
+                {formatMessage('broadcastMode')}：
               </Box>
               <Center
                 mr="15px"
@@ -729,7 +729,7 @@ const Right = ({
           <Flex alignItems="center">
             <Image alt="title" src={title} />
             <Box ml="10px" color={theme === 'deep' ? 'rgba(0, 216, 255, 1)' : ''}>
-              {formatMessage({ id: 'toPlayVoiceFiles' })}
+              {formatMessage('toPlayVoiceFiles')}
             </Box>
           </Flex>
           <CircleClose onClick={endAnimate} cursor="pointer" />
@@ -776,7 +776,7 @@ const Right = ({
         fontWeight={400}
         onClick={paly}
       >
-        {formatMessage({ id: 'confirmBroadcasting' })}
+        {formatMessage('confirmBroadcasting')}
       </Button>
     </Box>
   );

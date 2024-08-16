@@ -176,11 +176,11 @@ const AlarmFilter = () => {
         borderRadius="2"
       >
         <Box fontSize="16px" fontWeight="bold">
-          {formatMessage({ id: 'alarm.type' })}
+          {formatMessage('alarm.type')}
         </Box>
         <Box>
           <Flex mt={2}>
-            <Text mr={2}>{formatMessage({ id: 'selectAll' })}</Text>
+            <Text mr={2}>{formatMessage('selectAll')}</Text>
             <Checkbox
               onChange={handleCheckAll}
               isChecked={alarmTypes.every((item) => item.isChecked)}
@@ -228,7 +228,7 @@ const AlarmFilter = () => {
           </SimpleGrid>
         </Box>
         {/* <Box my={2} fontSize="16px" fontWeight="bold">
-          {formatMessage({ id: 'dp' })}
+          {formatMessage('dp' )}
         </Box> */}
         {/* <FormProvider {...methods}>
           <TreeSelect

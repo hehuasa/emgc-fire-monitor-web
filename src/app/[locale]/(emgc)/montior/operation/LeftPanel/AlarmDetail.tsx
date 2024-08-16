@@ -243,7 +243,7 @@ const AlarmDetail = ({ fold }: IProps) => {
           <HStack>
             <Image alt="title" src={title} />
             <Box fontSize="lg" fontWeight="bold" color="pri.dark.100">
-              {formatMessage({ id: 'alarm.info' })}
+              {formatMessage('alarm.info')}
             </Box>
           </HStack>
         </Box>
@@ -251,7 +251,7 @@ const AlarmDetail = ({ fold }: IProps) => {
           <Box color="pri.dark.100" lineHeight="30px" mb="3.5">
             <Flex alignItems="flex-start">
               <Box minW="18" whiteSpace="nowrap" justifyContent="flex-start">
-                {formatMessage({ id: 'alarm.place' })} :
+                {formatMessage('alarm.place')} :
               </Box>
 
               <Box color="pri.dark.500" flex={1} ml="0.5rem" wordBreak="break-all">
@@ -262,20 +262,20 @@ const AlarmDetail = ({ fold }: IProps) => {
             </Flex>
             <HStack>
               <Box minW="18" whiteSpace="nowrap">
-                {formatMessage({ id: 'alarm.areaName' })} :
+                {formatMessage('alarm.areaName')} :
               </Box>
               <Box>{alarmAreaName}</Box>
             </HStack>
             <HStack>
               <Box minW="18" whiteSpace="nowrap">
-                {formatMessage({ id: 'alarm.res.proNum' })} :
+                {formatMessage('alarm.res.proNum')} :
               </Box>
               <Box>{resourceNo}</Box>
             </HStack>
             {alarmLevelRefer && (
               <HStack>
                 <Box minW="18" whiteSpace="nowrap">
-                  {formatMessage({ id: 'alarm.category' })} :
+                  {formatMessage('alarm.category')} :
                 </Box>
                 <Box>{getAlarmLevelReferTitle(alarmLevelRefer)}</Box>
               </HStack>
@@ -283,7 +283,7 @@ const AlarmDetail = ({ fold }: IProps) => {
 
             <HStack>
               <Box minW="18" whiteSpace="nowrap">
-                {formatMessage({ id: 'alarm.duration' })} :
+                {formatMessage('alarm.duration')} :
               </Box>
               <Box color="pri.red.100">
                 <TimerCounter time={alarmFirstTime} />
@@ -291,27 +291,27 @@ const AlarmDetail = ({ fold }: IProps) => {
             </HStack>
             <HStack>
               <Box minW="18" whiteSpace="nowrap">
-                {formatMessage({ id: 'alarm.status' })} :
+                {formatMessage('alarm.status')} :
               </Box>
               <Box color="pri.red.100">{statusView}</Box>
             </HStack>
 
             <HStack>
               <Box minW="18" whiteSpace="nowrap">
-                {formatMessage({ id: 'alarm.res.name' })} :
+                {formatMessage('alarm.res.name')} :
               </Box>
               <Box color="pri.dark.500">{devName}</Box>
             </HStack>
 
             <HStack>
               <Box minW="18" whiteSpace="nowrap">
-                {formatMessage({ id: 'alarm.type' })} :
+                {formatMessage('alarm.type')} :
               </Box>
               <Box color="pri.red.100">{alarmTypeName}</Box>
             </HStack>
             <HStack>
               <Box minW="18" whiteSpace="nowrap">
-                {formatMessage({ id: 'alarm.level' })} :
+                {formatMessage('alarm.level')} :
               </Box>
               <Box color="pri.red.100">{alarmLevelName}</Box>
             </HStack>
@@ -320,20 +320,20 @@ const AlarmDetail = ({ fold }: IProps) => {
               <>
                 <HStack>
                   <Box minW="18" whiteSpace="nowrap">
-                    {formatMessage({ id: 'alarm.startTime' })} :
+                    {formatMessage('alarm.startTime')} :
                   </Box>
                   <Box color="pri.dark.500">{alarmFirstTime}</Box>
                 </HStack>
                 <HStack>
                   <Box minW="18" whiteSpace="nowrap">
-                    {formatMessage({ id: 'alarm.lastTime' })} :
+                    {formatMessage('alarm.lastTime')} :
                   </Box>
                   <Box color="pri.dark.500">{alarmLastTime}</Box>
                 </HStack>
                 {alarmUserName && (
                   <HStack>
                     <Box minW="18" whiteSpace="nowrap">
-                      {formatMessage({ id: 'alarm.user.name' })} :
+                      {formatMessage('alarm.user.name')} :
                     </Box>
                     <Box color="pri.dark.500">{alarmUserName}</Box>
                   </HStack>
@@ -341,7 +341,7 @@ const AlarmDetail = ({ fold }: IProps) => {
                 {linkPhone && (
                   <HStack>
                     <Box minW="18" whiteSpace="nowrap">
-                      {formatMessage({ id: 'alarm.user.phone' })} :
+                      {formatMessage('alarm.user.phone')} :
                     </Box>
                     <Box color="pri.dark.500">{linkPhone}</Box>
                   </HStack>
@@ -350,7 +350,7 @@ const AlarmDetail = ({ fold }: IProps) => {
                 {supplement && (
                   <HStack>
                     <Box minW="18" whiteSpace="nowrap">
-                      {formatMessage({ id: 'alarm.desc' })} :
+                      {formatMessage('alarm.desc')} :
                     </Box>
                     <Box color="pri.dark.500">{supplement}</Box>
                   </HStack>

@@ -29,7 +29,7 @@ const RealtiveRes = ({ showRealDatas, resList }: IProps) => {
         <HStack>
           <Image alt="title" src={title} />
           <Box fontSize="lg" fontWeight="bold" color="pri.dark.100">
-            {formatMessage({ id: 'resource.relation.res' })}
+            {formatMessage('resource.relation.res')}
           </Box>
         </HStack>
       </Box>
