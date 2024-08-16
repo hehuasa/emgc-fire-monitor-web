@@ -5,7 +5,6 @@ import Image from 'next/image';
 import React, { useContext, useMemo, useRef, useState } from 'react';
 import title from '@/assets/montior/title.png';
 import { MoreIcon } from '@/components/Icons';
-import { useIntl } from 'react-intl';
 import {
   alarmTypeModel,
   alarmListModel,
@@ -26,6 +25,7 @@ import Link from 'next/link';
 import { useMemoizedFn } from 'ahooks';
 import { AlarmFilter, AlarmFilterChecked } from '@/components/Icons';
 import moment from 'moment';
+import { useTranslations } from 'next-intl';
 
 interface ISortCondisionItem {
   type: 'alarmLevel' | 'alarmLastTime' | 'alarmFirstTime';
@@ -38,7 +38,8 @@ interface IProps {
 }
 
 const AlarmList = ({ fold, showDetail }: IProps) => {
-  const { formatMessage } = useIntl();
+  const formatMessage = useTranslations("base");
+
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
   const [alarmStatus, setAlarmStatus] = useRecoilState(currentAlarmStatusModel);
@@ -154,12 +155,12 @@ const AlarmList = ({ fold, showDetail }: IProps) => {
             <Box>
               <Link
                 href="/emgc/montior/alarmQuery"
-                //href="/emgc/montior/stationManager"
-                //href="/emgc/montior/alarmSwitch"
-                //href="/emgc/montior/jobSafety"
-                //href="/emgc/jobSafety"
-                //href="/emgc/montior/cameraDeviceManagement"
-                //href="/emgc/montior/equipmentLocationManagement"
+              //href="/emgc/montior/stationManager"
+              //href="/emgc/montior/alarmSwitch"
+              //href="/emgc/montior/jobSafety"
+              //href="/emgc/jobSafety"
+              //href="/emgc/montior/cameraDeviceManagement"
+              //href="/emgc/montior/equipmentLocationManagement"
               >
                 {formatMessage({ id: 'more' })}
               </Link>
@@ -301,7 +302,7 @@ const AlarmList = ({ fold, showDetail }: IProps) => {
                   key={item.alarmId}
                   alarm={item}
                   measureRef={measureRef}
-                  // openAlarmDeal={openAlarmDeal}
+                // openAlarmDeal={openAlarmDeal}
                 />
               );
             })}

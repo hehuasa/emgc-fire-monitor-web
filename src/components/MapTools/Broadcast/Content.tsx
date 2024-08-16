@@ -36,7 +36,7 @@ import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useRef } from 'react';
-import { useIntl } from 'react-intl';
+import { useTranslations } from 'next-intl'
 import { SetterOrUpdater, useRecoilState, useRecoilValue } from 'recoil';
 
 const ModalWarp = dynamic(() => import('@/components/emergencyCommand/modalWarp'), { ssr: false });
@@ -92,7 +92,7 @@ const Broadcast = ({ theme = 'shallow', onClose }: Props) => {
   const areaSelectedRef = useRef<string[]>([]);
   const [showPlay, setShowPlay] = useSafeState(false);
   const [callNumberShow, setCallNumberShow] = useRecoilState(callNumberVisibleModel);
-  const { formatMessage } = useIntl();
+  const formatMessage = useTranslations("base");
   const [voiceList, setVoiceList] = useSafeState<IVoice[]>([]);
 
   const searchParams = useSearchParams();
@@ -438,9 +438,9 @@ const Broadcast = ({ theme = 'shallow', onClose }: Props) => {
                             '>span':
                               theme === 'deep'
                                 ? {
-                                    background: `${themeStyle.colors.emgc.black['200']}`,
-                                    border: 'none',
-                                  }
+                                  background: `${themeStyle.colors.emgc.black['200']}`,
+                                  border: 'none',
+                                }
                                 : {},
                           }}
                         />
@@ -512,7 +512,7 @@ const Broadcast = ({ theme = 'shallow', onClose }: Props) => {
               getMapObj={getMapObj_}
               disableMiniMap
               isDark={theme === 'deep'}
-              //mapPosition={{ zoom: 17.68996489492907, center: { lng: 103.90443759038135, lat: 31.052100731325638 } }}
+            //mapPosition={{ zoom: 17.68996489492907, center: { lng: 103.90443759038135, lat: 31.052100731325638 } }}
             />
             {showPlay ? (
               <Right
@@ -571,7 +571,7 @@ const Right = ({
   eventId,
   area,
 }: IProps) => {
-  const { formatMessage } = useIntl();
+  const formatMessage = useTranslations("base");
   const [animating, setAnimating] = useSafeState(false);
   const [voicePath, setVoicePath] = useSafeState<string>();
   const [testPlayingUrl, setTestPlayingUrl] = useSafeState('');

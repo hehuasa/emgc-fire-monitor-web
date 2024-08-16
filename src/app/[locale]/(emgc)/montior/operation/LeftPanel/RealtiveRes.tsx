@@ -4,7 +4,7 @@ import title from '@/assets/montior/title.png';
 
 import React from 'react';
 import Image from 'next/image';
-import { useIntl } from 'react-intl';
+import { useTranslations } from 'next-intl';
 import { AiOutlinePlayCircle } from 'react-icons/ai';
 import { useSetRecoilState } from 'recoil';
 
@@ -16,7 +16,7 @@ interface IProps {
 }
 
 const RealtiveRes = ({ showRealDatas, resList }: IProps) => {
-  const { formatMessage } = useIntl();
+  const formatMessage = useTranslations("base");
   const setCurrentRes = useSetRecoilState(currentResModel);
 
   const handleClick = (item: IResItem) => {

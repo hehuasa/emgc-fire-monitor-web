@@ -17,7 +17,7 @@ import { featureCollection } from '@turf/turf';
 import { GeoJSONSource } from 'maplibre-gl';
 import Image from 'next/image';
 import { useContext, useEffect, useState } from 'react';
-import { useIntl } from 'react-intl';
+import { useTranslations } from 'next-intl';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
 interface IProps {
@@ -43,7 +43,7 @@ export const getGpsList = async () => {
 };
 
 const GpsLocationList = ({ fold }: IProps) => {
-  const { formatMessage } = useIntl();
+  const formatMessage = useTranslations("base");
   const locales = useRecoilValue(localesModal);
 
   const map = useContext(MapContext);

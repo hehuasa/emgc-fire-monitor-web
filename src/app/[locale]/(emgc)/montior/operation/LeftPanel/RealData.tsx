@@ -4,7 +4,7 @@ import title from '@/assets/montior/title.png';
 
 import React from 'react';
 import Image from 'next/image';
-import { useIntl } from 'react-intl';
+import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 const AlarmDetailCharts = dynamic(() => import('@/components/Charts/AlarmDetailCharts'), { ssr: false });
 
@@ -13,7 +13,7 @@ interface IProps {
 }
 
 const RealData = ({ realDatas }: IProps) => {
-  const { formatMessage } = useIntl();
+  const formatMessage = useTranslations("base");
 
   return (
     <>

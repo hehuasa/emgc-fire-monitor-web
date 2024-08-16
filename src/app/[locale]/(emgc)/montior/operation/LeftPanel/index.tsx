@@ -15,12 +15,12 @@ import { Box, Tooltip } from '@chakra-ui/react';
 import { useMemoizedFn } from 'ahooks';
 import dynamic from 'next/dynamic';
 import { useContext, useEffect, useState } from 'react';
-import { useIntl } from 'react-intl';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import AlarmDealModal from './AlarmDeal';
 import AlarmFilter from './AlarmFilter';
 import GpsLocation from './GpsLocation';
 import GpsLocationList from './GpsLocationList';
+import { useTranslations } from 'next-intl';
 
 const AlarmDetail = dynamic(() => import('./AlarmDetail'), { ssr: false });
 
@@ -39,7 +39,7 @@ export interface IHisResData {
 }
 
 const LeftPanel = () => {
-  const { formatMessage } = useIntl();
+  const formatMessage = useTranslations("base");
   const [fold, setFold] = useRecoilState(foldModel);
   const alarmFilterShow = useRecoilValue(alarmFilterModel);
   const [currentAlarm, setCurrentAlarm] = useRecoilState(currentAlarmModel);

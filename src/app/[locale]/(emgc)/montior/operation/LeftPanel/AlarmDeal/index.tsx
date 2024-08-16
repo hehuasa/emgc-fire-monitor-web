@@ -37,7 +37,6 @@ import {
 } from '@chakra-ui/react';
 import { FeatureCollection, Polygon } from '@turf/turf';
 import { useMemoizedFn, useSafeState } from 'ahooks';
-import { useIntl } from 'react-intl';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import Table from './table';
 import { useForm, FormProvider, Controller } from 'react-hook-form';
@@ -48,6 +47,7 @@ import { IArea } from '@/models/map';
 import { useRouter } from 'next/navigation';
 import { DCItem } from '@/models/system';
 import { flatMenuModel } from '@/models/user';
+import { useTranslations } from 'next-intl';
 
 export interface IResultItem {
   address: string;
@@ -86,7 +86,8 @@ interface Props {
 const AlarmDeal = ({ dealCallBack }: Props) => {
   const [buttonIsLoading, setButtonLoading] = useSafeState(false);
   const alarmDealTypes = useRecoilValue(alarmDealTypeModel);
-  const { formatMessage } = useIntl();
+  const formatMessage = useTranslations("base");
+
   const [dealResult, setprocessResult] = useSafeState<string>('02');
   const [alarmType] = useRecoilState(alarmTypeModel);
   const flatMenus = useRecoilValue(flatMenuModel);

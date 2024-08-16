@@ -12,7 +12,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import title from '@/assets/montior/title.png';
 
-import { useIntl } from 'react-intl';
+import { useTranslations } from 'next-intl';
 
 import SmoothScrollbar from 'smooth-scrollbar';
 import RealData from './RealData';
@@ -27,7 +27,7 @@ interface IProps {
 }
 
 const RessourceDetail = ({ fold }: IProps) => {
-  const { formatMessage } = useIntl();
+  const formatMessage = useTranslations("base");
 
   const scrollbar = useRef<SmoothScrollbar | null>(null);
   const [currentRes, setCurrentRes] = useRecoilState(currentResModel);

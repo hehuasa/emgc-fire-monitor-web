@@ -36,7 +36,7 @@ import popup from '@/assets/map/popup.svg';
 import popup_h from '@/assets/map/popup_h.svg';
 import RecordAnimatedComponent from '@/components/RecordAnimatedComponent';
 import { createPortal } from 'react-dom';
-import { useIntl } from 'react-intl';
+import { useTranslations } from 'next-intl'
 import { genSearchResIcons } from '@/utils/mapUtils';
 
 const getHistory = () => {
@@ -229,7 +229,7 @@ const Search = ({ theme = 'shallow' }: IProps) => {
     updateHistory(inputVal);
     doQuery(inputVal, pageState.size, pageState.current);
   });
-  const { formatMessage } = useIntl();
+  const formatMessage = useTranslations("base");
 
   const onMouseEnter = useMemoizedFn((resourceNo: string) => {
     setSearchHoverResId(resourceNo);

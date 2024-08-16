@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { Box, Flex, HStack } from '@chakra-ui/react';
 import { useMount } from 'ahooks';
 import React, { useState } from 'react';
-import { useIntl } from 'react-intl';
+import { useTranslations } from 'next-intl'
 import { CircleClose, PhoneIcon } from '../Icons';
 import nodata from '@/assets/montior/nodata.png';
 import { createGetUrl } from '@/utils/util';
@@ -16,7 +16,7 @@ interface IAlarmCharger {
   chargePhone: string;
 }
 const AlarmCharger = ({ areaId, alarmType, handleClose }: { areaId: string; alarmType?: string; handleClose: () => void }) => {
-  const { formatMessage } = useIntl();
+  const formatMessage = useTranslations("base");
   const setCallNumberShow = useSetRecoilState(callNumberVisibleModel);
   const [users, setusers] = useState<IAlarmCharger[]>([]);
   useMount(() => {

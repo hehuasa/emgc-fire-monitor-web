@@ -15,17 +15,17 @@ import { IDepartment } from '@/models/system';
 import { request } from '@/utils/request';
 import { Box, Checkbox, Flex, SimpleGrid, Text, Tooltip, useOutsideClick } from '@chakra-ui/react';
 import { useMemoizedFn, useSafeState } from 'ahooks';
+import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { useContext, useRef } from 'react';
 import { useForm } from 'react-hook-form';
-import { useIntl } from 'react-intl';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
 const TreeSelect = dynamic(() => import('@/components/Montior/TreeSelect'), { ssr: false });
 
 const AlarmFilter = () => {
-  const { formatMessage } = useIntl();
+  const formatMessage = useTranslations("base");
   const [alarmTypes, setAlarmTypes] = useRecoilState(alarmTypeModel);
   const alarmStatus = useRecoilValue(currentAlarmStatusModel);
 

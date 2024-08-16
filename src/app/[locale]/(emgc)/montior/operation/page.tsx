@@ -23,6 +23,8 @@ import { useEffect, useRef, useState } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { FeatureCollection, Point, Polygon } from 'geojson';
 import { Scene } from '@antv/l7';
+import LeftPanel from './LeftPanel';
+import Videos from './Videos';
 
 const MapToolBar = dynamic(() => import('@/components/MapTools/MaptoolBar'), { ssr: false });
 const BaseMap = dynamic(() => import('./Map'), { ssr: false });
@@ -335,9 +337,9 @@ const Page = () => {
       {mapLoaded && mapSceneRef.current && (
         <UpdateAlarmfnContext.Provider value={{ getAlalrmList, updateAlarmCluster }}>
           <MapSceneContext.Provider value={mapScene}>
-            {/* <LeftPanel />
+            <LeftPanel />
             <MapToolBar />
-            <Videos /> */}
+            <Videos />
           </MapSceneContext.Provider>
         </UpdateAlarmfnContext.Provider>
       )}

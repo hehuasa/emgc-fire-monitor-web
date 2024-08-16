@@ -28,7 +28,7 @@ import {
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import { useIntl } from 'react-intl';
+import { useTranslations } from 'next-intl';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { IHisResData } from '.';
 
@@ -47,7 +47,7 @@ const ItemButton = ({
   alarmStatus,
   setShowAlarmCharger,
 }: propType) => {
-  const { formatMessage } = useIntl();
+  const formatMessage = useTranslations("base");
 
   const [addAlarmOpen, setAlarmOpen] = useRecoilState(handleAlarmModel);
 

@@ -44,7 +44,7 @@ const Content = (props: Props) => {
     }, 50);
   }, []);
 
-  const { formatMessage } = useIntl();
+  const formatMessage = useTranslations("base");
 
   const close = useMemoizedFn(() => {
     setShow(false);

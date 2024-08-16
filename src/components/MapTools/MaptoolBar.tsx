@@ -13,15 +13,15 @@ import { request } from '@/utils/request';
 import { Box, Flex } from '@chakra-ui/react';
 import { useMemoizedFn, useMount, useSafeState, useUnmount } from 'ahooks';
 import { useContext, useMemo, useRef, useState } from 'react';
-import { useIntl } from 'react-intl';
 import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useTranslations } from 'next-intl';
 
 export interface Props {
   theme?: 'deep' | 'shallow';
 }
 
 const MapToolBar = ({ theme = 'shallow' }: Props) => {
-  const { formatMessage } = useIntl();
+  const formatMessage = useTranslations("base");
   const [fold] = useRecoilState(foldModel);
   const [showType, setShowTypes] = useState<'' | 'layer' | 'tool' | 'ctrlTool'>('');
   const [layers, setLayers] = useState<ILayerItem[]>([]);

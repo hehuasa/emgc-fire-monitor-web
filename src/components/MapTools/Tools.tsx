@@ -6,7 +6,7 @@ import Legend from '@/components/MapTools/Legend';
 import React, { useMemo, useRef } from 'react';
 //import SpaceQuerySquare from './SpaceQuerySquare';
 import { ILayerItem, ISprite } from './LayerList';
-import { useIntl } from 'react-intl';
+import { useTranslations } from 'next-intl'
 import { clearMapSearchModel, emgcCommandFooterActiveModel } from '@/models/resource';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 
@@ -38,7 +38,7 @@ const Tools = ({
   const emgcCommandFooterActive = useRecoilValue(emgcCommandFooterActiveModel);
   const boxRef = useRef<HTMLDivElement | null>(null);
   const toast = useToast();
-  const { formatMessage } = useIntl();
+  const formatMessage = useTranslations("base");
   const setClearMapSearch = useSetRecoilState(clearMapSearchModel);
   useOutsideClick({
     ref: boxRef,

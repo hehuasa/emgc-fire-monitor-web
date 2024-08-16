@@ -698,8 +698,8 @@ const LinkeditWithmap = () => {
                                       <Box
                                         key={preset.presetId}
 
-                                        // borderColor="pri.gray.100"
-                                        // borderWidth="1px" p="1"
+                                      // borderColor="pri.gray.100"
+                                      // borderWidth="1px" p="1"
                                       >
                                         <Text>{preset.presetName}</Text>
                                         {/* <Popover
@@ -871,7 +871,7 @@ const LinkeditWithmap = () => {
                                 </Checkbox>
 
                                 {currentVideoPresets[videoId] &&
-                                currentVideoPresets[videoId].length > 0 ? (
+                                  currentVideoPresets[videoId].length > 0 ? (
                                   <Box flex={1} color="pri.dark.500">
                                     {currentVideoPresets[videoId].map((preset) => {
                                       const currentPreset = currentPresets.find(

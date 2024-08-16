@@ -8,7 +8,6 @@ import TimerCounter from '@/components/TimerCounter';
 import { Box, Center, Flex, HStack } from '@chakra-ui/react';
 import { useMemoizedFn, useMount, useUnmount } from 'ahooks';
 import { useContext, useEffect, useRef, useState } from 'react';
-import { useIntl } from 'react-intl';
 import { useRecoilState } from 'recoil';
 import SmoothScrollbar from 'smooth-scrollbar';
 
@@ -21,13 +20,14 @@ import { featureCollection, FeatureCollection, Point } from '@turf/turf';
 import AlarmImg from './AlarmImg';
 import RealData from './RealData';
 import VideoList from './VideoList';
+import { useTranslations } from 'next-intl';
 
 interface IProps {
   fold: boolean;
 }
 
 const AlarmDetail = ({ fold }: IProps) => {
-  const { formatMessage } = useIntl();
+  const formatMessage = useTranslations("base");
 
   const scrollbar = useRef<SmoothScrollbar | null>(null);
   const domWarp = useRef<HTMLDivElement | null>(null);

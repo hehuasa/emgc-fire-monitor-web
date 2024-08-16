@@ -4,7 +4,7 @@ import { PagButton } from './pbutton';
 import { Menu, MenuButton, MenuList, Box, MenuOptionGroup, MenuItemOption, chakra, Input, HStack, Text } from '@chakra-ui/react';
 import PagContext, { Responsives } from '../providers/pagination-provider';
 import { fetchPageNumbers } from '../services/fetch-page';
-import { useIntl } from 'react-intl';
+import { useTranslations } from 'next-intl'
 
 export const PaginationComp = () => {
   const props = React.useContext(PagContext);

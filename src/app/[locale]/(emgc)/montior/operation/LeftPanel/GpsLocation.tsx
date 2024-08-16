@@ -16,7 +16,6 @@ import moment from 'moment';
 import { stringify } from 'qs';
 import { useContext, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useIntl } from 'react-intl';
 import { useRecoilState } from 'recoil';
 import SmoothScrollbar from 'smooth-scrollbar';
 import { getGpsList } from './GpsLocationList';
@@ -31,7 +30,7 @@ interface IProps {
   fold: boolean;
 }
 const GpsLocation = ({ fold }: IProps) => {
-  const { formatMessage } = useIntl();
+  const formatMessage = useTranslations("base");
   const [currentGpsInfo, setCurrentGpsInfo] = useRecoilState(currentGpsInfoModel);
   const [currentGpsList, setCurrentGpsList] = useRecoilState(currentGpsListModel);
   const map = useContext(MapContext);
@@ -149,7 +148,7 @@ const GpsLocation = ({ fold }: IProps) => {
         map?.removeLayer('gpsLocation_line');
       }
       // 人员定位轨迹图层资源撒移除
-      if ( map?.getSource('gpsLocation_line')) {
+      if (map?.getSource('gpsLocation_line')) {
         map?.removeSource('gpsLocation_line');
       }
       // 人员定位图标图层数据设空

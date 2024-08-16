@@ -4,7 +4,7 @@ import { broadcastVisibleModel, accessControltVisibleModel } from '@/models/map'
 import { useSetRecoilState } from 'recoil';
 import { AccessControl, VoiceIcon } from '@/components/Icons';
 import { useRef } from 'react';
-import { useIntl } from 'react-intl';
+import { useTranslations } from 'next-intl'
 
 interface Props {
   closeShowType: () => void;
@@ -13,7 +13,7 @@ interface Props {
 type openType = 'broadcast' | 'accessControl' | '';
 
 const LinkageQquipment = ({ closeShowType }: Props) => {
-  const { formatMessage } = useIntl();
+  const formatMessage = useTranslations("base");
 
   const [showType, setShowType] = useSafeState<openType>('');
   const boxRef = useRef<null | HTMLDivElement>(null);

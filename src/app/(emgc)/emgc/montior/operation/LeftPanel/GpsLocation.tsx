@@ -149,7 +149,7 @@ const GpsLocation = ({ fold }: IProps) => {
         map?.removeLayer('gpsLocation_line');
       }
       // 人员定位轨迹图层资源撒移除
-      if ( map?.getSource('gpsLocation_line')) {
+      if (map?.getSource('gpsLocation_line')) {
         map?.removeSource('gpsLocation_line');
       }
       // 人员定位图标图层数据设空

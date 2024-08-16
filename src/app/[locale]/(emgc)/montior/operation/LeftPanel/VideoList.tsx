@@ -15,7 +15,7 @@ import { featureCollection, point } from '@turf/turf';
 import { useUnmount } from 'ahooks';
 import Image from 'next/image';
 import { useContext } from 'react';
-import { useIntl } from 'react-intl';
+import { useTranslations } from 'next-intl';
 import { useRecoilState } from 'recoil';
 
 interface IProps {
@@ -24,7 +24,7 @@ interface IProps {
 }
 
 const VideoList = ({ showRealDatas, leaveVideo }: IProps) => {
-  const { formatMessage } = useIntl();
+  const formatMessage = useTranslations("base");
   const [videoList, setVideoList] = useRecoilState(videoListModal);
 
   //正在播放的视频
