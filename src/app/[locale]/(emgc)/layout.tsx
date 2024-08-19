@@ -1,7 +1,7 @@
 'use client';
 import { flatMenuModel, IMenuItem, menuModel } from '@/models/user';
 import { request } from '@/utils/request';
-import { Box, Flex, useToast } from '@chakra-ui/react';
+import { useToast } from '@chakra-ui/react';
 // import Image from 'next/image';
 import { IUserInfo } from '@/app/login/page';
 import CallNumberContainer, {
@@ -320,59 +320,33 @@ const Layout = ({ children }: { children: ReactNode }) => {
 
   return (
     <>
-      {/* {authRoute ? ( */}
-      <Box h="full" overflow="hidden">
-        {/* {currentUserInfo && <WebSocketComponent currentUserInfo={currentUserInfo} />} */}
-        {/* <Script strategy="afterInteractive" src="/wenet/js/recorder/recorder-core.js"></Script>
-    <Script strategy="afterInteractive" src="/wenet/js/recorder/extensions/lib.fft.js"></Script>
-    <Script strategy="afterInteractive" src="/wenet/js/recorder/extensions/frequency.histogram.view.js"></Script>
-    <Script strategy="afterInteractive" src="/wenet/js/recorder/engine/pcm.js"></Script>
-    <Script strategy="afterInteractive" src="/wenet/js/SoundRecognizer.js"></Script> */}
-        <Flex direction="column" h="full">
-          <Header />
-          {/* { hideHeader ? null } */}
+      <audio
+        preload="auto"
+        id="alarmAudio"
+        src={`${process.env.NEXT_PUBLIC_ANALYTICS_BasePath}/audios/alarm0425.mp3`}
+      />
+      <audio
+        preload="auto"
+        id="earthquakeAudio"
+        loop
+        muted
+        src={`${process.env.NEXT_PUBLIC_ANALYTICS_BasePath}/audios/earthquake.mp3`}
+      />
+      <div className='h-full overflow-hidden'>
 
-          {/* <Button
-            bg="test.100"
-            onClick={() => {
-              setTheme({
-                ...lightTheme,
-                colors: {
-                  ...lightTheme.colors,
-                  pri: {
-                    ...lightTheme.colors.pri,
-                    'blue.100': 'rgba(249, 42, 42, 1)',
-                  },
-                },
-              });
-            }}
-          >
-            测试颜色替换
-          </Button> */}
-          <audio
-            preload="auto"
-            id="alarmAudio"
-            src={`${process.env.NEXT_PUBLIC_ANALYTICS_BasePath}/audios/alarm0425.mp3`}
-          />
-          <audio
-            preload="auto"
-            id="earthquakeAudio"
-            loop
-            muted
-            src={`${process.env.NEXT_PUBLIC_ANALYTICS_BasePath}/audios/earthquake.mp3`}
-          />
-          <Box flex="1" overflow="hidden" position="relative">
+        <div className="flex h-full flex-col" >
+          <Header />
+
+
+          <div className='relative flex-1 overflow-hidden' >
 
             {authLoad && children}
-          </Box>
+          </div>
 
           <CallNumberContainer ref={phoneSocket} />
-        </Flex>
-      </Box>
-      {/* ) : (
-        1122333
-        // <NoAuth />
-      )} */}
+        </div>
+      </div>
+
     </>
   );
 };

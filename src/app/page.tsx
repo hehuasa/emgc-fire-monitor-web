@@ -1,5 +1,4 @@
 'use client';
-import { Box } from '@chakra-ui/react';
 import { useLocalStorageState } from 'ahooks';
 import { useRouter } from 'next/navigation';
 import { useEffect, useLayoutEffect } from 'react';
@@ -27,7 +26,7 @@ const Page = () => {
     }
   }, []);
 
-  return <Box m="20"></Box>;
+  return <div className='m-20'></div>;
 };
 
 export default Page;

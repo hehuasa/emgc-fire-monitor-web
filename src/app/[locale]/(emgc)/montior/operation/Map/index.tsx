@@ -1,5 +1,5 @@
 import AreaFloors from '@/app/(emgc)/emgc/montior/operation/AreaFloors';
-import { CircleClose, MapPositionNameIcon, PhoneIcon } from '@/components/Icons';
+import { CircleClose, PhoneIcon } from '@/components/Icons';
 import { mapOp } from '@/components/Map';
 import Marker from '@/components/L7Map/Marker';
 import Popup from '@/components/L7Map/Popup';
@@ -15,7 +15,7 @@ import { currentAreaFloorsModel, IArea, isInIconModel, isSpaceQueryingModel } fr
 import { currentResModel, IResItem } from '@/models/resource';
 import { genHoverLayerIconId } from '@/utils/mapUtils';
 import { request } from '@/utils/request';
-import { Box, Flex, HStack, Text } from '@chakra-ui/react';
+import { Box, Flex, HStack } from '@chakra-ui/react';
 import {
   center,
 
@@ -586,33 +586,6 @@ const Map = ({ getMapObj }: IProps) => {
               <Box color="pri.dark.100">{currentAreaData.deptName}</Box>
             </HStack>
 
-            {/* <HStack px={2} spacing={2} justifyContent="center" borderTopWidth="1px" borderTopColor="pri.gray.300">
-              {currentAreaData.chargeInfo?.split(',')?.map((item) => {
-                return (
-                  <React.Fragment key={item}>
-                    <Flex
-                      lineHeight="44px"
-                      color="pri.blue.100"
-                      cursor="pointer"
-                      textAlign="center"
-                      _hover={{ color: 'pri.blue.200' }}
-                      alignItems="center"
-                      onClick={(e) => {
-                        const info = item;
-                        if (info) {
-                          const name = info.split(' ')[0];
-                          const number = info.split(' ')[1];
-                          setCallNumberShow({ visible: true, name, number });
-                        }
-                      }}
-                    >
-                      {currentAreaData.chargeInfo?.split(',')?.length > 1 ? item : formatMessage('alarm.director.call')}
-                      <PhoneIcon ml="1" color="pri.green.200" />
-                    </Flex>
-                  </React.Fragment>
-                );
-              })}
-            </HStack> */}
           </Box>
         </Popup>
       )}
@@ -622,25 +595,7 @@ const Map = ({ getMapObj }: IProps) => {
         </Marker>
       )}
 
-      {mapRef.current && (
-        <Marker longitude={103.90526488707621} latitude={31.053389548106935} map={mapRef.current}>
-          <Flex
-            //transform="rotate(45deg)"
-            alignItems="center"
-          >
-            <MapPositionNameIcon fontSize={'24px'} />
-            <Text
-              color="#0078EC"
-              fontFamily="Microsoft YaHei-Bold, Microsoft YaHei"
-              fontSize="20px"
-              fontWeight="bold"
-              textShadow="2px 2px rgba(0,0,0,0.16)"
-            >
-              4号场站
-            </Text>
-          </Flex>
-        </Marker>
-      )}
+
 
     </>
   );

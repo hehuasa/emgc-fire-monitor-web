@@ -14,13 +14,13 @@ import {
   alarmFilterModel,
   alarmDepartmentModel,
 } from '@/models/alarm';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import useVirtual from 'react-cool-virtual';
 
 import nodata from '@/assets/montior/nodata.png';
 import ListItem from './ListItem';
-import { MapContext, UpdateAlarmfnContext } from '@/models/map';
+import { MapSceneContext, UpdateAlarmfnContext } from '@/models/map';
 import Link from 'next/link';
 import { useMemoizedFn } from 'ahooks';
 import { AlarmFilter, AlarmFilterChecked } from '@/components/Icons';
@@ -44,14 +44,14 @@ const AlarmList = ({ fold, showDetail }: IProps) => {
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
   const [alarmStatus, setAlarmStatus] = useRecoilState(currentAlarmStatusModel);
-  const [alarmDepartment, setAlarmDepartment] = useRecoilState(alarmDepartmentModel);
-  const [alarmList, setAlarmList] = useRecoilState(alarmListModel);
+  const alarmDepartment = useRecoilValue(alarmDepartmentModel);
+  const alarmList = useRecoilValue(alarmListModel);
 
   const [alarmFilterShow, setAlarmFilterShow] = useRecoilState(alarmFilterModel);
 
-  const [alarmTypes, setAlarmTypes] = useRecoilState(alarmTypeModel);
+  const alarmTypes = useRecoilValue(alarmTypeModel);
 
-  const map = useContext(MapContext);
+  const scene = useContext(MapSceneContext);
 
   const { updateAlarmCluster, getAlalrmList } = useContext(UpdateAlarmfnContext);
 
@@ -117,12 +117,14 @@ const AlarmList = ({ fold, showDetail }: IProps) => {
       currentAlarmStatus_: status,
       alarmDepartment_: alarmDepartment,
     });
-    map &&
+    if (scene) {
       updateAlarmCluster({
         alarmTypes_: alarmTypes_,
         currentAlarmStatus_: status,
         alarmDepartment_: alarmDepartment,
       });
+    }
+
   };
 
   return (
@@ -334,45 +336,43 @@ const SortIcon = ({ type, toggleSort, sortCondision }: Props) => {
   });
 
   return (
-    <Flex flexDirection="column">
-      <Flex
+    <div className='flex flex-col'>
+      <div
+        className='flex cursor-pointer w-7 h-2.5 justify-center items-center clic'
         onClick={() => toggle('up')}
-        cursor="pointer"
-        w="30px"
-        h="10px"
-        justify="center"
-        alignItems="center"
       >
-        <Box
-          w="12px"
-          h="6px"
-          bg={
-            sortCondision?.type === type && sortCondision?.sort === 'up'
-              ? 'pri.blue.100'
-              : 'pri.dark.500'
-          }
-          clipPath="polygon(0 100%, 50% 0, 100% 100%)"
+        <div
+          className='w-3 h-1.5'
+          style={{
+            background:
+              sortCondision?.type === type && sortCondision?.sort === 'up'
+                ? '#0369FF'
+                : '#A8B4C2',
+
+            clipPath: "polygon(0 100%, 50% 0, 100% 100%)"
+          }}
         />
-      </Flex>
-      <Flex
+      </div>
+      <div
+        className='flex cursor-pointer w-7 h-2.5 justify-center items-center clic'
         onClick={() => toggle('down')}
-        cursor="pointer"
-        w="30px"
-        h="10px"
-        justify="center"
-        alignItems="center"
+
+
+
       >
-        <Box
-          w="12px"
-          h="6px"
-          bg={
-            sortCondision?.type === type && sortCondision?.sort === 'down'
-              ? 'pri.blue.100'
-              : 'pri.dark.500'
-          }
-          clipPath="polygon(0 0, 50% 100%, 100% 0)"
+        <div
+          className='w-3 h-1.5'
+          style={{
+            background:
+              sortCondision?.type === type && sortCondision?.sort === 'down'
+                ? '#0369FF'
+                : '#A8B4C2',
+
+            clipPath: "polygon(0 0, 50% 100%, 100% 0)"
+          }}
+
         />
-      </Flex>
-    </Flex>
+      </div>
+    </div>
   );
 };

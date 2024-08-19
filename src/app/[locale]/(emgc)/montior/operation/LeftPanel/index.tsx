@@ -1,5 +1,4 @@
 'use client';
-import { ArrowLeftIcon, FoldIcon } from '@/components/Icons';
 import {
   alarmDepartmentModel,
   alarmFilterModel,
@@ -116,7 +115,6 @@ const LeftPanel = () => {
 
 
     >
-      {/* <Box h="20" bg="red" onClick={dev_dealAlarms}></Box> */}
 
       <div
         className='relative '
@@ -151,22 +149,19 @@ const LeftPanel = () => {
             transition: 'right 0.2s ease-in-out',
           }}
         >
-          <FoldIcon
-            position="absolute"
-            top={0}
-            left="0"
-            w="7.5"
-            h="26"
-            fill="rgba(0, 0, 0, 0.1)"
-          />
-          <ArrowLeftIcon
-            transform={fold ? 'translateX(-12px) rotate(180deg)' : ''}
-            position="absolute"
-            top={0}
-            left="0"
-            w="7.5"
-            h="26"
-          />
+          <svg viewBox="0 0 30 102.849" className='absolute top-0 left-0 w-7 h-24 fill-black/10'>
+            <path d="M.002 102.849V0a37.545 37.545 0 0 0 14.8 21.6 36.345 36.345 0 0 1 11.045 12.739 36.65 36.65 0 0 1 3.071 8.136 37.351 37.351 0 0 1 1.083 8.952 37.363 37.363 0 0 1-1.083 8.954 36.649 36.649 0 0 1-3.071 8.137 36.342 36.342 0 0 1-11.045 12.74 37.56 37.56 0 0 0-14.8 21.591Z" />
+          </svg>
+          <svg viewBox="0 0 30 102.849" className='absolute top-0 left-0 w-7 h-24 fill-white' style={{
+            transform: `${fold ? 'translateX(-12px) rotate(180deg)' : ''}`
+          }}>
+            <path
+
+              d="m.574 52.581 9.665 9.559a1.93 1.93 0 1 0 2.714-2.744l-8.287-8.2 8.22-8.243a1.93 1.93 0 0 0-2.733-2.725L.569 49.839v.006H.563a1.917 1.917 0 0 0-.4.606c0 .008-.014.015-.015.023a1.929 1.929 0 0 0 .426 2.107Z"
+
+            />
+          </svg>
+
         </div>
         <AlarmList showDetail={showAlarmDetail || showResDetail} fold={fold} />
         {currentAlarm && <AlarmDetail fold={fold} />}
