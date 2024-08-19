@@ -1,5 +1,8 @@
 'use client';
 import WebSocket, { Refs as IWebSocketFun } from '@/components/socket/webSocket';
+import { lightTheme } from '@/styles';
+import { CacheProvider } from '@chakra-ui/next-js';
+import { ChakraProvider } from '@chakra-ui/react';
 import { useMount } from 'ahooks';
 import { ReactNode, useRef } from 'react';
 
@@ -12,8 +15,11 @@ const Layout = ({ children }: { children: ReactNode }) => {
 
   return (
     <>
-      {children}
-      <WebSocket ref={socket} />
+      <CacheProvider>
+        <ChakraProvider theme={lightTheme}>      {children}
+          <WebSocket ref={socket} /></ChakraProvider>
+      </CacheProvider>
+
     </>
   );
 };

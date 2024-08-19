@@ -105,7 +105,7 @@ const LeftPanel = () => {
 
   return (
     <div
-      className='absolute top-0 left-0 z-10 w-96 h-full bg-white/10 transition-[transform 0.15s] backdrop-blur-xl'
+      className='absolute top-0 left-0 z-10 w-[400px] h-full bg-black/10 transition-[transform 0.15s] backdrop-blur-xl'
 
       style={{
         transform: `translateX(${fold ? '-100%' : '0'})`,

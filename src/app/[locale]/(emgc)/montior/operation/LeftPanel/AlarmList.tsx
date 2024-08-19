@@ -1,10 +1,9 @@
 'use client';
-import { Box, Flex, HStack, Tooltip } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import Image from 'next/image';
 
 import React, { useContext, useMemo, useRef, useState } from 'react';
 import title from '@/assets/montior/title.png';
-import { MoreIcon } from '@/components/Icons';
 import {
   alarmTypeModel,
   alarmListModel,
@@ -23,9 +22,9 @@ import ListItem from './ListItem';
 import { MapSceneContext, UpdateAlarmfnContext } from '@/models/map';
 import Link from 'next/link';
 import { useMemoizedFn } from 'ahooks';
-import { AlarmFilter, AlarmFilterChecked } from '@/components/Icons';
 import moment from 'moment';
 import { useTranslations } from 'next-intl';
+import './index.css'
 
 interface ISortCondisionItem {
   type: 'alarmLevel' | 'alarmLastTime' | 'alarmFirstTime';
@@ -128,128 +127,117 @@ const AlarmList = ({ fold, showDetail }: IProps) => {
   };
 
   return (
-    <Flex
-      position="absolute"
-      flexDir="column"
-      h="full"
-      py="3.5"
-      w="full"
-      opacity={fold || showDetail ? 0 : 1}
-      zIndex={fold || showDetail ? -1 : 1}
-      borderRadius="10px"
-      backgroundColor="pri.gray.600"
-      overflowY="auto"
+    <div className='flex flex-col absolute h-full py-3.5 w-full rounded-xl bg-gray-50/80 overflow-hidden'
+
+      style={{
+        opacity: fold || showDetail ? 0 : 1,
+        zIndex: fold || showDetail ? -1 : 1
+      }}
+
+
     >
-      <Box px="3.5">
-        <Flex mb="4" justify="space-between" align="center">
-          <HStack>
+      <div className='px-3.5'>
+        <div
+          className='flex justify-between items-center mb-4'>
+          <div
+            className='flex gap-2 items-center'
+          >
             <Image alt="title" src={title} />
-            <Box fontSize="lg" fontWeight="bold" color="pri.dark.100">
+            <div
+              className='text-lg font-bold text-gray-900'>
               {formatMessage('alarm-list')}
               {`（${alarmList.length}  ${formatMessageBase('alarms')} ）`}
-            </Box>
-          </HStack>
-          <HStack
-            cursor="pointer"
-            fill="pri.dark.500"
-            color="pri.dark.500"
-            _hover={{ color: 'pri.blue.100', fill: 'pri.blue.100' }}
-          >
-            <Box>
-              <Link
-                href="/emgc/montior/alarmQuery"
-              //href="/emgc/montior/stationManager"
-              //href="/emgc/montior/alarmSwitch"
-              //href="/emgc/montior/jobSafety"
-              //href="/emgc/jobSafety"
-              //href="/emgc/montior/cameraDeviceManagement"
-              //href="/emgc/montior/equipmentLocationManagement"
-              >
+            </div>
+          </div>
+          <div >
+            <Link
+              className='flex gap-2 text-sm items-center cursor-pointer text-gray-900 hover:text-blue-700 fill-gray-900 hover:fill-blue-700'
+              href="/emgc/montior/alarmQuery">
+              <div>
                 {formatMessageBase('more')}
-              </Link>
-            </Box>
-            <MoreIcon w="2" h="2" transform="rotate(-90deg)" />
-          </HStack>
-        </Flex>
-        <Box
-          //h={groupFold ? '15' : `${Math.ceil(alarmTypes.length / 3) * 2 + 0.75 + 3.75}rem`}
-          py="2.5"
-          ps="4"
-          pe="2.5"
-          mb="2.5"
-          backgroundColor="pri.white.100"
-          borderRadius="10px"
-          boxShadow="0px 3px 6px 1px rgba(119,140,162,0.1)"
-        >
-          <Flex justify="space-between" align="center">
-            <Flex
-              lineHeight="40px"
-              fontSize="lg"
-              textAlign="center"
-              bg={'pri.gray.300'}
-              borderRadius="20px"
-            >
-              <Box
+              </div>
+              <svg viewBox="0 0 9.91 10.737" className='-rotate-90 w-2 h-2'>
+                <path d="M4.956 8.743 1.411 5.194A.829.829 0 0 0 .244 6.366l4.126 4.127a.825.825 0 0 0 1.172 0l4.126-4.127a.829.829 0 1 0-1.171-1.172Z" />
+                <path d="M4.956 3.792 1.416.243A.829.829 0 0 0 .244 1.415L4.37 5.542a.825.825 0 0 0 1.172 0l4.126-4.126A.829.829 0 1 0 8.496.244Z" />
+              </svg> </Link></div>
+        </div>
+        <div className='ps-4 pe-2.5 mb-2.5 py-2.5 rounded-lg shadow-md shadow-sky-200/10 bg-white' >
+          <div className='flex justify-between items-center'>
+            <div className='flex text-lg text-center rounded-3xl leading-10 bg-gray-300' >
+              <div
+                className={`w-32 h-10 cursor-pointer rounded-3xl
+                   ${alarmStatus === '01' ? 'text-white' : 'text-gray-900'}
+                    ${alarmStatus === '01' ? 'bg-primary' : ''}
+                   `
+                }
                 onClick={() => {
                   handleAlarmSatausCheck('01', alarmTypes);
                 }}
-                w="35"
-                h="10"
-                color={alarmStatus === '01' ? 'pri.white.100' : 'pri.dark.100'}
-                cursor="pointer"
-                borderRadius="20px"
-                bg={alarmStatus === '01' ? 'pri.blue.100' : ''}
               >
                 {formatMessage('alarm-undeal')}
-              </Box>
-              <Box
+              </div>
+              <div
+                className={`w-32 h-10 cursor-pointer rounded-3xl
+                        ${alarmStatus === '02' ? 'text-white' : 'text-gray-900'}
+                         ${alarmStatus === '02' ? 'bg-primary' : ''}
+                        `
+                }
                 onClick={() => {
                   handleAlarmSatausCheck('02', alarmTypes);
                 }}
-                w="35"
-                h="10"
-                color={alarmStatus === '02' ? 'pri.white.100' : 'pri.dark.100'}
-                cursor="pointer"
-                borderRadius="20px"
-                bg={alarmStatus === '02' ? 'pri.blue.100' : ''}
+
               >
                 {formatMessage('alarm-dealing')}
-              </Box>
-            </Flex>
-            <Tooltip label={formatMessage('alarm-filter')} placement="right">
-              <Box>
+              </div>
+            </div>
+            <div className='tooltip tooltip-top' data-tip={formatMessage('alarm-filter')}>
+              <div>
                 {alarmFilterShow ? (
-                  <AlarmFilterChecked cursor="pointer" />
+                  <svg viewBox="0 0 18 18" className='cursor-pointer w-4 h-4' onClick={() => setAlarmFilterShow(false)}>
+                    <path
+                      fill="#0078ec"
+                      d="M76.916,144.83h10.44a1.178,1.178,0,0,0,0-2.3H76.916a1.178,1.178,0,0,0,0,2.3Zm0-5.362h10.44a1.178,1.178,0,0,0,0-2.3H76.916a1.178,1.178,0,0,0,0,2.3Zm.065-5.17H93.018a1.163,1.163,0,0,0,0-2.3H76.982a1.163,1.163,0,0,0,0,2.3ZM89.418,144.83,94,141l-4.582-3.83Zm3.6,2.872H76.982a1.163,1.163,0,0,0,0,2.3H93.018a1.163,1.163,0,0,0,0-2.3Z"
+                      transform="translate(-76 -132)"
+                    />
+                  </svg>
+
                 ) : (
-                  <AlarmFilter cursor="pointer" onClick={() => setAlarmFilterShow(true)} />
+                  <svg viewBox="0 0 18 18" className='cursor-pointer w-4 h-4' onClick={() => setAlarmFilterShow(true)} >
+                    <path
+                      d="M76.916,144.83H93.084a1.178,1.178,0,0,0,0-2.3H76.916a1.178,1.178,0,0,0,0,2.3Zm0-5.362H93.084a1.178,1.178,0,0,0,0-2.3H76.916a1.178,1.178,0,0,0,0,2.3Zm.065-5.17H93.018a1.163,1.163,0,0,0,0-2.3H76.982a1.163,1.163,0,0,0,0,2.3Zm16.036,13.4H76.982a1.163,1.163,0,0,0,0,2.3H93.018a1.163,1.163,0,0,0,0-2.3Z"
+                      transform="translate(-76 -132)"
+                    />
+                  </svg>
+
                 )}
-              </Box>
-            </Tooltip>
-          </Flex>
-          <Flex justifyContent="space-between" fontSize="16px" color="#778CA2" mt="15px">
-            <Flex alignItems="center">
+              </div>
+            </div>
+
+          </div>
+          <div className='flex justify-between text-base mt-4 text-slate-500' >
+            <div className='flex items-center'>
               {formatMessage('alarm-startTime')}
               <SortIcon
                 type="alarmFirstTime"
                 toggleSort={toggleSort}
                 sortCondision={sortCondision}
               />
-            </Flex>
-            <Flex>
+            </div>
+            <div className='flex items-center'>
               {formatMessage('alarm-level')}
               <SortIcon type="alarmLevel" toggleSort={toggleSort} sortCondision={sortCondision} />
-            </Flex>
-            <Flex>
+            </div>
+            <div className='flex items-center'>
               {formatMessage('alarm-endTime')}
               <SortIcon
                 type="alarmLastTime"
                 toggleSort={toggleSort}
                 sortCondision={sortCondision}
               />
-            </Flex>
-          </Flex>
-        </Box>
-      </Box>
+            </div>
+          </div>
+        </div>
+      </div>
 
       {alarmList.length === 0 ? (
         <Flex
@@ -275,19 +263,17 @@ const AlarmList = ({ fold, showDetail }: IProps) => {
           </Box>
         </Flex>
       ) : (
-        <Box
-          flex={1}
-          overflow="overlay"
+        <div
+          className='flex-1 scrollbar overflow-y-auto'
           ref={(el) => {
             outerRef.current = el; // Set the element to the `outerRef`
             scrollRef.current = el; // Share the element for other purposes
           }}
-          layerStyle="scrollbarStyle"
+
         >
-          <Box
-            color="font.100"
-            w="85"
-            ml="3.5"
+          <div
+            className='alarm-list text-gray-900 w-[340px] ml-3.5'
+
             ref={(el) => {
               innerRef.current = el; // Set the element to the `outerRef`
               scrollRef.current = el; // Share the element for other purposes
@@ -309,10 +295,10 @@ const AlarmList = ({ fold, showDetail }: IProps) => {
                 />
               );
             })}
-          </Box>
-        </Box>
+          </div>
+        </div>
       )}
-    </Flex>
+    </div>
   );
 };
 
@@ -361,7 +347,9 @@ const SortIcon = ({ type, toggleSort, sortCondision }: Props) => {
 
       >
         <div
-          className='w-3 h-1.5'
+          className={`
+            w-3 h-1.5
+            `}
           style={{
             background:
               sortCondision?.type === type && sortCondision?.sort === 'down'
