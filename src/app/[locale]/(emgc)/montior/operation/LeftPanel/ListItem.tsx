@@ -1,7 +1,7 @@
 'use client';
-import defaultPng from '@/assets/montior/default.png';
-import FAS from '@/assets/montior/FAS.png';
-import GAS from '@/assets/montior/GAS.png';
+// import defaultPng from '@/assets/montior/default.png';
+// import FAS from '@/assets/montior/FAS.png';
+// import GAS from '@/assets/montior/GAS.png';
 import {
   alarmTypeModel,
   checkedAlarmIdsModel,
@@ -10,27 +10,28 @@ import {
   IAlarmDetail,
   ISuppData,
 } from '@/models/alarm';
-import { Box, Checkbox, Flex, Text } from '@chakra-ui/react';
+
 
 import { request } from '@/utils/request';
+import { Checkbox } from 'antd';
 import moment from 'moment';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
 interface IProps {
   alarm: IAlarm;
 
-  measureRef: any;
+  measureRef: unknown;
 }
-const getImg = (type: string) => {
-  switch (type) {
-    case 'FAS':
-      return FAS;
-    case 'GAS':
-      return GAS;
-    default:
-      return defaultPng;
-  }
-};
+// const getImg = (type: string) => {
+//   switch (type) {
+//     case 'FAS':
+//       return FAS;
+//     case 'GAS':
+//       return GAS;
+//     default:
+//       return defaultPng;
+//   }
+// };
 const getColor = (level: IAlarm['alarmLevel']) => {
   switch (level) {
     case '00':
@@ -77,8 +78,8 @@ const ListItem = ({ alarm, measureRef }: IProps) => {
             newItem.infoValue && newItem.infoValue !== '' && newItem.infoValue !== null
               ? new URL(newItem.infoValue)
               : {
-                  pathname: '',
-                };
+                pathname: '',
+              };
           const newImgUrl = '/minio' + path.pathname;
           newItem.infoValue = newImgUrl;
 
@@ -103,63 +104,67 @@ const ListItem = ({ alarm, measureRef }: IProps) => {
     }
   };
   const currentType = alarmTypes.find((val) => val.alarmType === alarmType);
-  const imgSrc = currentType ? getImg(currentType.alarmType) : defaultPng;
+  // const imgSrc = currentType ? getImg(currentType.alarmType) : defaultPng;
   const alarmTypeName = currentType ? currentType.alarmTypeName : '';
   const isChecked = checkedAlarmIds.includes(alarmId);
 
   return (
-    <Flex
-      minH="25"
-      mb="2.5"
-      p="2.5"
-      align="center"
+    <div
+      className={
+        `min-h-[100px] mb-2.5 p-2.5 flex items-center rounded-xl text-lg justify-start border 
+      ${isChecked ? 'border-primary' : 'border-primary/0'}
+      cursor-pointer
+    bg-white shadow-md 
+    hover:border-primary`
+      }
+
       key={alarmId}
-      borderRadius="10px"
       ref={measureRef}
-      bg="pri.white.100"
-      fontSize="lg"
-      boxShadow=" 0px 3px 6px 1px rgba(119,140,162,0.1)"
-      justify="flex-start"
-      alignItems="center"
-      borderWidth="1px"
-      borderColor={isChecked ? 'pri.blue.100' : 'transparent'}
-      _hover={{
-        borderColor: 'pri.blue.100',
-      }}
+
+
       onClick={getAlarmDetail}
-      cursor="pointer"
     >
-      <Flex onClick={(e) => e.stopPropagation()} alignItems="center">
+      <div
+        className='flex items-center'
+        onClick={(e) => e.stopPropagation()}>
         <Checkbox
-          colorScheme="blue"
-          isChecked={isChecked}
-          cursor="pointer"
+
+          checked={isChecked}
+
           onChange={handleAlarmCheck}
         />
-      </Flex>
+      </div>
 
       {/* <Center w="10" h="10" borderRadius="50%" bg="pri.red.200" cursor="pointer">
         <Image src={imgSrc} alt={alarmTypeName} />
       </Center> */}
 
-      <Box w="3" h="3" borderRadius="50%" ml="2.5" bg={getColor(alarmLevel)}></Box>
-      <Flex flexDir="column" ml="2.5" w="62.5">
-        <Text noOfLines={2} fontSize="16px" color="pri.dark.100">
+      <div className='w-3 h-3 rounded-full ml-2.5'
+        style={{
+          backgroundColor: getColor(alarmLevel)
+        }}
+      ></div>
+      <div
+        className='flex flex-col ml-2.5 w-[250px] text-gray-900'>
+        <p
+          className='text-base '
+        >
           {/* {deptName} */}
           {alarmAreaName}
           {alarmAreaName === address ? '' : address}
-        </Text>
-        <Text noOfLines={1} fontSize="14px">
+        </p>
+        <p
+          className='text-sm '>
           {alarm.resourceNo}
-        </Text>
-        <Flex fontSize="14px" justify="space-between" align="center">
-          <Text title={alarmTypeName} color="pri.blue.100" w="30">
+        </p>
+        <div className='flex justify-between items-center text-sm '>
+          <div title={alarmTypeName} className='w-[120px] text-primary'>
             {alarmTypeName}
-          </Text>
-          <Box color="pri.dark.500">{moment(alarmLastTime).format('YY/MM/DD HH:mm:ss')}</Box>
-        </Flex>
-      </Flex>
-    </Flex>
+          </div>
+          <div className='text-gray-500' >{moment(alarmLastTime).format('YY/MM/DD HH:mm:ss')}</div>
+        </div>
+      </div>
+    </div>
   );
 };
 
