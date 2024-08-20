@@ -182,7 +182,6 @@ const AlarmDetail = ({ fold }: IProps) => {
   };
 
   const leaveVideo = () => {
-    console.log('levellllllll video');
     if (map && map.getSource) {
       // console.info('============map==============', map);
       const videosource = map.getSource('video_h') as maplibregl.GeoJSONSource;
