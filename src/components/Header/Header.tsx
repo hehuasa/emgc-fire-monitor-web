@@ -14,9 +14,7 @@ import { searchParamModel, searchResModel } from '@/models/resource';
 import { IUserInfo, menuModel } from '@/models/user';
 import { request } from '@/utils/request';
 import { downFileByUrl, flagMenuFn, privateKey, publicKey } from '@/utils/util';
-import {
-  WarningTwoIcon,
-} from '@chakra-ui/icons';
+import { WarningTwoIcon } from '@chakra-ui/icons';
 import {
   Box,
   Button,
@@ -39,6 +37,7 @@ import {
 } from '@chakra-ui/react';
 import { useLocalStorageState, useMemoizedFn, useMount, useSafeState, useUnmount } from 'ahooks';
 import type { JSEncrypt } from 'jsencrypt';
+import { useLocale, useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { parse, stringify } from 'qs';
@@ -48,13 +47,11 @@ import { FaCircleUser } from 'react-icons/fa6';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import UploadBtn from '../Upload/uploadBtn';
 import NavLink from './NavLink';
-import { useLocale, useTranslations } from 'next-intl';
 
 import { Badge, Dropdown, MenuProps } from 'antd';
 import LocaleLink from '../LocaleLink';
 
 const Header = () => {
-
   const locale = useLocale();
 
   const setSearchRes = useSetRecoilState(searchResModel);
@@ -62,7 +59,7 @@ const Header = () => {
 
   const setIsSpaceQuerying = useSetRecoilState(isSpaceQueryingModel);
   const [showAlarmToast, setShowAlarmToast] = useRecoilState(showAlarmToastModel);
-  const formatMessage = useTranslations("base");
+  const formatMessage = useTranslations('base');
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [currentUserInfo] = useLocalStorageState<null | IUserInfo>('emgc_web_currentUserInfo');
 
@@ -227,60 +224,46 @@ const Header = () => {
     {
       key: '1',
       label: (
-        <LocaleLink href={'/emgc/personalCenter'} className='flex items-center'>
-          <AiOutlineUser className='mr-2' />
+        <LocaleLink href={'/emgc/personalCenter'} className="flex items-center">
+          <AiOutlineUser className="mr-2" />
           {formatMessage('personalInfo')}
         </LocaleLink>
-
       ),
     },
     {
       key: '2',
       label: (
-        <span
-          onClick={logOut}
-          className="flex items-center gap-1 text-base"
-        >
-          <AiOutlineLogout className='mr-2' />
-          {formatMessage('loginOut')}
+        <span onClick={logOut} className="flex items-center gap-1 text-base">
+          <AiOutlineLogout className="mr-2" />
+          {formatMessage('logout')}
         </span>
       ),
     },
   ];
   return (
     <>
-      <div className='z-50 px-5 text-white shadow-md bg-blue-600' >
-        <div className='h-16 flex items-center justify-between' >
-
-
-          <div className='flex items-center'>
+      <div className="z-50 px-5 text-white shadow-md bg-blue-600">
+        <div className="h-16 flex items-center justify-between">
+          <div className="flex items-center">
             <Image src={logo} alt="login" width="30" height="24" />
 
-            <div className='text-xl font-bold ml-2 text-white'>
-              {formatMessage('sysName')}
-            </div>
+            <div className="text-xl font-bold ml-2 text-white">{formatMessage('sysName')}</div>
           </div>
-          <div className='flex'>
+          <div className="flex">
             <div>
-
               <NavLink links={links} flagMenu={flagMenu} />
             </div>
-
           </div>
-          <div className='flex items-center'>
-
-
-            <div className='mr-4 '>
-              <LocaleLink href={'/stationMessage'} className='flex items-center'>
+          <div className="flex items-center">
+            <div className="mr-4 ">
+              <LocaleLink href={'/stationMessage'} className="flex items-center">
                 <Badge count={5}>
-                  <AiFillBell className='w-6 h-6 text-white' />
+                  <AiFillBell className="w-6 h-6 text-white" />
                 </Badge>
               </LocaleLink>
             </div>
 
-
             {/* <SwitchLanguage /> */}
-
 
             <RealTime />
 
@@ -292,7 +275,6 @@ const Header = () => {
                 <div>{currentUserInfo?.userName}</div>
               </div>
             </Dropdown>
-
           </div>
         </div>
       </div>

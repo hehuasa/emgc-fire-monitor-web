@@ -22,6 +22,7 @@ const alarm = {
   'alarm-status': '报警状态',
   'alarm-res-name': '报警设备',
   'alarm-type': '报警类型',
+  'alarm-area': '报警区域',
   'alarm-lastTime': '末报时间',
   'alarm-user-name': '报警人',
   'alarm-user-phone': '联系电话',
@@ -38,6 +39,13 @@ const alarm = {
   'alarm-deal-time': '处理时间',
   'alarm-director-org': '部门',
   'alarm-detail': '报警详情',
+  'alarm-no': '序号',
+  'alarm-records': '条数据',
+  'alarm-export': '导出',
+  'alarm-back': '返回',
+  'alarm-submit': '查询',
+  'alarm-bulk-operation': '批量操作',
+  'alarm-resource-processNum': '工艺位号',
 
   'alarm-list-fold': '折叠报警列表',
   'alarm-list-unfold': '展开报警列表',
@@ -152,6 +160,10 @@ const alarm = {
   'alarm-director-phone-tips': '请输入联系电话',
   'alarm-director-book': '通讯录',
   'alarm-need-event': '请选择并案的目标事件',
+
+  'alarm-operator': '操作',
+
+  'alarm-commit': '提交',
 };
 
 export default alarm;

@@ -1,17 +1,16 @@
-import CustomSelect from '@/components/CustomSelect';
 import { BackIcon, ExportIcon } from '@/components/Icons';
 import { checkedAlarmIdsModel, dealAlarmModalVisibleModal, IAlarmTypeItem } from '@/models/alarm';
 import { depTreeModal } from '@/models/global';
 import { IArea } from '@/models/map';
 import { request } from '@/utils/request';
-import { Button, Flex, FormLabel, Input } from '@chakra-ui/react';
 import { useMount, useSafeState } from 'ahooks';
+import { Button, DatePicker, Form, FormProps, Input, Select } from 'antd';
+import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
-import { useRef, useState } from 'react';
-import { FormProvider, UseFormReturn } from 'react-hook-form';
-import { useIntl } from 'react-intl';
+import { useState } from 'react';
+import { UseFormReturn } from 'react-hook-form';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import SmoothScrollbar from 'smooth-scrollbar';
+import './AlarmQuere.css';
 import { IAlarmPageState } from './page';
 
 interface IProps {
@@ -20,34 +19,43 @@ interface IProps {
   exportLoading: boolean;
   methods: UseFormReturn<IAlarmPageState, any>;
 }
+
+interface select {
+  label: string;
+  value: string;
+}
+
 const AlarmQuere = ({ handleSearch, exportFile, exportLoading, methods }: IProps) => {
   const depTree = useRecoilValue(depTreeModal);
   const router = useRouter();
-  const { formatMessage } = useIntl();
+  const formatMessage = useTranslations('alarm');
+
   const checkedAlarmIds = useRecoilValue(checkedAlarmIdsModel);
   const alarmStatus = [
-    { id: '01', name: formatMessage({ id: 'alarm.undeal' }) },
-    { id: '02', name: formatMessage({ id: 'alarm.dealing' }) },
-    { id: '03', name: formatMessage({ id: 'alarm.dealed' }) },
+    { label: formatMessage('alarm-undeal'), value: '01' },
+    { label: formatMessage('alarm-dealing'), value: '02' },
+    { label: formatMessage('alarm-dealed'), value: '03' },
   ];
   const setDealAlarmVisible = useSetRecoilState(dealAlarmModalVisibleModal);
-  const domWarp = useRef<HTMLDivElement | null>(null);
-  const scrollbar = useRef<SmoothScrollbar | null>(null);
-  const [alarmType, setAlarmType] = useSafeState<IAlarmTypeItem[]>([]);
-  const [areas, setAreas] = useState<IArea[]>([]);
+  const [alarmType, setAlarmType] = useSafeState<select[]>([]);
+  const [areas, setAreas] = useState<select[]>([]);
+  const [currentStatus, setCurrentStatus] = useState('01');
 
-  // const methods = useForm<IAlarmPageState>({
-  //   defaultValues: {
-  //     status: '01',
-  //   },
-  // });
-  const { register, handleSubmit, getValues } = methods;
   const getAlarmTypes = () => {
-    request<IAlarmTypeItem[]>({ url: '/ms-gateway/cx-alarm/alm/alarm/getAlarmType' }).then((res) => {
-      if (res.code === 200) {
-        setAlarmType(res.data);
+    request<IAlarmTypeItem[]>({ url: '/ms-gateway/cx-alarm/alm/alarm/getAlarmType' }).then(
+      (res) => {
+        if (res.code === 200) {
+          const newAlarmTypes = [];
+          for (let i = 0; i < res.data.length; i++) {
+            newAlarmTypes.push({
+              label: res.data[i].alarmTypeName,
+              value: res.data[i].alarmType,
+            });
+          }
+          setAlarmType(newAlarmTypes);
+        }
       }
-    });
+    );
   };
 
   useMount(() => {
@@ -56,206 +64,207 @@ const AlarmQuere = ({ handleSearch, exportFile, exportLoading, methods }: IProps
   });
 
   const getAreas = async () => {
-    const res = await request<IArea[]>({ url: '/ms-gateway/cx-alarm/dc/area/getChildren?areaId=0' });
-    if (domWarp.current) {
-      scrollbar.current = SmoothScrollbar.init(domWarp.current);
-    }
+    const res = await request<IArea[]>({
+      url: '/ms-gateway/cx-alarm/dc/area/getChildren?areaId=0',
+    });
 
     if (res.code === 200) {
-      setAreas(res.data);
+      const newAreas = [];
+      for (let i = 0; i < res.data.length; i++) {
+        newAreas.push({
+          label: res.data[i].areaName,
+          value: res.data[i].areaId,
+        });
+      }
+      setAreas(newAreas);
     }
   };
 
+  type FieldType = {
+    username?: string;
+    password?: string;
+    remember?: string;
+  };
+
+  const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
+    console.log('Success:', values);
+  };
+
+  const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
+    console.log('Failed:', errorInfo);
+  };
+
   return (
-    <FormProvider {...methods}>
-      <Flex px="6" py="4" flexWrap="wrap">
-        <Flex alignItems="center" mr={4} mt={2}>
-          <FormLabel mb={0} mr={0} display="flex" w="90px">
-            工艺位号:
-          </FormLabel>
-
+    <>
+      <Form
+        layout={'inline'}
+        style={{
+          padding: '16px 24px',
+        }}
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+      >
+        <Form.Item
+          label="工艺位号："
+          name={'searchText'}
+          style={{
+            marginTop: '8px',
+          }}
+        >
           <Input
-            width="240px"
-            pr="7"
             placeholder={
-              formatMessage({ id: 'alarm.place' }) +
-              '、' +
-              formatMessage({ id: 'resource.processNum' })
+              formatMessage('alarm-place') + '、' + formatMessage('alarm-resource-processNum')
             }
-            borderColor="pri.gray.200"
-            {...register('searchText')}
+            style={{
+              width: '240px',
+            }}
           />
-        </Flex>
+        </Form.Item>
 
-        {/* <Flex alignItems="center" mr={4} mt={2}>
-          <FormLabel mb={0} mr={0} display="flex" w="90px">
-            部门:
-          </FormLabel>
-
-          <TreeSelect
-            placeholder="请选择部门"
-            data={depTree}
-            {...register('orgId')}
-            w="240px"
-            ref={undefined}
-            allNodeCanSelect
+        <Form.Item
+          label="报警类型："
+          name={'alarmTypes'}
+          style={{
+            marginTop: '8px',
+          }}
+        >
+          <Select
+            style={{
+              width: '240px',
+            }}
+            placeholder={formatMessage('alarm-type')}
+            options={alarmType ? alarmType : []}
+            getPopupContainer={(triggerNode) => triggerNode.parentElement}
           />
-        </Flex> */}
+        </Form.Item>
 
-        <Flex alignItems="center" mr={4} mt={2}>
-          <FormLabel mb={0} mr={0} display="flex" w="90px">
-            报警类型:
-          </FormLabel>
-
-          <CustomSelect
-            placeholder="请选择事件类型"
-            flex={1}
-            _hover={{}}
-            {...register('alarmTypes')}
-            mr={1}
-            w="240px"
-          >
-            {alarmType.map((item) => (
-              <option value={item.alarmType} key={item.alarmType}>
-                {item.alarmTypeName}
-              </option>
-            ))}
-          </CustomSelect>
-        </Flex>
-
-        <Flex alignItems="center" mr={4} mt={2}>
-          <FormLabel mb={0} mr={0} display="flex" w="90px">
-            区域:
-          </FormLabel>
-
-          <CustomSelect
-            placeholder="请选择区域"
-            flex={1}
-            _hover={{}}
-            {...register('alarmAreaIds')}
-            mr={1}
-            w="240px"
-          >
-            {areas.map((item) => (
-              <option value={item.areaId} key={item.areaId}>
-                {item.areaName}
-              </option>
-            ))}
-          </CustomSelect>
-        </Flex>
-
-
-
-        <Flex alignItems="center" mr={4} mt={2}>
-          <FormLabel mb={0} mr={0} display="flex" w="90px">
-            首报时间:
-          </FormLabel>
-
-          <Input
-            w="240px"
-            pr="7"
-            placeholder={'请选择首报时间'}
-            {...register('alarmTimeStart')}
-            type="datetime-local"
-            step="01"
+        <Form.Item
+          label="区域："
+          name={'alarmAreaIds'}
+          style={{
+            marginTop: '8px',
+          }}
+        >
+          <Select
+            style={{
+              width: '240px',
+            }}
+            placeholder={formatMessage('alarm-area')}
+            options={areas ? areas : []}
+            getPopupContainer={(triggerNode) => triggerNode.parentElement}
           />
-        </Flex>
-        <Flex alignItems="center" mr={4} mt={2}>
-          <FormLabel mb={0} mr={0} display="flex">
-            -
-          </FormLabel>
+        </Form.Item>
 
-          <Input
-            w="240px"
-            pr="7"
-            ml="4"
-            placeholder={'请选择首报时间'}
-            {...register('alarmTimeEnd')}
-            type="datetime-local"
-            step="01"
+        <Form.Item
+          label="首报时间："
+          name={'alarmTimeStart'}
+          style={{
+            marginTop: '8px',
+          }}
+        >
+          <DatePicker.RangePicker
+            showTime
+            style={{
+              width: '500px',
+            }}
           />
-        </Flex>
+        </Form.Item>
 
-        <Flex alignItems="center" mr={4} mt={2}>
-          <FormLabel mb={0} mr={0} display="flex" w="90px">
-            处理状态:
-          </FormLabel>
-
-          <CustomSelect
-            flex={1}
+        <Form.Item
+          label="处理状态："
+          name={'status'}
+          style={{
+            marginTop: '8px',
+          }}
+        >
+          <Select
+            defaultValue={currentStatus}
+            style={{
+              width: '240px',
+            }}
             placeholder="请选择处理状态"
-            _hover={{}}
-            {...register('status')}
-            mr={1}
-            w="240px"
-          >
-            {alarmStatus.map((item) => (
-              <option value={item.id} key={item.id}>
-                {item.name}
-              </option>
-            ))}
-          </CustomSelect>
-        </Flex>
+            options={alarmStatus ? alarmStatus : []}
+            getPopupContainer={(triggerNode) => triggerNode.parentElement}
+            onChange={(e) => {
+              // console.log('999', e);
+              setCurrentStatus(e);
+            }}
+          />
+        </Form.Item>
 
         <Button
-          mt={2}
-          w="20"
-          h="10"
-          borderRadius="20px"
-          bg="pri.blue.400"
-          color="pri.blue.100"
-          fill="pri.blue.100"
-          fontWeight="normal"
-          _hover={{ color: 'pri.white.100', bg: 'pri.blue.100', fill: 'pri.white.100' }}
-          leftIcon={<ExportIcon />}
+          className="custom-button"
+          style={{
+            width: '80px',
+            marginTop: '8px',
+            marginRight: '8px',
+            borderRadius: '20px',
+            backgroundColor: '#e4f0ff',
+            color: '#0078ec',
+            fill: '#0078ec',
+            fontSize: '16px',
+          }}
+          icon={<ExportIcon />}
           onClick={() => {
-            const status = getValues('status');
-            if (status === '03') {
+            if (currentStatus === '03') {
               exportFile(true);
             } else {
               exportFile(false);
             }
           }}
-          isLoading={exportLoading}
-          mr={2}
         >
-          {formatMessage({ id: 'export' })}
+          {formatMessage('alarm-export')}
         </Button>
 
         <Button
-          w="25"
-          mt={2}
-          h="10"
-          borderRadius="20px"
-          bg="pri.white.400"
-          color="pri.dark.500"
-          borderWidth="1px"
-          borderColor="pri.gray.100"
-          fill="pri.dark.500"
-          fontWeight="normal"
-          _hover={{ color: 'pri.blue.100', fill: 'pri.blue.100' }}
-          leftIcon={<BackIcon />}
+          className="custom-button"
+          style={{
+            width: '80px',
+            marginTop: '8px',
+            marginRight: '8px',
+            borderRadius: '20px',
+            backgroundColor: '#e4f0ff',
+            color: '#0078ec',
+            fill: '#0078ec',
+            fontSize: '16px',
+          }}
+          icon={<BackIcon />}
           onClick={router.back}
-          mr={2}
         >
-          {formatMessage({ id: 'back' })}
+          {formatMessage('alarm-back')}
         </Button>
 
-        <Button mr={2} mt={2} colorScheme={'blue'} onClick={handleSubmit(handleSearch)}>
-          查询
-        </Button>
-        {getValues('status') === '01' && (
+        <Form.Item
+          style={{
+            marginTop: '8px',
+          }}
+        >
           <Button
-            onClick={() => setDealAlarmVisible({ visible: true })}
-            isDisabled={!checkedAlarmIds.length}
-            mt={2}
-            colorScheme={'blue'}
+            type="primary"
+            htmlType="submit"
+            style={{
+              fontSize: '16px',
+            }}
           >
-            批量处理
+            {formatMessage('alarm-submit')}
+          </Button>
+        </Form.Item>
+
+        {currentStatus === '01' && (
+          <Button
+            style={{
+              marginTop: '8px',
+              fontSize: '16px',
+            }}
+            type="primary"
+            onClick={() => setDealAlarmVisible({ visible: true })}
+            disabled={!checkedAlarmIds.length}
+          >
+            {formatMessage('alarm-bulk-operation')}
           </Button>
         )}
-      </Flex>
-    </FormProvider>
+      </Form>
+    </>
   );
 };
 

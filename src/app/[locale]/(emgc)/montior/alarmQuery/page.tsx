@@ -1,8 +1,7 @@
 'use client';
 import { IAlarmDetail } from '@/models/alarm';
 import { initPageData, IPageData } from '@/utils/publicData';
-import { request, requestDownload } from '@/utils/request';
-import { Box, Flex } from '@chakra-ui/react';
+import { downloadRequest, request } from '@/utils/request';
 import { useMemoizedFn, useMount, useSafeState } from 'ahooks';
 import moment from 'moment';
 import dynamic from 'next/dynamic';
@@ -82,12 +81,15 @@ const AlarmQuery = () => {
     });
     let url = '';
     if (values.status === '03') {
-      url = `/cx-alarm/alm/alarmHistory/query?${param}`;
+      url = `/ms-gateway/cx-alarm/alm/alarmHistory/query?${param}`;
     } else {
-      url = `/cx-alarm/alm/alarm/findMorePage?${param}`;
+      url = `/ms-gateway/cx-alarm/alm/alarm/findMorePage?${param}`;
     }
     const { data, code } = await request<IPageData<IAlarmDetail>>({ url });
     if (code === 200) {
+      for (let i = 0; i < data.records.length; i++) {
+        data.records[i].key = data.records[i].alarmAreaId;
+      }
       setData(data);
     }
     setLoading(false);
@@ -113,9 +115,9 @@ const AlarmQuery = () => {
     );
     const date = moment().format('YYYY-MM-DD HH:mm:ss');
     const url = isHistory
-      ? '/cx-alarm/alm/alarmHistory/exportMore'
-      : '/cx-alarm/alm/alarm/exportMore';
-    await requestDownload({
+      ? '/ms-gateway/cx-alarm/alm/alarmHistory/exportMore'
+      : '/ms-gateway/cx-alarm/alm/alarm/exportMore';
+    await downloadRequest({
       url: `${url}?${param}`,
       options: { name: `报警数据${date}.xlsx` },
     });
@@ -123,17 +125,17 @@ const AlarmQuery = () => {
   };
 
   return (
-    <Flex h="full" flexDirection="column">
+    <div className="relative h-full w-full flex flex-col">
       <AlarmQuere
         handleSearch={handleSearch}
         exportFile={exportFile}
         exportLoading={exportLoading}
         methods={methods}
       />
-      <Box flex="1" borderRadius="lg" p="4" bg="pri.gray.500" overflow="hidden">
+      <div className="relative flex-1 p-4 bg-gray-100 overflow-hidden">
         <AlarmTable data={data} isLoading={isLoading} getPage={getPage} />
-      </Box>
-    </Flex>
+      </div>
+    </div>
   );
 };
 

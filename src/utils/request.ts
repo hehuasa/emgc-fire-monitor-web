@@ -346,7 +346,6 @@ export const request = async <T>({
  * @description app部分的接口 需要不同的reqType
  * @description 重新设置app的 appClientType
  */
-
 export const appRequest = async <T>({
   url,
   options = { headers: {} },
