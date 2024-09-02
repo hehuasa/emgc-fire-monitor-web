@@ -57,6 +57,7 @@ export interface ISuppData {
 }
 
 export interface IAlarmDetail extends IAlarm {
+  key:string
   address: string;
   alarmAreaId: string;
   alarmAreaName: string;

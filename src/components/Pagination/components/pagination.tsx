@@ -1,15 +1,26 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import {
+  Box,
+  chakra,
+  HStack,
+  Input,
+  Menu,
+  MenuButton,
+  MenuItemOption,
+  MenuList,
+  MenuOptionGroup,
+  Text,
+} from '@chakra-ui/react';
+import { useTranslations } from 'next-intl';
 import React from 'react';
-import { PagButton } from './pbutton';
-import { Menu, MenuButton, MenuList, Box, MenuOptionGroup, MenuItemOption, chakra, Input, HStack, Text } from '@chakra-ui/react';
 import PagContext, { Responsives } from '../providers/pagination-provider';
 import { fetchPageNumbers } from '../services/fetch-page';
-import { useTranslations } from 'next-intl'
+import { PagButton } from './pbutton';
 
 export const PaginationComp = () => {
   const props = React.useContext(PagContext);
   const totalPages = Math.ceil(props.total / props.pageSize);
-  const { formatMessage } = useIntl()
+  const formatMessage = useTranslations('base');
 
   const prevRender = props.itemRender(props.currentPage, 'prev');
   const nextRender = props.itemRender(props.currentPage, 'next');
@@ -133,7 +144,13 @@ export const PaginationComp = () => {
               onChange={(e) => setSimplePage(e.target.value)}
             />
           </form>
-          <chakra.span userSelect="none" opacity={props.disabled ? 0.6 : 1} mx={1} my="auto" fontSize={props.size}>
+          <chakra.span
+            userSelect="none"
+            opacity={props.disabled ? 0.6 : 1}
+            mx={1}
+            my="auto"
+            fontSize={props.size}
+          >
             / 5
           </chakra.span>
         </React.Fragment>
@@ -214,7 +231,8 @@ export const PaginationComp = () => {
             disabled={props.disabled}
             size={props.size === 'lg' ? 'md' : props.size === 'xs' ? 'xs' : 'sm'}
           >
-            {props.pageSize}{formatMessage('record')} / {formatMessage('page')}
+            {props.pageSize}
+            {formatMessage('record')} / {formatMessage('page')}
           </PagMenuButton>
           <MenuList>
             <MenuOptionGroup onChange={changePageSize}>
@@ -222,7 +240,8 @@ export const PaginationComp = () => {
                 .filter((opt: any) => opt !== props.pageSize)
                 .map((opt: any, oid: number) => (
                   <MenuItemOption fontSize={props.size} value={opt.toString()} key={`size${oid}`}>
-                    {opt}{formatMessage('record')} / {formatMessage('page')}
+                    {opt}
+                    {formatMessage('record')} / {formatMessage('page')}
                   </MenuItemOption>
                 ))}
             </MenuOptionGroup>
@@ -239,9 +258,7 @@ export const PaginationComp = () => {
           onSubmit={pageJumperUpdate}
           {...responsiveDisplay('pageJumper')}
         >
-          <Text wordBreak="unset">
-            {formatMessage('jumpTo')}
-          </Text>
+          <Text wordBreak="unset">{formatMessage('jumpTo')}</Text>
           <Input
             type="number"
             width="50px"
@@ -257,8 +274,7 @@ export const PaginationComp = () => {
             }}
             size={props.size === 'lg' ? 'md' : props.size === 'xs' ? 'xs' : 'sm'}
           />
-          <Text wordBreak="unset"> {formatMessage('page')}
-          </Text>
+          <Text wordBreak="unset"> {formatMessage('page')}</Text>
         </HStack>
       )}
     </Box>

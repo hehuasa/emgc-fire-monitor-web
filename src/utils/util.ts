@@ -13,6 +13,22 @@ export const getCurrentIntl = () => {
   return intl;
 };
 
+export type AlarmLevelRefer = 'HHA' | 'HA' | 'FLT' | 'LLA' | 'LA';
+
+//报警状态
+export const alarmStatusText = (type: string) => {
+  switch (type) {
+    case '01':
+      return '未处理';
+    case '02':
+      return '处理中';
+    case '03':
+      return '已处理';
+    default:
+      return '';
+  }
+};
+
 //根据地址直接下载文件
 export const downFileByUrl = async (url: string, name: string) => {
   return new Promise<void>((reslove, reject) => {

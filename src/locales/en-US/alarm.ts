@@ -22,6 +22,7 @@ const alarm = {
   'alarm-status': 'Alarm Status',
   'alarm-res-name': 'Alarm Resource Name',
   'alarm-type': 'Alarm Type',
+  'alarm-area': 'Alarm Area',
   'alarm-lastTime': 'Last Time',
   'alarm-user-name': 'Reporter',
   'alarm-user-phone': 'Reporter phoneNum',
@@ -29,6 +30,13 @@ const alarm = {
   'alarm-director-user': 'Station Manager',
   'alarm-deal': 'Deal',
   'alarm-history': 'History',
+  'alarm-no': 'No',
+  'alarm-records': 'piece of data',
+  'alarm-export': 'Export',
+  'alarm-back': 'Back',
+  'alarm-submit': 'Query',
+  'alarm-bulk-operation': 'Bulk-Operation',
+  'alarm-resource-processNum': 'resource processNum',
 
   'alarm-monitor': 'AlarmMonitoring',
   'alarm-query': 'AlarmQuery',
@@ -153,6 +161,10 @@ const alarm = {
   'alarm-director-phone-tips': '请输入联系电话',
   'alarm-director-book': '通讯录',
   'alarm-need-event': '请选择并案的目标事件',
+
+  'alarm-operator': 'Operator',
+
+  'alarm-commit':"commit"
 };
 
 export default alarm;
