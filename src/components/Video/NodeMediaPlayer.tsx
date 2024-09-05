@@ -81,7 +81,7 @@ const NodeMediaPlayer = (
           setloading(false);
         });
 
-        request({ url: "/mock/erbanVideo.json" }).then((res) => {
+        request({ url: "/mock/videos.json" }).then((res) => {
           const videoObj = res as unknown as IVideoObjItem;
           videoObjsRef.current.rtspVideos = videoObj.rtspVideos;
           videoObjsRef.current.NVRVideos = videoObj.NVRVideos;
