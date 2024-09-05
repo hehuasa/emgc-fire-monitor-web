@@ -1,4 +1,5 @@
 import base from './zh-CN/base';
+import panel from './zh-CN/panel';
 
 const zh_cn = {
   'navBar.lang': '语言',
@@ -11,6 +12,7 @@ const zh_cn = {
     '表单页用于向用户收集或验证信息，基础表单常见于数据项较少的表单场景。',
 
   ...base,
+  ...panel,
 
   login: '登录',
   yes: '是',
