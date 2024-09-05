@@ -23,7 +23,6 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { IAlarmClusterItem } from '../page';
 import LaryerInit, { IL7LayerEventTarget } from './LaryerInit';
 import RightClickMenu from './RightClickMenu';
-import MapLibreMap from '@/components/L7Map/MapLibreMap';
 import { Scene } from '@antv/l7';
 import { useTranslations } from 'next-intl';
 import { FeatureCollection, LineString, Point, Polygon, Position } from 'geojson';
@@ -430,6 +429,8 @@ const Map = ({ getMapObj }: IProps) => {
     <>
       {/*   {showPopup && mapRef.current && currentAreaClusterData && ( */}
       <MapBoxMap getMapScence={getMapObj_} />
+      {/* <MapLibreMap getMapScence={getMapObj_} /> */}
+
       {mapLoaded && mapSceneRef.current && (
         <LaryerInit
           scene={mapSceneRef.current}
