@@ -57,7 +57,7 @@ export interface ISuppData {
 }
 
 export interface IAlarmDetail extends IAlarm {
-  key:string
+  key: string;
   address: string;
   alarmAreaId: string;
   alarmAreaName: string;
@@ -328,7 +328,7 @@ export const alarmDealTypeModel = atom<IAlarmDealType[]>({
 
 export const lastUpdateAlarmTimeModel = atom<number>({
   key: 'lastUpdateAlarmTime_',
-  default: 0,
+  default: 1,
 });
 
 // 新增应急事件

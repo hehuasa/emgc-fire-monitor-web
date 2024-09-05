@@ -1,4 +1,4 @@
-import { Mapbox, Scene } from '@antv/l7';
+import { Mapbox, Scale, Scene, Zoom } from '@antv/l7';
 import { useMount } from 'ahooks';
 import mapboxgl from 'mapbox-gl';
 import React, { useRef } from 'react'
@@ -25,6 +25,7 @@ const MapBoxMap = ({ getMapScence, onMapLoaded }: IProps) => {
             container: 'map', // container id
             style: 'mapbox://styles/mapbox/streets-v11', // stylesheet location
             center: [-73.9286084, 40.8140204], // starting position [lng, lat]
+            // center: [103.82357442634452, 30.992602876948965],
             zoom: 18, // starting zoom
         });
 
@@ -39,6 +40,18 @@ const MapBoxMap = ({ getMapScence, onMapLoaded }: IProps) => {
         });
 
         sceneRef.current.on('loaded', async () => {
+
+            const zoom = new Zoom({
+                zoomInTitle: '放大',
+                zoomOutTitle: '缩小',
+            });
+            sceneRef.current!.addControl(zoom);
+
+            const scale = new Scale({
+
+            });
+            sceneRef.current!.addControl(scale);
+
             if (getMapScence) {
                 getMapScence(sceneRef.current!);
             }

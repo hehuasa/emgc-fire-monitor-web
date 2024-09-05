@@ -3,7 +3,7 @@ import { mapOp } from '@/components/Map';
 import AlarmAnimateIcon from '@/components/Map/AlarmAnimateIcon';
 
 import CustomAlarmIcon from '@/components/Map/CustomAlarmIcon';
-import { alarmTypeModel, currentAlarmModel, IAlarmDetail, ISuppData } from '@/models/alarm';
+import { alarmTypeModel, currentAlarmModel } from '@/models/alarm';
 import { isInIconModel, isSpaceQueryingModel } from '@/models/map';
 import {
   currentGpsInfoModel,
@@ -21,6 +21,8 @@ import { useRef } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { IAlarmClusterItem } from '../page';
 import { LineLayer, PointLayer, PolygonLayer, Scene } from '@antv/l7';
+
+import FASpng from '@/assets/map/fire.png'
 // import test from 'public/map/test.png'
 
 const { clusterZoom, flyToZoom } = mapOp;
@@ -411,28 +413,35 @@ const LaryerInit = ({ scene, hoveAreaCluster, handleClusterMouseleave, handleAre
 
   // 生成报警图标图层
   const genAlarmIconLayer = () => {
+    console.info('============22222222222==============', 22222222222);
     //=================================todo=> 动画图标后期实现，暂时写死一个动态获取的图标==================================
     scene.addImage(
       'FAS',
-      'https://gw.alipayobjects.com/zos/basement_prod/604b5e7f-309e-40db-b95b-4fac746c5153.svg',
+      FASpng.src,
     );
     scene.addImage(
       'GAS',
-      'https://gw.alipayobjects.com/zos/basement_prod/30580bc9-506f-4438-8c1a-744e082054ec.svg',
+      FASpng.src,
     );
     scene.addImage(
       '02',
-      'https://gw.alipayobjects.com/zos/basement_prod/7aa1f460-9f9f-499f-afdf-13424aa26bbf.svg',
+      FASpng.src,
     );
     // 报警相关图层，点击事件允许透传
     const alarmIconLayer = new PointLayer({
       name: "alarmIconLayer",
-      minZoom: clusterZoom,
+      // minZoom: clusterZoom,
       enablePropagation: true,
-    }).source(source).shape("alarmType", (alarmType) => {
+    }).source(source).size(18).shape("alarmType", (alarmType) => {
       console.info('============alarmType==============', alarmType);
       return alarmType
     })
+
+    // const alarmIconLayer = new PointLayer({
+    //   name: "alarmIconLayer",
+    //   // minZoom: clusterZoom,
+    //   enablePropagation: true,
+    // }).source(source).shape("FAS")
 
     const alarmLineLayer = new LineLayer({
       name: "alarmLineLayer",
@@ -566,95 +575,16 @@ const LaryerInit = ({ scene, hoveAreaCluster, handleClusterMouseleave, handleAre
   const genAlarmClusterLayer = () => {
 
 
-    const alarmCluster_count = new PointLayer({
-      name: "alarmCluster_count",
-      maxZoom: clusterZoom,
-
-    }).source(source).shape("alarmCount", "text").style({
-
-    });
-    const alarmCluster_circle = new PointLayer({
-      name: "alarmCluster_circle",
-      maxZoom: clusterZoom,
-
-    }).source(source).size(18).color('rgba(255, 170, 27, 1)').shape("circle").style({
-      stroke: 'rgba(249, 42, 42, 0.16)',
-      strokeWidth: 1,
-    })
-
-    scene.addLayer(alarmCluster_count);
-    scene.addLayer(alarmCluster_circle);
-
-    alarmCluster_count.on("click", handleClusterClick)
-    alarmCluster_circle.on("click", handleClusterClick)
 
 
-    alarmCluster_circle.on("mousemove", handleClusterMousemove)
-    alarmCluster_circle.on("mouseleave", handleClusterMouseleave)
 
   };
-  const handleClusterClick = (e: IL7LayerEventTarget) => {
-    if (isSpaceQueryingRef.current) {
-      return;
-    }
-    e.preventDefault();
-    scene.setZoomAndCenter(flyToZoom, e.lngLat)
-  }
-
-  const handleClusterMousemove = (
-    e: IL7LayerEventTarget
-  ) => {
-    if (isSpaceQueryingRef.current) {
-      return;
-    }
-    if (e.feature && e.feature.properties) {
-      // e.feature.properties.countDetails = JSON.parse(e.feature.properties.countDetails);
-
-      // e.features[0].properties.centralPoint = JSON.parse(e.features[0].properties.centralPoint);
-      hoveAreaCluster(e.feature.properties, e.feature.properties.centralPoint.coordinates);
-    }
-  };
-
   // 报警图标点击事件
   const handleAlarmIconClick = async (e: IL7LayerEventTarget) => {
     console.log('报警图标点击');
     //阻止冒泡
-    e.preventDefault();
-    if (isSpaceQueryingRef.current) {
-      return;
-    }
 
-    if (e.feature && e.feature.properties) {
-      const alarmId = e.feature.properties.alarmId;
 
-      if (alarmId) {
-        setCurrentAlarmDeatil(null);
-
-        const res = await request<IAlarmDetail>({ url: `/cx-alarm/alm/alarm/find/${alarmId}` });
-
-        if (res.code === 200) {
-          const newSuppData: ISuppData[] = res.data.suppData.map((item, index) => {
-            if (item.infoType !== 0) {
-              const newItem: any = { ...item };
-              const path = new URL(newItem.infoValue);
-              const newImgUrl = '/minio' + path.pathname;
-              newItem.infoValue = newImgUrl;
-
-              return newItem;
-            }
-            return item;
-          });
-          console.log('debug-------4-------', {
-            ...res.data,
-            suppData: newSuppData,
-          });
-          setCurrentAlarmDeatil({
-            ...res.data,
-            suppData: newSuppData,
-          });
-        }
-      }
-    }
   };
 
   const resLayerEnter = () => {

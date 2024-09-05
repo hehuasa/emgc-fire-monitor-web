@@ -61,24 +61,11 @@ const Page = () => {
   const isGetAlarmList = useRef(false);
 
   // 报警列表
-  const getAlalrmList = async ({
-    currentAlarmStatus_,
-    alarmTypes_,
-    alarmDepartment_,
-  }: {
-    currentAlarmStatus_: IAlarmStatus;
-    alarmTypes_: string;
-    alarmDepartment_: string;
-  }) => {
-    const obj = {
-      status: currentAlarmStatus_,
-      alarmTypes: alarmTypes_ === '' ? 'null' : alarmTypes_,
-      dept_id: alarmDepartment_,
-    };
+  const getAlalrmList = async () => {
 
-    const param = stringify(obj, { indices: false });
+
     const res = await request<IAlarm[]>({
-      url: `/ms-gateway/cx-alarm/alm/alarm/findList?${param}`,
+      url: `/mock/alarmList.json`,
     });
 
     if (res.code === 200) {
@@ -179,23 +166,10 @@ const Page = () => {
   console.info('============lastUpdateAlarmTime==============', lastUpdateAlarmTime);
   useEffect(() => {
     if (lastUpdateAlarmTime) {
-      let alarmGroup = '';
       if (mapSceneRef.current) {
-        const newG = alarmTypes.filter((val) => val.isChecked);
-        for (const [index, { alarmType }] of newG.entries()) {
-          alarmGroup += index < newG.length - 1 ? `${alarmType},` : `${alarmType}`;
-        }
 
-        updateAlarmCluster({
-          currentAlarmStatus_: currentAlarmStatusRef.current,
-          alarmTypes_: alarmGroup,
-          alarmDepartment_: alarmDepartment,
-        });
-        getAlalrmList({
-          currentAlarmStatus_: currentAlarmStatusRef.current,
-          alarmTypes_: alarmGroup,
-          alarmDepartment_: alarmDepartment,
-        });
+
+        getAlalrmList();
       }
     }
   }, [lastUpdateAlarmTime]);
@@ -203,23 +177,9 @@ const Page = () => {
   // 报警太频繁，非首次报警，5秒更新一次
   useEffect(() => {
     if (lastUpdateAlarmTimeWithNotNew) {
-      let alarmGroup = '';
       if (mapRef.current) {
-        const newG = alarmTypes.filter((val) => val.isChecked);
-        for (const [index, { alarmType }] of newG.entries()) {
-          alarmGroup += index < newG.length - 1 ? `${alarmType},` : `${alarmType}`;
-        }
 
-        updateAlarmCluster({
-          currentAlarmStatus_: currentAlarmStatusRef.current,
-          alarmTypes_: alarmGroup,
-          alarmDepartment_: alarmDepartment,
-        });
-        getAlalrmList({
-          currentAlarmStatus_: currentAlarmStatusRef.current,
-          alarmTypes_: alarmGroup,
-          alarmDepartment_: alarmDepartment,
-        });
+        getAlalrmList();
       }
 
     }
@@ -250,30 +210,15 @@ const Page = () => {
     setMapScene(scene);
     setMapLoaded(true);
 
-    getAreaDatas();
 
-    if (centerRef.current.lng) {
-      // mapRef.current.flyTo({
-      //   center: [centerRef.current.lng, centerRef.current.lat],
-      //   zoom: mapOp.flyToZoom,
-      // });
-    }
   };
 
   //页面加成成功时获取报警列表和聚合 只执行一次
   //alarmTypes有可能在页面加载完成的时候有可能没有值，所以用在effect里面
   useEffect(() => {
-    if (mapLoaded && alarmTypes && alarmTypes.length && !isGetAlarmList.current) {
-      updateAlarmCluster({
-        currentAlarmStatus_: currentAlarmStatus,
-        alarmTypes_: alarmTypes.map((item) => item.alarmType).join(','),
-        alarmDepartment_: alarmDepartment,
-      });
-      getAlalrmList({
-        currentAlarmStatus_: currentAlarmStatus,
-        alarmTypes_: alarmTypes.map((item) => item.alarmType).join(','),
-        alarmDepartment_: alarmDepartment,
-      });
+    if (mapLoaded && !isGetAlarmList.current) {
+
+      getAlalrmList();
 
       isGetAlarmList.current = true;
     }
