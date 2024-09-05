@@ -16,15 +16,14 @@
   },
   "dependencies": {
     "@ant-design/nextjs-registry": "^1.0.1",
-    "@antv/l7": "^2.22.0",
-    "@antv/l7-maps": "^2.22.0",
+    "@antv/l7": "^2.22.1",
+    "@antv/l7-maps": "^2.22.1",
+    "mapbox-gl": "^3.6.0",
     "@chakra-ui/icons": "2.1.0",
     "@chakra-ui/next-js": "^2.1.5",
     "@chakra-ui/react": "2.8.0",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
-    "@fortawesome/fontawesome-free": "^6.6.0",
-    "@minoru/react-dnd-treeview": "^3.4.4",
 
     "@turf/turf": "^7.0.0",
     "@types/geojson": "^7946.0.14",
@@ -34,8 +33,8 @@
     "@types/react": "18.3.3",
     "@types/react-dom": "18.3.0",
     "@types/uuid": "^10.0.0",
-    "@typescript-eslint/eslint-plugin": "^8.0.1",
-    "@typescript-eslint/parser": "^8.0.1",
+    "@typescript-eslint/eslint-plugin": "^8.4.0",
+    "@typescript-eslint/parser": "^8.4.0",
     "ahooks": "^3.8.0",
     "antd": "^5.20.1",
     "autoprefixer": "^10.4.20",
@@ -45,7 +44,7 @@
     "dayjs-ext": "^2.2.0",
     "dotenv": "^16.4.5",
     "eslint": "8.57.0",
-    "eslint-config-next": "14.2.5",
+    "eslint-config-next": "14.2.8",
     "framer-motion": "^11.3.24",
     "geojson": "^0.5.0",
     "http-proxy-middleware": "3.0.1-beta.0",
@@ -71,9 +70,9 @@
   },
   "devDependencies": {
     "eslint-config-prettier": "^8.10.0",
-    "eslint-plugin-react": "^7.35.0",
+    "eslint-plugin-react": "^7.35.2",
     "eslint-plugin-react-hooks": "^4.6.2",
-    "eslint-plugin-unused-imports": "^4.0.1",
+    "eslint-plugin-unused-imports": "^4.1.3",
     "prettier": "^3.3.3"
   }
 }

@@ -1,7 +1,5 @@
 'use client';
-import AccessControl from '@/components/MapTools/AccessControl';
-import Broadcast from '@/components/MapTools/Broadcast';
-import { IUeMap } from '@/components/UeMap';
+
 import {
   alarmDepartmentModel,
   alarmListModel,
@@ -12,7 +10,7 @@ import {
   lastUpdateAlarmTimeModel,
   lastUpdateAlarmTimeWithNotNewModel,
 } from '@/models/alarm';
-import { IArea, isSpaceQueryingModel, MapSceneContext, UpdateAlarmfnContext } from '@/models/map';
+import { IArea, MapSceneContext, UpdateAlarmfnContext } from '@/models/map';
 import { genAlarmClusterData, genAlarmIcons, genAlarmLineIcons } from '@/utils/mapUtils';
 import { request } from '@/utils/request';
 import { featureCollection } from '@turf/turf';
@@ -50,10 +48,7 @@ const Page = () => {
   const [mapScene, setMapScene] = useState<null | Scene>(null);
 
   const [mapObj, setMapObj] = useState<null | maplibregl.Map>(null);
-  const spaceQuerySquare = useRecoilValue(isSpaceQueryingModel);
-  const [mapType, setMapType] = useState<'3d' | '2d'>(
-    process.env.NEXT_PUBLIC_ANALYTICS_mapType as '2d'
-  );
+
 
   const setAlarmList = useSetRecoilState(alarmListModel);
   const lastUpdateAlarmTime = useRecoilValue(lastUpdateAlarmTimeModel);
@@ -226,13 +221,7 @@ const Page = () => {
           alarmDepartment_: alarmDepartment,
         });
       }
-      if (ueMapRef.current) {
-        getAlalrmList({
-          currentAlarmStatus_: currentAlarmStatusRef.current,
-          alarmTypes_: alarmGroup,
-          alarmDepartment_: alarmDepartment,
-        });
-      }
+
     }
   }, [lastUpdateAlarmTimeWithNotNew]);
 
@@ -290,8 +279,7 @@ const Page = () => {
     }
   }, [alarmTypes, mapLoaded]);
 
-  // 3d地图注册
-  const ueMapRef = useRef<IUeMap | null>(null);
+
 
   // 2、3 d 地图中心
   const centerRef = useRef<{ lat: number; lng: number; height: number }>({
@@ -309,27 +297,21 @@ const Page = () => {
     isGetAlarmList.current = false;
     mapRef.current = null;
   };
-  const disable3dMap = () => {
-    console.info('===========disable3dMap===============');
-    ueMapRef.current = null;
-    setMapLoaded(false);
-    isGetAlarmList.current = false;
-  };
+
 
   useUnmount(() => {
     disable2dMap();
-    disable3dMap();
   });
 
   return (
     <div
       className="w-full h-full relative "
 
-      // css={{
-      //   '&  .maplibregl-canvas': {
-      //     cursor: spaceQuerySquare ? 'default' : 'pointer',
-      //   },
-      // }}
+    // css={{
+    //   '&  .maplibregl-canvas': {
+    //     cursor: spaceQuerySquare ? 'default' : 'pointer',
+    //   },
+    // }}
     >
       {/* <Wenet /> */}
 
@@ -343,10 +325,7 @@ const Page = () => {
           </MapSceneContext.Provider>
         </UpdateAlarmfnContext.Provider>
       )}
-      {/* 广播 */}
-      <Broadcast />
-      {/* 门禁 */}
-      <AccessControl />
+
     </div>
   );
 };
