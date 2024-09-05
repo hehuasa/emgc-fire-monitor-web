@@ -9,7 +9,7 @@ import { AiOutlineCompress } from 'react-icons/ai';
 import { MapRotateIcon } from '../Icons';
 
 import { clone } from 'lodash';
-import { ThreeSceneLayer } from './ThreeSceneLayer';
+
 
 export const mapOp = {
   minClusterZoom: 15,
@@ -79,7 +79,7 @@ const Map = ({
   const minimapDom = useRef<HTMLDivElement | null>(null);
   const compassDom = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
-  const customLayer = useRef<ThreeSceneLayer | null>(null);
+
 
   const newOps = useRef(clone(mapOps));
 
@@ -104,13 +104,7 @@ const Map = ({
        * 添加自定义图层，结合threejs
        */
       const addCustomLayer = () => {
-        customLayer.current = new ThreeSceneLayer();
-        customLayer.current.SetPosition([
-          Number(process.env.NEXT_PUBLIC_ANALYTICS_MAPCenterLng),
-          Number(process.env.NEXT_PUBLIC_ANALYTICS_MAPCenterLat),
-        ]);
 
-        return customLayer.current;
       };
 
       map.on('load', () => {
@@ -190,11 +184,9 @@ const Map = ({
 
       map.on('rotate', () => {
         if (compassDom.current) {
-          compassDom.current.style.transform = `scale(${
-            1 / Math.pow(Math.cos(map.transform.pitch * (Math.PI / 180)), 0.5)
-          }) rotateX(${map.transform.pitch}deg) rotateZ(${
-            map.transform.angle * (180 / Math.PI)
-          }deg)`;
+          compassDom.current.style.transform = `scale(${1 / Math.pow(Math.cos(map.transform.pitch * (Math.PI / 180)), 0.5)
+            }) rotateX(${map.transform.pitch}deg) rotateZ(${map.transform.angle * (180 / Math.PI)
+            }deg)`;
         }
       });
 

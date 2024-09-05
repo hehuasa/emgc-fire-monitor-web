@@ -27,6 +27,7 @@ import MapLibreMap from '@/components/L7Map/MapLibreMap';
 import { Scene } from '@antv/l7';
 import { useTranslations } from 'next-intl';
 import { FeatureCollection, LineString, Point, Polygon, Position } from 'geojson';
+import MapBoxMap from '@/components/L7Map/MapBoxMap';
 
 const { clusterZoom, flyToZoom } = mapOp;
 
@@ -428,7 +429,7 @@ const Map = ({ getMapObj }: IProps) => {
   return (
     <>
       {/*   {showPopup && mapRef.current && currentAreaClusterData && ( */}
-      <MapLibreMap getMapScence={getMapObj_} />
+      <MapBoxMap getMapScence={getMapObj_} />
       {mapLoaded && mapSceneRef.current && (
         <LaryerInit
           scene={mapSceneRef.current}

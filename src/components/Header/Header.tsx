@@ -12,7 +12,7 @@ import { isSpaceQueryingModel } from '@/models/map';
 import { searchParamModel, searchResModel } from '@/models/resource';
 import { IUserInfo, menuModel } from '@/models/user';
 import { request } from '@/utils/request';
-import { downFileByUrl, flagMenuFn, privateKey, publicKey } from '@/utils/util';
+import { downFileByUrl, flagMenuFn } from '@/utils/util';
 // import { WarningTwoIcon } from '@chakra-ui/icons';
 
 import config from '@/assets/header/config.png';
@@ -161,13 +161,8 @@ const Header = () => {
   });
 
   useMount(async () => {
-    const Jsencrypt = (await import('jsencrypt')).default;
-    jsencryptRef.current = new Jsencrypt();
 
-    jsencryptRef.current.setPublicKey(publicKey);
-    jsencryptRef.current.setPrivateKey(privateKey);
 
-    getUnRead();
   });
 
   const encrypt = (val: string) => {
@@ -179,15 +174,6 @@ const Header = () => {
     return newVal;
   };
 
-  // 获取未读消息数量
-  const getUnRead = useMemoizedFn(async () => {
-    const { code, data } = await request<number>({
-      url: `/ms-gateway/ms-system/sys/message/query_no_read_count`,
-    });
-    if (code === 200) {
-      setNotReadNumber(data);
-    }
-  });
 
   //-------------------------
   const uploadCallBack = useMemoizedFn(async (e: File) => {

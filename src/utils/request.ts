@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { message } from 'antd';
-import { handleCache } from '../amisCache/sqlite3';
-import { dev } from './util';
+
 // import { Toast } from 'antd-mobile';
 
 export interface IFetchOp extends RequestInit {
@@ -420,38 +419,4 @@ export const downloadRequest = async ({
   } catch (error) {
     return Promise.reject(false);
   }
-};
-
-export const appAmisRequest = async <T>({
-  url,
-  options = { headers: {} },
-}: IFetchParams): Promise<IResData<T> | AmisResponseType | Blob> => {
-  appSetHeader(options);
-  return amisRequest({ url, options });
-};
-
-// 请求amis页面本身的json，不是请求数据的接口
-export const requestAmisJson = async (amisId: number) => {
-  // 开发模式下直接请求amis服务，不走sqlite
-  const fetchUrl =
-    process.env.NEXT_PUBLIC_ANALYTICS_Strapi_Server +
-    `/api/cpecc-amis-pages/${amisId}?fields[0]=content`;
-
-  const json = dev
-    ? await (await fetch(fetchUrl, { cache: 'no-cache' })).json()
-    : process.env.isBuilding || globalThis.alert === undefined
-      ? await (await handleCache(Number(amisId))).json()
-      : await (
-          await fetch(`${process.env.NEXT_PUBLIC_ANALYTICS_BasePath}/api/amis-cache?id=${amisId}`, {
-            cache: dev ? 'no-cache' : 'force-cache',
-          })
-        ).json();
-
-  if (json && json.data && json.data.attributes && json.data.attributes.content) {
-    return json.data.attributes.content;
-  }
-  return {
-    type: 'page',
-    body: '数据请求失败，请联系管理员',
-  };
 };
