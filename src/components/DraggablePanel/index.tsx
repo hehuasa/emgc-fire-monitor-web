@@ -30,10 +30,12 @@ const DraggablePanel = ({ children }: { children?: JSX.Element }) => {
     };
 
     const handleMouseUp = (event: MouseEvent) => {
+      if (isDragging) {
+        const newX = positionRef.current.x + (event.clientX - initialX);
+        const newY = positionRef.current.y + (event.clientY - initialY);
+        positionRef.current = { x: newX, y: newY };
+      }
       isDragging = false;
-      const newX = positionRef.current.x + (event.clientX - initialX);
-      const newY = positionRef.current.y + (event.clientY - initialY);
-      positionRef.current = { x: newX, y: newY };
     };
 
     panel.addEventListener('mousedown', handleMouseDown);
