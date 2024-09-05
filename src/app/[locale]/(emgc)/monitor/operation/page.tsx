@@ -1,7 +1,5 @@
 'use client';
-import AccessControl from '@/components/MapTools/AccessControl';
-import Broadcast from '@/components/MapTools/Broadcast';
-import { IUeMap } from '@/components/UeMap';
+
 import {
   alarmDepartmentModel,
   alarmListModel,
@@ -12,7 +10,7 @@ import {
   lastUpdateAlarmTimeModel,
   lastUpdateAlarmTimeWithNotNewModel,
 } from '@/models/alarm';
-import { IArea, isSpaceQueryingModel, MapSceneContext, UpdateAlarmfnContext } from '@/models/map';
+import { IArea, MapSceneContext, UpdateAlarmfnContext } from '@/models/map';
 import { genAlarmClusterData, genAlarmIcons, genAlarmLineIcons } from '@/utils/mapUtils';
 import { request } from '@/utils/request';
 import { featureCollection } from '@turf/turf';
@@ -50,10 +48,7 @@ const Page = () => {
   const [mapScene, setMapScene] = useState<null | Scene>(null);
 
   const [mapObj, setMapObj] = useState<null | maplibregl.Map>(null);
-  const spaceQuerySquare = useRecoilValue(isSpaceQueryingModel);
-  const [mapType, setMapType] = useState<'3d' | '2d'>(
-    process.env.NEXT_PUBLIC_ANALYTICS_mapType as '2d'
-  );
+
 
   const setAlarmList = useSetRecoilState(alarmListModel);
   const lastUpdateAlarmTime = useRecoilValue(lastUpdateAlarmTimeModel);
@@ -66,24 +61,11 @@ const Page = () => {
   const isGetAlarmList = useRef(false);
 
   // 报警列表
-  const getAlalrmList = async ({
-    currentAlarmStatus_,
-    alarmTypes_,
-    alarmDepartment_,
-  }: {
-    currentAlarmStatus_: IAlarmStatus;
-    alarmTypes_: string;
-    alarmDepartment_: string;
-  }) => {
-    const obj = {
-      status: currentAlarmStatus_,
-      alarmTypes: alarmTypes_ === '' ? 'null' : alarmTypes_,
-      dept_id: alarmDepartment_,
-    };
+  const getAlalrmList = async () => {
 
-    const param = stringify(obj, { indices: false });
+
     const res = await request<IAlarm[]>({
-      url: `/ms-gateway/cx-alarm/alm/alarm/findList?${param}`,
+      url: `/mock/alarmList.json`,
     });
 
     if (res.code === 200) {
@@ -184,23 +166,10 @@ const Page = () => {
   console.info('============lastUpdateAlarmTime==============', lastUpdateAlarmTime);
   useEffect(() => {
     if (lastUpdateAlarmTime) {
-      let alarmGroup = '';
       if (mapSceneRef.current) {
-        const newG = alarmTypes.filter((val) => val.isChecked);
-        for (const [index, { alarmType }] of newG.entries()) {
-          alarmGroup += index < newG.length - 1 ? `${alarmType},` : `${alarmType}`;
-        }
 
-        updateAlarmCluster({
-          currentAlarmStatus_: currentAlarmStatusRef.current,
-          alarmTypes_: alarmGroup,
-          alarmDepartment_: alarmDepartment,
-        });
-        getAlalrmList({
-          currentAlarmStatus_: currentAlarmStatusRef.current,
-          alarmTypes_: alarmGroup,
-          alarmDepartment_: alarmDepartment,
-        });
+
+        getAlalrmList();
       }
     }
   }, [lastUpdateAlarmTime]);
@@ -208,31 +177,11 @@ const Page = () => {
   // 报警太频繁，非首次报警，5秒更新一次
   useEffect(() => {
     if (lastUpdateAlarmTimeWithNotNew) {
-      let alarmGroup = '';
       if (mapRef.current) {
-        const newG = alarmTypes.filter((val) => val.isChecked);
-        for (const [index, { alarmType }] of newG.entries()) {
-          alarmGroup += index < newG.length - 1 ? `${alarmType},` : `${alarmType}`;
-        }
 
-        updateAlarmCluster({
-          currentAlarmStatus_: currentAlarmStatusRef.current,
-          alarmTypes_: alarmGroup,
-          alarmDepartment_: alarmDepartment,
-        });
-        getAlalrmList({
-          currentAlarmStatus_: currentAlarmStatusRef.current,
-          alarmTypes_: alarmGroup,
-          alarmDepartment_: alarmDepartment,
-        });
+        getAlalrmList();
       }
-      if (ueMapRef.current) {
-        getAlalrmList({
-          currentAlarmStatus_: currentAlarmStatusRef.current,
-          alarmTypes_: alarmGroup,
-          alarmDepartment_: alarmDepartment,
-        });
-      }
+
     }
   }, [lastUpdateAlarmTimeWithNotNew]);
 
@@ -261,37 +210,21 @@ const Page = () => {
     setMapScene(scene);
     setMapLoaded(true);
 
-    getAreaDatas();
 
-    if (centerRef.current.lng) {
-      // mapRef.current.flyTo({
-      //   center: [centerRef.current.lng, centerRef.current.lat],
-      //   zoom: mapOp.flyToZoom,
-      // });
-    }
   };
 
   //页面加成成功时获取报警列表和聚合 只执行一次
   //alarmTypes有可能在页面加载完成的时候有可能没有值，所以用在effect里面
   useEffect(() => {
-    if (mapLoaded && alarmTypes && alarmTypes.length && !isGetAlarmList.current) {
-      updateAlarmCluster({
-        currentAlarmStatus_: currentAlarmStatus,
-        alarmTypes_: alarmTypes.map((item) => item.alarmType).join(','),
-        alarmDepartment_: alarmDepartment,
-      });
-      getAlalrmList({
-        currentAlarmStatus_: currentAlarmStatus,
-        alarmTypes_: alarmTypes.map((item) => item.alarmType).join(','),
-        alarmDepartment_: alarmDepartment,
-      });
+    if (mapLoaded && !isGetAlarmList.current) {
+
+      getAlalrmList();
 
       isGetAlarmList.current = true;
     }
   }, [alarmTypes, mapLoaded]);
 
-  // 3d地图注册
-  const ueMapRef = useRef<IUeMap | null>(null);
+
 
   // 2、3 d 地图中心
   const centerRef = useRef<{ lat: number; lng: number; height: number }>({
@@ -309,27 +242,21 @@ const Page = () => {
     isGetAlarmList.current = false;
     mapRef.current = null;
   };
-  const disable3dMap = () => {
-    console.info('===========disable3dMap===============');
-    ueMapRef.current = null;
-    setMapLoaded(false);
-    isGetAlarmList.current = false;
-  };
+
 
   useUnmount(() => {
     disable2dMap();
-    disable3dMap();
   });
 
   return (
     <div
       className="w-full h-full relative "
 
-      // css={{
-      //   '&  .maplibregl-canvas': {
-      //     cursor: spaceQuerySquare ? 'default' : 'pointer',
-      //   },
-      // }}
+    // css={{
+    //   '&  .maplibregl-canvas': {
+    //     cursor: spaceQuerySquare ? 'default' : 'pointer',
+    //   },
+    // }}
     >
       {/* <Wenet /> */}
 
@@ -343,10 +270,7 @@ const Page = () => {
           </MapSceneContext.Provider>
         </UpdateAlarmfnContext.Provider>
       )}
-      {/* 广播 */}
-      <Broadcast />
-      {/* 门禁 */}
-      <AccessControl />
+
     </div>
   );
 };

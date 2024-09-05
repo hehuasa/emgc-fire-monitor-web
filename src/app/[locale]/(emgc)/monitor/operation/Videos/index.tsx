@@ -3,20 +3,14 @@
 import { CircleClose, PtzIcon1, VideotapeIcon, VideoZoomOut } from '@/components/Icons';
 // import WebRtcPlayer from '@/components/Video/WebRtcPlayer';
 // import WebRtcPlayer from '@/components/Video/WebRtcPlayer';
-import { CloseIcon } from '@/components/Icons';
 import NodeMediaPlayer, { Refs as VideoRefs } from '@/components/Video/NodeMediaPlayer';
 import Ptz from '@/components/Video/Ptz';
 import WebRtcSrs from '@/components/Video/WebRtcSrs';
 import { IPlayVideoItem, playVideosModel } from '@/models/video';
 import {
   Box,
-  Button,
   Flex,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
   Icon,
-  Input,
   Modal,
   ModalBody,
   ModalContent,
@@ -24,9 +18,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { useMemoizedFn, useMount, useSafeState } from 'ahooks';
-import moment from 'moment';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
 import Moveable, { OnDrag, OnResize } from 'react-moveable';
 import { useRecoilState } from 'recoil';
@@ -43,17 +35,9 @@ const videoWidth = 495 + 8;
 const videoHeight = 270 + 8;
 const Videos = () => {
   const formatMessage = useTranslations("base");
-  const methods = useForm<IHistoryForm>({
-    defaultValues: {},
-  });
 
-  const {
-    handleSubmit,
-    register,
-    formState: { errors },
-    getValues,
-    reset,
-  } = methods;
+
+
   const [videos, setVideos] = useRecoilState(playVideosModel);
 
   const [fullHeight, setFullHeight] = useState('4xl');
@@ -199,7 +183,7 @@ const Videos = () => {
         </ModalContent>
       </Modal>
       {/* 录像modal */}
-      <Modal
+      {/* <Modal
         size={'6xl'}
         isOpen={videotapeIsOpen}
         onClose={closeHistoryVideo}
@@ -304,7 +288,7 @@ const Videos = () => {
             </Box>
           </ModalBody>
         </ModalContent>
-      </Modal>
+      </Modal> */}
     </>
   );
 };
