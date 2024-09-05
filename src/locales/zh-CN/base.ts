@@ -102,7 +102,7 @@ const json = {
 
     area: '区域',
 
-    sysName: '安全管控系统',
+    sysName: '纽约垃圾厂智慧管控平台',
     sysNameDome: '基于工业互联网平台的安全管控系统',
   },
 };

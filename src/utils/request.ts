@@ -104,7 +104,7 @@ const go401 = () => {
   const intl = `/${localStorage.getItem('intl') || 'zh'}`;
 
   const newUrl =
-    window.location.origin + process.env.NEXT_PUBLIC_ANALYTICS_BasePath + intl + '/permission';
+    window.location.origin + process.env.NEXT_PUBLIC_ANALYTICS_BasePath + intl + '/NoAuth';
   window.location.href = newUrl;
 
   return Promise.reject();

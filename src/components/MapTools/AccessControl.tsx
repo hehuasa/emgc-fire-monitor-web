@@ -1,11 +1,11 @@
-import { confirmModal } from '@/components/Confirm';
+// import { confirmModal } from '@/components/Confirm';
 import { CircleClose } from '@/components/Icons';
 import BaseMap from '@/components/Map';
 import { localesModal } from '@/models/global';
 import { accessControltVisibleModel } from '@/models/map';
 import { IResItem } from '@/models/resource';
 import { request } from '@/utils/request';
-import { execOperate } from '@/utils/util';
+// import { execOperate } from '@/utils/util';
 import {
   Box,
   Button,
@@ -17,7 +17,7 @@ import {
   useTheme,
 } from '@chakra-ui/react';
 import { featureCollection, point } from '@turf/turf';
-import { Point, FeatureCollection } from 'geojson'
+import { Point, FeatureCollection } from 'geojson';
 import { useMemoizedFn } from 'ahooks';
 import { stringify } from 'qs';
 import { useRef } from 'react';
@@ -134,7 +134,7 @@ const AccessControl = ({ theme = 'shallow', onCloseFn, eventId }: Props) => {
     });
   };
 
-  const resLayerClick = (e: { features: unknown[]; }) => {
+  const resLayerClick = (e: { features: unknown[] }) => {
     if (e.features && e.features[0]) {
       const res = e.features[0] as unknown as {
         properties: { open: boolean };
@@ -232,7 +232,7 @@ const AccessControl = ({ theme = 'shallow', onCloseFn, eventId }: Props) => {
             {theme === 'shallow' ? (
               _renderBody()
             ) : (
-              <ModalWarp onClose={onClose} title={t("accessControl")}>
+              <ModalWarp onClose={onClose} title={t('accessControl')}>
                 {_renderBody()}
               </ModalWarp>
             )}
