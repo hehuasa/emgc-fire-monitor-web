@@ -1,6 +1,7 @@
 import { Mapbox, Scale, Scene, Zoom } from '@antv/l7';
 import { useMount } from 'ahooks';
 import mapboxgl from 'mapbox-gl';
+import { useSearchParams } from 'next/navigation';
 import React, { useRef } from 'react'
 import { AiOutlineSync } from 'react-icons/ai';
 
@@ -14,19 +15,34 @@ interface IProps {
 
 const MapBoxMap = ({ getMapScence, onMapLoaded }: IProps) => {
     const sceneRef = useRef<Scene | null>(null);
+    const searchParams = useSearchParams();
+    const mapType = searchParams.get('mapType');
 
 
     useMount(() => {
         if (sceneRef.current) {
             return;
         }
+        let style;
+        switch (mapType) {
+            case '1':
+                style = process.env.NEXT_PUBLIC_ANALYTICS_MAPURL_vec
+                break;
+            case '2':
+                style = process.env.NEXT_PUBLIC_ANALYTICS_MAPURL_satellite
+                break;
+            default:
+                break;
+        }
         mapboxgl.accessToken = tk;
         const map = new mapboxgl.Map({
             container: 'map', // container id
-            style: 'mapbox://styles/mapbox/streets-v11', // stylesheet location
-            center: [-73.9286084, 40.8140204], // starting position [lng, lat]
-            // center: [103.82357442634452, 30.992602876948965],
-            zoom: 18, // starting zoom
+            style,
+            center: [Number(process.env.NEXT_PUBLIC_ANALYTICS_MAPCenterLng), Number(process.env.NEXT_PUBLIC_ANALYTICS_MAPCenterLat)],
+            bearing: Number(process.env.NEXT_PUBLIC_ANALYTICS_MAPCenterBearing),
+            zoom: Number(process.env.NEXT_PUBLIC_ANALYTICS_MAPCenterZoom),
+            pitch: Number(process.env.NEXT_PUBLIC_ANALYTICS_MAPPitch),
+            attributionControl: false,
         });
 
 
@@ -87,16 +103,14 @@ const MapBoxMap = ({ getMapScence, onMapLoaded }: IProps) => {
     return (
         <>
             <div
-                style={{
-                    background: 'rgb(13, 37, 85)',
-                }}
-                className="absolute top-0 left-0 w-full h-full bg-[rgb(13, 37, 85)] min-h-[600px] "
+
+                className="absolute top-0 left-0 w-full h-full min-h-[600px] "
                 id="map"
             ></div>
 
             <div
 
-                className="absolute  bottom-28 z-10 cursor-pointer hover:bg-blue-600 bg-[#2574A7] rounded-md w-9 h-9 flex items-center justify-center"
+                className="absolute right-2  bottom-20 z-10 cursor-pointer hover:bg-[#f3f3f3] bg-white rounded-md w-7 h-7 flex items-center justify-center"
                 onClick={handleReset}
             >
                 <AiOutlineSync />
