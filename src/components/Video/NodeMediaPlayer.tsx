@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { request } from '@/utils/request';
 import { Box, BoxProps, Spinner } from '@chakra-ui/react';
 import { useMemoizedFn, useMount, useSafeState, useUnmount } from 'ahooks';
@@ -10,105 +12,22 @@ export type Refs = {
 };
 interface Iprops {
   cameraId: string;
+  isNVR: boolean;
+  rtspIndex: number;
   history?: boolean;
   start?: string;
   end?: string;
   contentStyle?: BoxProps;
   streamType?: number; // 码流类型, 0:主码流,1:子码流; 默认1
 }
-const user = 'admin';
-const pass = 'jiankong123';
 
-const ips = [
-  'rtsp://' +
-    user +
-    ':' +
-    pass +
-    '@' +
-    '192.168.23.19' +
-    ':554/cam/realmonitor?channel=1&subtype=0',
-  'rtsp://' +
-    user +
-    ':' +
-    pass +
-    '@' +
-    '192.168.23.20' +
-    ':554/cam/realmonitor?channel=1&subtype=0',
-  'rtsp://' +
-    user +
-    ':' +
-    pass +
-    '@' +
-    '192.168.23.22' +
-    ':554/cam/realmonitor?channel=1&subtype=0',
-  'rtsp://' +
-    user +
-    ':' +
-    pass +
-    '@' +
-    '192.168.23.23' +
-    ':554/cam/realmonitor?channel=1&subtype=0',
-  'rtsp://' +
-    user +
-    ':' +
-    pass +
-    '@' +
-    '192.168.23.24' +
-    ':554/cam/realmonitor?channel=1&subtype=0',
-  'rtsp://' +
-    user +
-    ':' +
-    pass +
-    '@' +
-    '192.168.23.25' +
-    ':554/cam/realmonitor?channel=1&subtype=0',
-  'rtsp://' +
-    user +
-    ':' +
-    pass +
-    '@' +
-    '192.168.23.26' +
-    ':554/cam/realmonitor?channel=1&subtype=0',
-  'rtsp://' +
-    user +
-    ':' +
-    pass +
-    '@' +
-    '192.168.23.27' +
-    ':554/cam/realmonitor?channel=1&subtype=0',
-  'rtsp://' +
-    user +
-    ':' +
-    pass +
-    '@' +
-    '192.168.23.30' +
-    ':554/cam/realmonitor?channel=1&subtype=0',
-  'rtsp://' +
-    user +
-    ':' +
-    pass +
-    '@' +
-    '192.168.23.31' +
-    ':554/cam/realmonitor?channel=1&subtype=0',
 
-  'rtsp://' + user + ':' + pass + '@' + '192.168.23.10' + ':554/Streaming/Channels/101',
-  'rtsp://' + user + ':' + pass + '@' + '192.168.23.11' + ':554/Streaming/Channels/101',
-  'rtsp://' + user + ':' + pass + '@' + '192.168.23.12' + ':554/Streaming/Channels/101',
-  'rtsp://' + user + ':' + pass + '@' + '192.168.23.13' + ':554/Streaming/Channels/101',
-  'rtsp://' + user + ':' + pass + '@' + '192.168.23.14' + ':554/Streaming/Channels/101',
-  'rtsp://' + user + ':' + pass + '@' + '192.168.23.15' + ':554/Streaming/Channels/101',
-  'rtsp://' + user + ':' + pass + '@' + '192.168.23.16' + ':554/Streaming/Channels/101',
-  'rtsp://' + user + ':' + pass + '@' + '192.168.23.17' + ':554/Streaming/Channels/101',
-  'rtsp://' + user + ':' + pass + '@' + '192.168.23.18' + ':554/Streaming/Channels/101',
-];
-
-const getUrl = (index: number) => {
-  const url = ips[index];
-  // const url = 'rtsp://' + user + ":" + pass + "@" + ip + ':554/cam/realmonitor?channel=1&subtype=0';
-  return url;
-};
+interface IVideoObjItem {
+  rtspVideos: string[];
+  NVRVideos: { id: string }[];
+}
 const NodeMediaPlayer = (
-  { cameraId, history, start, end, contentStyle, streamType }: Iprops,
+  { cameraId, history, start, end, contentStyle, streamType, isNVR, rtspIndex }: Iprops,
   ref: Ref<Refs>
 ) => {
   const id = useRef<string>('video' + Math.ceil(Math.random() * 10000) + new Date().getTime());
@@ -117,13 +36,15 @@ const NodeMediaPlayer = (
   //正在播放
   const [isPlaying, setIsPlaying] = useSafeState(false);
   // const toast = useToast();
-  const timer = useRef<null | NodeJS.Timer>(null);
+  const timer = useRef<null | NodeJS.Timeout>(null);
   const playerRef = useRef<null | NodePlayer>(null);
 
   const currentVideo = useRef<{ id: string; playUrl: string }>({
     id: '',
     playUrl: '',
   });
+
+  const videoObjsRef = useRef<IVideoObjItem>({ rtspVideos: [], NVRVideos: [] });
 
   useImperativeHandle(ref, () => {
     return {
@@ -160,7 +81,13 @@ const NodeMediaPlayer = (
           setloading(false);
         });
 
-        playVideo();
+        request({ url: "/mock/videos.json" }).then((res) => {
+          const videoObj = res as unknown as IVideoObjItem;
+          videoObjsRef.current.rtspVideos = videoObj.rtspVideos;
+          videoObjsRef.current.NVRVideos = videoObj.NVRVideos;
+          playVideo();
+
+        })
       });
     }
   });
@@ -182,8 +109,8 @@ const NodeMediaPlayer = (
     const url = history
       ? '/device-manger/camera/rtsp_history_play'
       : '/device-manger/camera/rtsp_live_play';
-    const dev = process.env.NODE_ENV !== 'production';
 
+    // @ts-ignore
     const obj: Iprops & { playProtocol: string } = {
       playProtocol: 'HTTP_FLV',
       cameraId,
@@ -227,8 +154,7 @@ const NodeMediaPlayer = (
     }
   };
   const getPlayUrl_fat = async () => {
-    const idex = Math.floor(Math.random() * ips.length);
-    const url = getUrl(idex);
+    const url = videoObjsRef.current.rtspVideos[rtspIndex];
     const res = await request<any>({
       url: '/video-server/api/rtsp_play',
       options: {
@@ -257,10 +183,7 @@ const NodeMediaPlayer = (
   const playVideo = async () => {
     setloading(true);
     if (playerRef.current) {
-      const res =
-        process.env.NEXT_PUBLIC_ANALYTICS_Ms_type === 'cx'
-          ? await getPlayUrl()
-          : await getPlayUrl();
+      const res = isNVR ? await getPlayUrl() : await getPlayUrl_fat();
       if (res) {
         const { id, playUrl, url } = res;
         if (currentVideo.current.id) {
