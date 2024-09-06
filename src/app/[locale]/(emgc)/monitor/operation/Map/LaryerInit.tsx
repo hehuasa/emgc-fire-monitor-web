@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { mapOp } from '@/components/Map';
 import AlarmAnimateIcon from '@/components/Map/AlarmAnimateIcon';
-
+import { createRoot } from 'react-dom/client';
 import CustomAlarmIcon from '@/components/Map/CustomAlarmIcon';
 import { alarmTypeModel, currentAlarmModel } from '@/models/alarm';
 import { isInIconModel, isSpaceQueryingModel } from '@/models/map';
@@ -20,9 +20,10 @@ import { MapMouseEvent } from 'maplibre-gl';
 import { useRef } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { IAlarmClusterItem } from '../page';
-import { LineLayer, PointLayer, PolygonLayer, Scene } from '@antv/l7';
+import { anchorType, LineLayer, Marker, PointLayer, PolygonLayer, Scene } from '@antv/l7';
 
 import FASpng from '@/assets/map/fire.png';
+import AlarmPanel from '@/components/AlarmPanel';
 // import test from 'public/map/test.png'
 
 const { clusterZoom, flyToZoom } = mapOp;
@@ -574,6 +575,17 @@ const LaryerInit = ({
   // 报警图标点击事件
   const handleAlarmIconClick = async (e: IL7LayerEventTarget) => {
     console.log('报警图标点击');
+    scene.removeAllMakers();
+    const el = document.createElement('div');
+    const root = createRoot(el);
+    root.render(<AlarmPanel operation={() => {}} />);
+
+    const marker = new Marker({
+      element: el,
+      anchor: 'TOP_LEFT' as anchorType,
+      offsets: [20, -20],
+    }).setLnglat(e.lngLat);
+    scene.addMarker(marker);
   };
 
   const resLayerEnter = () => {

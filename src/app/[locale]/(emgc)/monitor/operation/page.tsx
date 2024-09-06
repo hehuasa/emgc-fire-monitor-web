@@ -22,7 +22,7 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { FeatureCollection, Point, Polygon } from 'geojson';
 import { Scene } from '@antv/l7';
 import Videos from './Videos';
-import Ptz from '@/components/Video/Ptz';
+import NodeMediaPlayer from '@/components/Video/NodeMediaPlayer';
 
 // const MapToolBar = dynamic(() => import('@/components/MapTools/MaptoolBar'), { ssr: false });
 const BaseMap = dynamic(() => import('./Map'), { ssr: false });
@@ -254,8 +254,7 @@ const Page = () => {
           <MapSceneContext.Provider value={mapScene}>
             {/* <LeftPanel /> */}
             {/* <MapToolBar /> */}
-            {/* <NodeMediaPlayer /> */}
-            <Ptz closePtz={() => {}} cameraId={'1'} />
+            <NodeMediaPlayer cameraId={''} isNVR={false} rtspIndex={1} />
             <Videos />
           </MapSceneContext.Provider>
         </UpdateAlarmfnContext.Provider>

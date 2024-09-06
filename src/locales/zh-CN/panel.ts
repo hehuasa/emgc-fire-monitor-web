@@ -1,5 +1,9 @@
 const json = {
   panel: {
+    'alarm-panel-title': '火警',
+    'alarm-panel-content': '垃圾处理厂B坑',
+    'alarm-panel-time': '报警时间',
+    'alarm-panel-operation': '去处理',
     'operation-cannon-direction': '方向',
     'operation-cannon-spray': '喷洒',
     'operation-cannon-openValve': '开阀',
@@ -11,7 +15,7 @@ const json = {
     'operation-cannon-stop': '停止',
     'operation-cannon-notConnected': '未联网',
     'operation-cannon-zoom': '缩放',
-    'operation-cannon-preset': '预置位',
+    'operation-PTZ-preset': '预置位',
   },
 };
 export default json;

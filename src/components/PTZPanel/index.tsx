@@ -219,7 +219,7 @@ const PTZPanel = ({ closePtz, cameraId }: Props) => {
           >
             <PiMinusFill className="w-[24px] h-[24px]" />
           </button>
-          {formatMessage('operation-cannon-zoom')}
+          {formatMessage('operation-PTZ-zoom')}
           <button
             aria-label="zoom-in"
             onMouseDown={() => {
