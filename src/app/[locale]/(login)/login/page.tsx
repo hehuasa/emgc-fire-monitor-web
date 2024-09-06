@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 'use client';
 import { useLocale, useTranslations } from 'next-intl';
 import { useLocalStorageState, useMemoizedFn, useMount, useSafeState, useUnmount } from 'ahooks';
@@ -95,7 +96,7 @@ const Login = () => {
 			//
 		}
 
-		getCodeImg();
+		// getCodeImg();
 	});
 
 	const encrypt = (val: string) => {
@@ -286,7 +287,7 @@ const Login = () => {
 
 				const pubKeyRes = await request<string>({
 					// url: `/ms-system/login/getPubKey?id=${id}`,
-					url: `/ms-gateway/ms-login/user/getPubKey?id=${id}`,
+					url: `/ms-gateway/ms-system/user/getPubKey?id=${id}`,
 
 					options: {
 						dataReturnConfig: {
@@ -308,8 +309,7 @@ const Login = () => {
 					errMsg: string;
 					errCode: string;
 				}>({
-					// url: `/ms-system/login/login_with_verify`,
-					url: '/ms-gateway/ms-login/user/login',
+					url: '/ms-gateway/ms-system/user/login',
 					options: {
 						headers: {
 							'content-type': 'application/json;charset=utf-8',
@@ -327,8 +327,9 @@ const Login = () => {
 
 				if (loginRes && loginRes.code === 200) {
 
+					//@ts-ignore
 					setUserInfo(loginRes.data);
-					router.push('/zh/montior/operation');
+					router.push('/zh/monitor/operation');
 					// if (loginRes.data.success) {
 					// 	const newInfo = formatUserInfo(loginRes.data.loginUser);
 					// 	setUserInfo(newInfo);
