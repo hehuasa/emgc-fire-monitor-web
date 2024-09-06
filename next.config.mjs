@@ -39,6 +39,18 @@ const nextConfig = {
   transpilePackages: ['echarts', 'zrender'],
   productionBrowserSourceMaps: true,
   basePath: process.env.NEXT_PUBLIC_ANALYTICS_BasePath,
+  async rewrites() {
+    return [
+      {
+        source: '/strapi/:path*',
+        destination: `${process.env.NEXT_PUBLIC_ANALYTICS_Strapi_Server}/:path*`,
+      },
+      {
+        source: '/ms-gateway/:path*',
+        destination: `${process.env.NEXT_PUBLIC_ANALYTICS_Ms_Gateway}/:path*`,
+      },
+    ];
+  },
   webpack: (config, op) => {
     config.module.rules.push({
       test: /\.node/,
