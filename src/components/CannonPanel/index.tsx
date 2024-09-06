@@ -12,7 +12,7 @@ interface ButtonGroupProps {
 }
 const Select = () => {
   return (
-    <select className="w-full bg-[#FFFFFF1C] px-4 py-1">
+    <select className="w-full bg-[#FFFFFF1C] px-4 py-1" aria-label="select">
       <option className="bg-[#0000001c]">1</option>
       <option className="bg-[#0000001c]">2</option>
     </select>
@@ -43,10 +43,6 @@ const Status = ({ status }: { status: string }) => {
     </div>
   );
 };
-
-interface ArrowButtonProps {
-  onDirectionChange: (direction: string) => void;
-}
 
 const ArrowPanel = ({ onDirectionChange }: ArrowButtonProps) => {
   const [selectedDirection, setSelectedDirection] = useState<string | null>(null);

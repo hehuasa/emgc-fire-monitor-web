@@ -22,6 +22,7 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { FeatureCollection, Point, Polygon } from 'geojson';
 import { Scene } from '@antv/l7';
 import Videos from './Videos';
+import Ptz from '@/components/Video/Ptz';
 
 // const MapToolBar = dynamic(() => import('@/components/MapTools/MaptoolBar'), { ssr: false });
 const BaseMap = dynamic(() => import('./Map'), { ssr: false });
@@ -49,7 +50,6 @@ const Page = () => {
 
   const [mapObj, setMapObj] = useState<null | maplibregl.Map>(null);
 
-
   const setAlarmList = useSetRecoilState(alarmListModel);
   const lastUpdateAlarmTime = useRecoilValue(lastUpdateAlarmTimeModel);
   // 报警太频繁，非首次报警，5秒更新一次
@@ -62,8 +62,6 @@ const Page = () => {
 
   // 报警列表
   const getAlalrmList = async () => {
-
-
     const res = await request<IAlarm[]>({
       url: `/mock/alarmList.json`,
     });
@@ -167,8 +165,6 @@ const Page = () => {
   useEffect(() => {
     if (lastUpdateAlarmTime) {
       if (mapSceneRef.current) {
-
-
         getAlalrmList();
       }
     }
@@ -178,10 +174,8 @@ const Page = () => {
   useEffect(() => {
     if (lastUpdateAlarmTimeWithNotNew) {
       if (mapRef.current) {
-
         getAlalrmList();
       }
-
     }
   }, [lastUpdateAlarmTimeWithNotNew]);
 
@@ -209,22 +203,17 @@ const Page = () => {
     mapSceneRef.current = scene;
     setMapScene(scene);
     setMapLoaded(true);
-
-
   };
 
   //页面加成成功时获取报警列表和聚合 只执行一次
   //alarmTypes有可能在页面加载完成的时候有可能没有值，所以用在effect里面
   useEffect(() => {
     if (mapLoaded && !isGetAlarmList.current) {
-
       getAlalrmList();
 
       isGetAlarmList.current = true;
     }
   }, [alarmTypes, mapLoaded]);
-
-
 
   // 2、3 d 地图中心
   const centerRef = useRef<{ lat: number; lng: number; height: number }>({
@@ -243,7 +232,6 @@ const Page = () => {
     mapRef.current = null;
   };
 
-
   useUnmount(() => {
     disable2dMap();
   });
@@ -252,11 +240,11 @@ const Page = () => {
     <div
       className="w-full h-full relative "
 
-    // css={{
-    //   '&  .maplibregl-canvas': {
-    //     cursor: spaceQuerySquare ? 'default' : 'pointer',
-    //   },
-    // }}
+      // css={{
+      //   '&  .maplibregl-canvas': {
+      //     cursor: spaceQuerySquare ? 'default' : 'pointer',
+      //   },
+      // }}
     >
       {/* <Wenet /> */}
 
@@ -266,11 +254,12 @@ const Page = () => {
           <MapSceneContext.Provider value={mapScene}>
             {/* <LeftPanel /> */}
             {/* <MapToolBar /> */}
+            {/* <NodeMediaPlayer /> */}
+            <Ptz closePtz={() => {}} cameraId={'1'} />
             <Videos />
           </MapSceneContext.Provider>
         </UpdateAlarmfnContext.Provider>
       )}
-
     </div>
   );
 };

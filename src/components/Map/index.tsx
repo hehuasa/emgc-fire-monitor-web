@@ -1,7 +1,7 @@
 'use client';
 import { Box, Flex, Stack } from '@chakra-ui/react';
 import { useMount, useUnmount } from 'ahooks';
-import maplibregl, { LngLatBounds, LngLatLike, MapOptions } from 'maplibre-gl';
+import maplibregl, { LngLatBounds, LngLatLike, MapOptions } from 'mapbox-gl';
 import { useRef } from 'react';
 // import popup from '@/assets/videoClient/center.png';
 import { centerOfMass, point, polygon, rhumbBearing, transformTranslate } from '@turf/turf';
@@ -9,7 +9,6 @@ import { AiOutlineCompress } from 'react-icons/ai';
 import { MapRotateIcon } from '../Icons';
 
 import { clone } from 'lodash';
-
 
 export const mapOp = {
   minClusterZoom: 15,
@@ -80,7 +79,6 @@ const Map = ({
   const compassDom = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
 
-
   const newOps = useRef(clone(mapOps));
 
   const initMap = async () => {
@@ -103,9 +101,7 @@ const Map = ({
       /**
        * 添加自定义图层，结合threejs
        */
-      const addCustomLayer = () => {
-
-      };
+      const addCustomLayer = () => {};
 
       map.on('load', () => {
         // map.addSource('terrainSource', {
@@ -184,9 +180,11 @@ const Map = ({
 
       map.on('rotate', () => {
         if (compassDom.current) {
-          compassDom.current.style.transform = `scale(${1 / Math.pow(Math.cos(map.transform.pitch * (Math.PI / 180)), 0.5)
-            }) rotateX(${map.transform.pitch}deg) rotateZ(${map.transform.angle * (180 / Math.PI)
-            }deg)`;
+          compassDom.current.style.transform = `scale(${
+            1 / Math.pow(Math.cos(map.transform.pitch * (Math.PI / 180)), 0.5)
+          }) rotateX(${map.transform.pitch}deg) rotateZ(${
+            map.transform.angle * (180 / Math.PI)
+          }deg)`;
         }
       });
 

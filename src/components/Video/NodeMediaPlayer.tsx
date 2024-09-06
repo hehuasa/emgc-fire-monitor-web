@@ -21,7 +21,6 @@ interface Iprops {
   streamType?: number; // 码流类型, 0:主码流,1:子码流; 默认1
 }
 
-
 interface IVideoObjItem {
   rtspVideos: string[];
   NVRVideos: { id: string }[];
@@ -81,13 +80,12 @@ const NodeMediaPlayer = (
           setloading(false);
         });
 
-        request({ url: "/mock/videos.json" }).then((res) => {
+        request({ url: '/mock/videos.json' }).then((res) => {
           const videoObj = res as unknown as IVideoObjItem;
           videoObjsRef.current.rtspVideos = videoObj.rtspVideos;
           videoObjsRef.current.NVRVideos = videoObj.NVRVideos;
           playVideo();
-
-        })
+        });
       });
     }
   });
@@ -136,9 +134,12 @@ const NodeMediaPlayer = (
         clearInterval(timer.current);
         timer.current = null;
 
-        timer.current = setInterval(() => {
-          pingUrl({ id: urlRes.data.id, playUrl: urlRes.data.playUrl });
-        }, 5 * 1000 * 60);
+        timer.current = setInterval(
+          () => {
+            pingUrl({ id: urlRes.data.id, playUrl: urlRes.data.playUrl });
+          },
+          5 * 1000 * 60
+        );
       }
       const path = window.location.host;
       const protocol = window.location.protocol.indexOf('https') !== -1 ? 'https://' : 'http://';

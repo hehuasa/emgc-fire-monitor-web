@@ -4,6 +4,34 @@ const withNextIntl = createNextIntlPlugin('./src/locales/i18n.ts');
 
 const dev = process.env.NODE_ENV !== 'production';
 
+// const proxy = {
+//   fallback: [
+//     {
+//       source: '/ms-login/:path*',
+//       destination: `${process.env.NEXT_PUBLIC_ANALYTICS_Ms_Gateway}/ms-login/:path*`,
+//     },
+//     {
+//       source: '/ms-system/:path*',
+//       destination: `${process.env.NEXT_PUBLIC_ANALYTICS_Ms_Gateway}/ms-system/:path*`,
+//     },
+//     {
+//       source: '/device-manger/:path*',
+//       destination: `${process.env.NEXT_PUBLIC_ANALYTICS_Ms_Gateway}/device-manger/:path*`,
+//     },
+//     {
+//       source: '/cx-alarm/:path*',
+//       destination: `${process.env.NEXT_PUBLIC_ANALYTICS_Ms_Gateway}/cx-alarm/:path*`,
+//     },
+//     {
+//       source: '/video-server/:path*',
+//       destination: `${process.env.NEXT_PUBLIC_ANALYTICS_Ms_Gateway}/video-server/:path*`,
+//     },
+//     {
+//       source: '/ms-msds/:path*',
+//       destination: `${process.env.NEXT_PUBLIC_ANALYTICS_Ms_Gateway}/ms-msds/:path*`,
+//     },
+//   ],
+// };
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
@@ -24,6 +52,9 @@ const nextConfig = {
     webpackBuildWorker: true,
     proxyTimeout: 600 * 1000,
   },
+  // async rewrites() {
+  //   return proxy;
+  // },
 };
 
 export default withNextIntl(nextConfig);
