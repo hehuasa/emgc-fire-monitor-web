@@ -18,15 +18,42 @@ import { useUnmount } from 'ahooks';
 import dynamic from 'next/dynamic';
 import { stringify } from 'qs';
 import { useEffect, useRef, useState } from 'react';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { FeatureCollection, Point, Polygon } from 'geojson';
 import { Scene } from '@antv/l7';
 import Videos from './Videos';
-import NodeMediaPlayer from '@/components/Video/NodeMediaPlayer';
+import { videoPanelModal } from '@/models/video';
+import { IVideoItem } from '@/components/VideoPanel/VideoList';
 
 // const MapToolBar = dynamic(() => import('@/components/MapTools/MaptoolBar'), { ssr: false });
 const BaseMap = dynamic(() => import('./Map'), { ssr: false });
-
+const VideoPanel = dynamic(() => import('@/components/VideoPanel'), { ssr: false });
+const videoItems: IVideoItem[] = [
+  {
+    index: 1,
+    cameraId: 'camera-001',
+    isNVR: true,
+    rtspIndex: -1,
+  },
+  {
+    index: 2,
+    cameraId: '',
+    isNVR: false,
+    rtspIndex: 1002,
+  },
+  {
+    index: 3,
+    cameraId: 'camera-003',
+    isNVR: true,
+    rtspIndex: -1,
+  },
+  {
+    index: 4,
+    cameraId: '',
+    isNVR: false,
+    rtspIndex: 1004,
+  },
+];
 export interface IAlarmClusterItem {
   alarmCount: number;
   areaId: string;
@@ -44,11 +71,11 @@ export interface IAlarmClusterItem {
 
 const Page = () => {
   const [mapLoaded, setMapLoaded] = useState(false);
-  const mapRef = useRef<null | maplibregl.Map>(null);
+  const mapRef = useRef<null | mapboxgl.Map>(null);
   const mapSceneRef = useRef<null | Scene>(null);
   const [mapScene, setMapScene] = useState<null | Scene>(null);
 
-  const [mapObj, setMapObj] = useState<null | maplibregl.Map>(null);
+  const [mapObj, setMapObj] = useState<null | mapboxgl.Map>(null);
 
   const setAlarmList = useSetRecoilState(alarmListModel);
   const lastUpdateAlarmTime = useRecoilValue(lastUpdateAlarmTimeModel);
@@ -59,6 +86,8 @@ const Page = () => {
 
   const currentAlarmStatus = useRecoilValue(currentAlarmStatusModel);
   const isGetAlarmList = useRef(false);
+
+  const [videoPanel, setVideoPanel] = useRecoilState(videoPanelModal);
 
   // 报警列表
   const getAlalrmList = async () => {
@@ -98,7 +127,7 @@ const Page = () => {
         // const genAlarmLineIconsSources = genAlarmLineIcons(res.data);
         // const centerPointsource = mapRef.current.getSource(
         //   'alarmLineCenterPoint'
-        // ) as maplibregl.GeoJSONSource;
+        // ) as mapboxgl.GeoJSONSource;
         // centerPointsource?.setData(genAlarmLineIconsSources as unknown as GeoJSON.GeoJSON);
 
         // const line = mapRef.current.getLayer("alarmLineAndPerson") as any;
@@ -185,7 +214,7 @@ const Page = () => {
       const url = `/ms-gateway/cx-alarm/dc/area/areaMap`;
       const res = (await request({ url })) as unknown as FeatureCollection<Polygon, IArea>;
       res.features = res.features?.filter((item) => item.geometry.type);
-      const alarmCluster_fill = mapRef.current.getSource('area_fill') as maplibregl.GeoJSONSource;
+      const alarmCluster_fill = mapRef.current.getSource('area_fill') as mapboxgl.GeoJSONSource;
       if (alarmCluster_fill) {
         alarmCluster_fill.setData(
           featureCollection(
@@ -241,7 +270,7 @@ const Page = () => {
       className="w-full h-full relative "
 
       // css={{
-      //   '&  .maplibregl-canvas': {
+      //   '&  .mapboxgl-canvas': {
       //     cursor: spaceQuerySquare ? 'default' : 'pointer',
       //   },
       // }}
@@ -253,8 +282,8 @@ const Page = () => {
         <UpdateAlarmfnContext.Provider value={{ getAlalrmList, updateAlarmCluster }}>
           <MapSceneContext.Provider value={mapScene}>
             {/* <LeftPanel /> */}
-            {/* <MapToolBar /> */}
-            <NodeMediaPlayer cameraId={''} isNVR={false} rtspIndex={1} />
+            {videoPanel && <VideoPanel />}
+
             <Videos />
           </MapSceneContext.Provider>
         </UpdateAlarmfnContext.Provider>

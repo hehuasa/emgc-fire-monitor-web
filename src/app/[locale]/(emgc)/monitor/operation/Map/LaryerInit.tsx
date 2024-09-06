@@ -18,12 +18,13 @@ import { featureCollection, polygon } from '@turf/turf';
 import { useMount, useUnmount } from 'ahooks';
 import { MapMouseEvent } from 'maplibre-gl';
 import { useRef } from 'react';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { IAlarmClusterItem } from '../page';
 import { anchorType, LineLayer, Marker, PointLayer, PolygonLayer, Scene } from '@antv/l7';
 
 import FASpng from '@/assets/map/fire.png';
 import AlarmPanel from '@/components/AlarmPanel';
+import { videoPanelModal } from '@/models/video';
 // import test from 'public/map/test.png'
 
 const { clusterZoom, flyToZoom } = mapOp;
@@ -72,6 +73,8 @@ const LaryerInit = ({
 
   // 线图层动画timer
   // const lineAnimateTimer = useRef<NodeJS.Timer | null>(null);
+
+  const [videoPanel, setVideoPanel] = useRecoilState(videoPanelModal);
 
   useMount(() => {
     console.info('=========LaryerInit===useMount==============');
@@ -152,7 +155,7 @@ const LaryerInit = ({
   };
   const genAlarmLayers = () => {
     map.addSource('test', initGeoJson());
-    const animateCircle: maplibregl.LayerSpecification = {
+    const animateCircle: mapboxgl.LayerSpecification = {
       id: 'animateCircle',
       type: 'symbol',
       source: 'test',
@@ -166,7 +169,7 @@ const LaryerInit = ({
       },
     };
 
-    const alarmIconLayer: maplibregl.LayerSpecification = {
+    const alarmIconLayer: mapboxgl.LayerSpecification = {
       type: 'symbol',
       id: 'alarmIconLayer',
       source: 'test',
@@ -188,7 +191,7 @@ const LaryerInit = ({
     const res = await request({ url: '/mockalarm.json' });
 
     console.info('============res==============', res);
-    const source = map.getSource('test') as maplibregl.GeoJSONSource;
+    const source = map.getSource('test') as mapboxgl.GeoJSONSource;
     console.info('============source==============', source);
 
     if (source) {
@@ -204,7 +207,7 @@ const LaryerInit = ({
   //   //人员定位hover图层
   //   map.addSource('gps_h', source);
 
-  //   const gpsLayer: maplibregl.LayerSpecification = {
+  //   const gpsLayer: mapboxgl.LayerSpecification = {
   //     id: 'gps',
   //     type: 'symbol',
   //     source: 'gps',
@@ -220,7 +223,7 @@ const LaryerInit = ({
   //     },
   //   };
 
-  //   const gpsLayer_h: maplibregl.LayerSpecification = {
+  //   const gpsLayer_h: mapboxgl.LayerSpecification = {
   //     id: 'gps_h',
   //     type: 'symbol',
   //     source: 'gps_h',
@@ -347,7 +350,7 @@ const LaryerInit = ({
       .color('#00f')
       .size(2);
 
-    // const reslayerP: maplibregl.LayerSpecification = {
+    // const reslayerP: mapboxgl.LayerSpecification = {
     //   id: 'serachRes_p',
     //   type: 'symbol',
     //   source: 'serachRes',
@@ -368,7 +371,7 @@ const LaryerInit = ({
     //   },
     //   filter: ['all', ['==', '$type', 'Point']],
     // };
-    // const reslayerC: maplibregl.LayerSpecification = {
+    // const reslayerC: mapboxgl.LayerSpecification = {
     //   id: 'serachRes_c',
     //   type: 'circle',
     //   source: 'serachRes',
@@ -380,7 +383,7 @@ const LaryerInit = ({
     //     'circle-translate': [8, 0],
     //   },
     // };
-    // const currentReslayer: maplibregl.LayerSpecification = {
+    // const currentReslayer: mapboxgl.LayerSpecification = {
     //   id: 'currentReslayer',
     //   type: 'symbol',
     //   source: 'currentReslayer',
@@ -392,7 +395,7 @@ const LaryerInit = ({
     //   },
     // };
 
-    // const currentReslayer_h: maplibregl.LayerSpecification = {
+    // const currentReslayer_h: mapboxgl.LayerSpecification = {
     //   id: 'currentReslayer_h',
     //   type: 'symbol',
     //   source: 'currentReslayer_h',
@@ -480,7 +483,7 @@ const LaryerInit = ({
     //   resLayerLeave();
     // });
 
-    // const layer_h: maplibregl.LayerSpecification = {
+    // const layer_h: mapboxgl.LayerSpecification = {
     //   id: 'alarmIcon_h',
     //   type: 'symbol',
     //   source: 'alarmIcon_h',
@@ -491,7 +494,7 @@ const LaryerInit = ({
     //   },
     //   filter: ['==', '$type', 'Point'],
     // };
-    // const layer1_h: maplibregl.LayerSpecification = {
+    // const layer1_h: mapboxgl.LayerSpecification = {
     //   id: 'alarmIcon1_h',
     //   type: 'symbol',
     //   source: 'alarmIcon_h',
@@ -506,7 +509,7 @@ const LaryerInit = ({
     //   filter: ['==', '$type', 'Point'],
     // };
 
-    // const alarmLineIcon_h: maplibregl.LayerSpecification = {
+    // const alarmLineIcon_h: mapboxgl.LayerSpecification = {
     //   id: 'alarmLineIcon_h',
     //   type: 'line',
     //   source: 'alarmIcon_h',
@@ -533,7 +536,7 @@ const LaryerInit = ({
     // lineAnimateTimer.current = setInterval(() => {
     //   // number += 0.1;
 
-    //   const centerPointsource = map.getSource('alarmLineCenterPoint') as maplibregl.GeoJSONSource;
+    //   const centerPointsource = map.getSource('alarmLineCenterPoint') as mapboxgl.GeoJSONSource;
 
     //   const data = centerPointsource._data as FeatureCollection<
     //     Point,
@@ -578,7 +581,13 @@ const LaryerInit = ({
     scene.removeAllMakers();
     const el = document.createElement('div');
     const root = createRoot(el);
-    root.render(<AlarmPanel operation={() => {}} />);
+    root.render(
+      <AlarmPanel
+        operation={() => {
+          if (!videoPanel) setVideoPanel(true);
+        }}
+      />
+    );
 
     const marker = new Marker({
       element: el,
@@ -605,7 +614,7 @@ const LaryerInit = ({
 
   // 新建一个图层，用于展示高亮区域
   const genHoverAreas = () => {
-    // const area_hover: maplibregl.LayerSpecification = {
+    // const area_hover: mapboxgl.LayerSpecification = {
     //   id: 'area_hover',
     //   type: 'fill',
     //   source: 'area_hover',
@@ -630,14 +639,14 @@ const LaryerInit = ({
     }
   ) => {
     const geom = polygon(e.features[0].geometry.coordinates);
-    const source = map.getSource('area_hover') as maplibregl.GeoJSONSource;
+    const source = map.getSource('area_hover') as mapboxgl.GeoJSONSource;
 
     source.setData(featureCollection([geom]) as GeoJSON.GeoJSON);
   };
 
   // 取消高亮区域
   const mouseOutArea = () => {
-    const source = map.getSource('area_hover') as maplibregl.GeoJSONSource;
+    const source = map.getSource('area_hover') as mapboxgl.GeoJSONSource;
 
     source.setData(featureCollection([]) as GeoJSON.GeoJSON);
   };

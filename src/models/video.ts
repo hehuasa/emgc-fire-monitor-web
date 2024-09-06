@@ -1,6 +1,10 @@
 import { Position } from '@turf/turf';
 import { atom } from 'recoil';
 
+export const videoPanelModal = atom<boolean>({
+  key: 'videoPanel',
+  default: false,
+});
 export interface IVideoResItem {
   equipmentid: string;
   id: string;

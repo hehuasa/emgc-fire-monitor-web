@@ -236,6 +236,8 @@ const NodeMediaPlayer = (
       position="relative"
       borderRadius="10px"
       overflow="hidden"
+      outline={'solid 1px #0078EC'}
+      _hover={{ boxShadow: '0 0 4px 4px rgba(0, 120, 236, 0.5)' }}
       {...contentStyle}
     >
       <canvas

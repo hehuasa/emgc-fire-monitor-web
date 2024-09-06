@@ -14,7 +14,7 @@ const json = {
     'operation-cannon-running': 'Running',
     'operation-cannon-stop': 'Stop',
     'operation-cannon-notConnected': 'Not Connected',
-    'operation-cannon-zoom': 'Zoom',
+    'operation-PTZ-zoom': 'Zoom',
     'operation-PTZ-preset': 'Preset Position',
   },
 };

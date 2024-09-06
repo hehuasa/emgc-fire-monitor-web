@@ -52,9 +52,8 @@ const DraggablePanel = ({ children }: { children?: JSX.Element }) => {
   return (
     <div
       ref={panelRef}
-      className="w-[402px] h-[368px] bg-[#00000088] relative"
+      className="w-[402px] h-[368px] bg-[#00000088] absolute z-[999]"
       style={{
-        position: 'absolute',
         left: `${position.x}px`,
         top: `${position.y}px`,
       }}

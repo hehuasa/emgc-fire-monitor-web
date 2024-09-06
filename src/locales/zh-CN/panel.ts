@@ -14,7 +14,7 @@ const json = {
     'operation-cannon-running': '动作',
     'operation-cannon-stop': '停止',
     'operation-cannon-notConnected': '未联网',
-    'operation-cannon-zoom': '缩放',
+    'operation-PTZ-zoom': '缩放',
     'operation-PTZ-preset': '预置位',
   },
 };

@@ -242,7 +242,7 @@ const PTZPanel = ({ closePtz, cameraId }: Props) => {
           </button>
         </div>
         <div className="flex gap-x-4 w-full items-center">
-          <div className="whitespace-nowrap">{formatMessage('operation-cannon-preset')}</div>
+          <div className="whitespace-nowrap">{formatMessage('operation-PTZ-preset')}</div>
           <Select />
         </div>
       </div>
