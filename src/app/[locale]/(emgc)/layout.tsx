@@ -4,8 +4,8 @@ import { useLocalStorageState, useUnmount } from 'ahooks';
 import { usePathname } from 'next/navigation';
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import Header from '@/components/Header/Header';
+import Script from 'next/script';
 // import NoAuth from './NoAuth';
-
 
 const version = '0.28';
 
@@ -13,8 +13,6 @@ const Layout = ({ children }: { children: ReactNode }) => {
   const pathname = usePathname();
 
   const updateTokernTimer = useRef<NodeJS.Timeout>();
-
-
 
   // 路由权限判断
   const [localRouteUrls, setLocalRouteUrls] = useLocalStorageState<null | Array<string>>(
@@ -47,6 +45,10 @@ const Layout = ({ children }: { children: ReactNode }) => {
 
   return (
     <>
+      <Script
+        strategy="afterInteractive"
+        src={`${process.env.NEXT_PUBLIC_ANALYTICS_BasePath}/nodeMedia/NodePlayer-simd.min.js`}
+      />
 
       <div className="h-full overflow-hidden">
         <div className="flex h-full flex-col">
