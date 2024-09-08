@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { mapOp } from '@/components/Map';
 import AlarmAnimateIcon from '@/components/Map/AlarmAnimateIcon';
-
+import { createRoot } from 'react-dom/client';
 import CustomAlarmIcon from '@/components/Map/CustomAlarmIcon';
 import { alarmTypeModel, currentAlarmModel } from '@/models/alarm';
 import { isInIconModel, isSpaceQueryingModel } from '@/models/map';
@@ -18,26 +18,27 @@ import { featureCollection, polygon } from '@turf/turf';
 import { useMount, useUnmount } from 'ahooks';
 import { MapMouseEvent } from 'maplibre-gl';
 import { useRef } from 'react';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { IAlarmClusterItem } from '../page';
-import { LineLayer, PointLayer, PolygonLayer, Scene } from '@antv/l7';
+import { anchorType, LineLayer, Marker, PointLayer, PolygonLayer, Scene } from '@antv/l7';
 
-import FASpng from '@/assets/map/fire.png'
+import FASpng from '@/assets/map/fire.png';
+import AlarmPanel from '@/components/AlarmPanel';
+import { videoPanelModal } from '@/models/video';
 // import test from 'public/map/test.png'
 
 const { clusterZoom, flyToZoom } = mapOp;
 
 export type IL7LayerEventTarget = {
   x: number; // 鼠标  在地图位置 x 坐标
-  y: number;  //鼠标  在地图位置 y 坐标
-  type: string;  //鼠标事件类型
-  lngLat: { lng: number, lat: number };  // 鼠标所在位置经纬度 经度度对象
-  feature: any;  //数据选中的地理要素信息
-  featureId: number | null;  //数据选中的地理要素的 ID
-  preventDefault: () => void;  //阻止默认事件
-}
+  y: number; //鼠标  在地图位置 y 坐标
+  type: string; //鼠标事件类型
+  lngLat: { lng: number; lat: number }; // 鼠标所在位置经纬度 经度度对象
+  feature: any; //数据选中的地理要素信息
+  featureId: number | null; //数据选中的地理要素的 ID
+  preventDefault: () => void; //阻止默认事件
+};
 interface IProps {
-
   scene: Scene;
   hoveAreaCluster: (currentAreaClusterData: IAlarmClusterItem, popuplnglat: number[]) => void;
   handleClusterMouseleave: () => void;
@@ -48,8 +49,14 @@ interface IProps {
 
 const source = initGeoJson();
 
-
-const LaryerInit = ({ scene, hoveAreaCluster, handleClusterMouseleave, handleAreaClick, genMapRightMenuFun, layerInitCallBack }: IProps) => {
+const LaryerInit = ({
+  scene,
+  hoveAreaCluster,
+  handleClusterMouseleave,
+  handleAreaClick,
+  genMapRightMenuFun,
+  layerInitCallBack,
+}: IProps) => {
   // 监听是否进行查周边，用以是否阻止相关图层的鼠标事件
   const isSpaceQuerying = useRecoilValue(isSpaceQueryingModel);
   const isSpaceQueryingRef = useRef(isSpaceQuerying);
@@ -67,9 +74,9 @@ const LaryerInit = ({ scene, hoveAreaCluster, handleClusterMouseleave, handleAre
   // 线图层动画timer
   // const lineAnimateTimer = useRef<NodeJS.Timer | null>(null);
 
+  const [videoPanel, setVideoPanel] = useRecoilState(videoPanelModal);
+
   useMount(() => {
-
-
     console.info('=========LaryerInit===useMount==============');
     genAlarmIconLayer();
     genResLayers();
@@ -79,11 +86,10 @@ const LaryerInit = ({ scene, hoveAreaCluster, handleClusterMouseleave, handleAre
     genSreachResLayers();
 
     if (layerInitCallBack) {
-      layerInitCallBack()
+      layerInitCallBack();
     }
     // genHoverAreas();
     // genGpsLayer();
-
   });
 
   // 自定义报警图标
@@ -149,7 +155,7 @@ const LaryerInit = ({ scene, hoveAreaCluster, handleClusterMouseleave, handleAre
   };
   const genAlarmLayers = () => {
     map.addSource('test', initGeoJson());
-    const animateCircle: maplibregl.LayerSpecification = {
+    const animateCircle: mapboxgl.LayerSpecification = {
       id: 'animateCircle',
       type: 'symbol',
       source: 'test',
@@ -163,7 +169,7 @@ const LaryerInit = ({ scene, hoveAreaCluster, handleClusterMouseleave, handleAre
       },
     };
 
-    const alarmIconLayer: maplibregl.LayerSpecification = {
+    const alarmIconLayer: mapboxgl.LayerSpecification = {
       type: 'symbol',
       id: 'alarmIconLayer',
       source: 'test',
@@ -185,7 +191,7 @@ const LaryerInit = ({ scene, hoveAreaCluster, handleClusterMouseleave, handleAre
     const res = await request({ url: '/mockalarm.json' });
 
     console.info('============res==============', res);
-    const source = map.getSource('test') as maplibregl.GeoJSONSource;
+    const source = map.getSource('test') as mapboxgl.GeoJSONSource;
     console.info('============source==============', source);
 
     if (source) {
@@ -201,7 +207,7 @@ const LaryerInit = ({ scene, hoveAreaCluster, handleClusterMouseleave, handleAre
   //   //人员定位hover图层
   //   map.addSource('gps_h', source);
 
-  //   const gpsLayer: maplibregl.LayerSpecification = {
+  //   const gpsLayer: mapboxgl.LayerSpecification = {
   //     id: 'gps',
   //     type: 'symbol',
   //     source: 'gps',
@@ -217,7 +223,7 @@ const LaryerInit = ({ scene, hoveAreaCluster, handleClusterMouseleave, handleAre
   //     },
   //   };
 
-  //   const gpsLayer_h: maplibregl.LayerSpecification = {
+  //   const gpsLayer_h: mapboxgl.LayerSpecification = {
   //     id: 'gps_h',
   //     type: 'symbol',
   //     source: 'gps_h',
@@ -257,49 +263,55 @@ const LaryerInit = ({ scene, hoveAreaCluster, handleClusterMouseleave, handleAre
 
   // 视频图标图层
   const genVideoIconLayer = () => {
-
-
     const videolayer = new PointLayer({
-      name: "videolayer"
-    }).source(source).size(32).shape("res_Video")
+      name: 'videolayer',
+    })
+      .source(source)
+      .size(32)
+      .shape('res_Video');
     scene.addLayer(videolayer);
-
   };
 
   // 区域图层
   const genAreaLayers = async () => {
-
-
     const areaFillLayer = new PolygonLayer({
-      name: "areaFillLayer"
-    }).shape("fill").color('rgba(0, 120, 236, 0.50)')
+      name: 'areaFillLayer',
+    })
+      .shape('fill')
+      .color('rgba(0, 120, 236, 0.50)');
 
     scene.addLayer(areaFillLayer);
-    areaFillLayer.on("click", (e) => {
+    areaFillLayer.on('click', (e) => {
       handleAreaClick(e);
-    })
-    areaFillLayer.on("contextmenu", (e) => {
+    });
+    areaFillLayer.on('contextmenu', (e) => {
       genMapRightMenuFun(e);
-    })
+    });
   };
 
   // 资源图层
   const genResLayers = () => {
-
     const reslayer = new PointLayer({
-      name: "reslayer"
-    }).source(source).size(32).shape("resTypeCode", () => {
-      return "res_Alarm";
+      name: 'reslayer',
     })
+      .source(source)
+      .size(32)
+      .shape('resTypeCode', () => {
+        return 'res_Alarm';
+      });
     const reslayerLineLayer = new LineLayer({
-      name: "reslayerLineLayer"
-    }).color('#00f').source(source).size(2).shape("line")
+      name: 'reslayerLineLayer',
+    })
+      .color('#00f')
+      .source(source)
+      .size(2)
+      .shape('line');
 
     scene.addLayer(reslayer);
     scene.addLayer(reslayerLineLayer);
 
-    reslayer.on("click", resLayerClick)
-    reslayerLineLayer.on("click", resLayerClick)
+    reslayer.on('click', resLayerClick);
+    reslayerLineLayer.on('click', resLayerClick);
 
     // map.on('mouseenter', 'reslayerLine', () => {
     //   map.getCanvas().style.cursor = 'default';
@@ -313,9 +325,7 @@ const LaryerInit = ({ scene, hoveAreaCluster, handleClusterMouseleave, handleAre
   };
 
   // 资源图层点击事件
-  const resLayerClick = (
-    e: IL7LayerEventTarget
-  ) => {
+  const resLayerClick = (e: IL7LayerEventTarget) => {
     console.log('点击资源');
     e.preventDefault();
 
@@ -330,18 +340,17 @@ const LaryerInit = ({ scene, hoveAreaCluster, handleClusterMouseleave, handleAre
   };
   //搜索结果图层
   const genSreachResLayers = () => {
-
     const serachResLayer = new PointLayer({
-      name: "serachResLayer"
-    }).shape("icon", () => {
-
-    })
+      name: 'serachResLayer',
+    }).shape('icon', () => {});
     const serachResLineLayer = new LineLayer({
-      name: "serachResLineLayer"
-    }).shape("line").color("#00f").size(2)
+      name: 'serachResLineLayer',
+    })
+      .shape('line')
+      .color('#00f')
+      .size(2);
 
-
-    // const reslayerP: maplibregl.LayerSpecification = {
+    // const reslayerP: mapboxgl.LayerSpecification = {
     //   id: 'serachRes_p',
     //   type: 'symbol',
     //   source: 'serachRes',
@@ -362,7 +371,7 @@ const LaryerInit = ({ scene, hoveAreaCluster, handleClusterMouseleave, handleAre
     //   },
     //   filter: ['all', ['==', '$type', 'Point']],
     // };
-    // const reslayerC: maplibregl.LayerSpecification = {
+    // const reslayerC: mapboxgl.LayerSpecification = {
     //   id: 'serachRes_c',
     //   type: 'circle',
     //   source: 'serachRes',
@@ -374,7 +383,7 @@ const LaryerInit = ({ scene, hoveAreaCluster, handleClusterMouseleave, handleAre
     //     'circle-translate': [8, 0],
     //   },
     // };
-    // const currentReslayer: maplibregl.LayerSpecification = {
+    // const currentReslayer: mapboxgl.LayerSpecification = {
     //   id: 'currentReslayer',
     //   type: 'symbol',
     //   source: 'currentReslayer',
@@ -386,7 +395,7 @@ const LaryerInit = ({ scene, hoveAreaCluster, handleClusterMouseleave, handleAre
     //   },
     // };
 
-    // const currentReslayer_h: maplibregl.LayerSpecification = {
+    // const currentReslayer_h: mapboxgl.LayerSpecification = {
     //   id: 'currentReslayer_h',
     //   type: 'symbol',
     //   source: 'currentReslayer_h',
@@ -398,44 +407,33 @@ const LaryerInit = ({ scene, hoveAreaCluster, handleClusterMouseleave, handleAre
     //   },
     // };
 
-
-
     scene.addLayer(serachResLineLayer);
     scene.addLayer(serachResLayer);
 
-    serachResLayer.on("click", searchResLayerClick)
-    serachResLayer.on("serachResLineLayer", searchResLayerClick)
+    serachResLayer.on('click', searchResLayerClick);
+    serachResLayer.on('serachResLineLayer', searchResLayerClick);
     // serachResLayer.on("mouseenter", resLayerEnter)
-
-
-
   };
 
   // 生成报警图标图层
   const genAlarmIconLayer = () => {
     console.info('============22222222222==============', 22222222222);
     //=================================todo=> 动画图标后期实现，暂时写死一个动态获取的图标==================================
-    scene.addImage(
-      'FAS',
-      FASpng.src,
-    );
-    scene.addImage(
-      'GAS',
-      FASpng.src,
-    );
-    scene.addImage(
-      '02',
-      FASpng.src,
-    );
+    scene.addImage('FAS', FASpng.src);
+    scene.addImage('GAS', FASpng.src);
+    scene.addImage('02', FASpng.src);
     // 报警相关图层，点击事件允许透传
     const alarmIconLayer = new PointLayer({
-      name: "alarmIconLayer",
+      name: 'alarmIconLayer',
       // minZoom: clusterZoom,
       enablePropagation: true,
-    }).source(source).size(18).shape("alarmType", (alarmType) => {
-      console.info('============alarmType==============', alarmType);
-      return alarmType
     })
+      .source(source)
+      .size(18)
+      .shape('alarmType', (alarmType) => {
+        console.info('============alarmType==============', alarmType);
+        return alarmType;
+      });
 
     // const alarmIconLayer = new PointLayer({
     //   name: "alarmIconLayer",
@@ -444,16 +442,22 @@ const LaryerInit = ({ scene, hoveAreaCluster, handleClusterMouseleave, handleAre
     // }).source(source).shape("FAS")
 
     const alarmLineLayer = new LineLayer({
-      name: "alarmLineLayer",
+      name: 'alarmLineLayer',
       minZoom: clusterZoom,
-      enablePropagation: true
-    }).color('#f00').source(source).size(2).shape("line")
+      enablePropagation: true,
+    })
+      .color('#f00')
+      .source(source)
+      .size(2)
+      .shape('line');
 
     const alarmLineCenterPointLayer = new PointLayer({
-      name: "alarmLineCenterPointLayer",
+      name: 'alarmLineCenterPointLayer',
       minZoom: clusterZoom,
-      enablePropagation: true
-    }).source(source).shape("circle")
+      enablePropagation: true,
+    })
+      .source(source)
+      .shape('circle');
     // 新增周界中心点图层
 
     scene.addLayer(alarmIconLayer);
@@ -461,10 +465,9 @@ const LaryerInit = ({ scene, hoveAreaCluster, handleClusterMouseleave, handleAre
     scene.addLayer(alarmLineLayer);
     scene.addLayer(alarmLineCenterPointLayer);
 
-    alarmIconLayer.on("click", handleAlarmIconClick)
-    alarmLineLayer.on("click", handleAlarmIconClick)
-    alarmLineCenterPointLayer.on("click", handleAlarmIconClick)
-
+    alarmIconLayer.on('click', handleAlarmIconClick);
+    alarmLineLayer.on('click', handleAlarmIconClick);
+    alarmLineCenterPointLayer.on('click', handleAlarmIconClick);
 
     // map.on('mouseenter', 'alarmIcon', resLayerEnter);
 
@@ -480,7 +483,7 @@ const LaryerInit = ({ scene, hoveAreaCluster, handleClusterMouseleave, handleAre
     //   resLayerLeave();
     // });
 
-    // const layer_h: maplibregl.LayerSpecification = {
+    // const layer_h: mapboxgl.LayerSpecification = {
     //   id: 'alarmIcon_h',
     //   type: 'symbol',
     //   source: 'alarmIcon_h',
@@ -491,7 +494,7 @@ const LaryerInit = ({ scene, hoveAreaCluster, handleClusterMouseleave, handleAre
     //   },
     //   filter: ['==', '$type', 'Point'],
     // };
-    // const layer1_h: maplibregl.LayerSpecification = {
+    // const layer1_h: mapboxgl.LayerSpecification = {
     //   id: 'alarmIcon1_h',
     //   type: 'symbol',
     //   source: 'alarmIcon_h',
@@ -506,7 +509,7 @@ const LaryerInit = ({ scene, hoveAreaCluster, handleClusterMouseleave, handleAre
     //   filter: ['==', '$type', 'Point'],
     // };
 
-    // const alarmLineIcon_h: maplibregl.LayerSpecification = {
+    // const alarmLineIcon_h: mapboxgl.LayerSpecification = {
     //   id: 'alarmLineIcon_h',
     //   type: 'line',
     //   source: 'alarmIcon_h',
@@ -533,7 +536,7 @@ const LaryerInit = ({ scene, hoveAreaCluster, handleClusterMouseleave, handleAre
     // lineAnimateTimer.current = setInterval(() => {
     //   // number += 0.1;
 
-    //   const centerPointsource = map.getSource('alarmLineCenterPoint') as maplibregl.GeoJSONSource;
+    //   const centerPointsource = map.getSource('alarmLineCenterPoint') as mapboxgl.GeoJSONSource;
 
     //   const data = centerPointsource._data as FeatureCollection<
     //     Point,
@@ -568,23 +571,30 @@ const LaryerInit = ({ scene, hoveAreaCluster, handleClusterMouseleave, handleAre
     // }, 100);
 
     // 周界报警，动画图层
-
   };
 
   //报警聚合图层
-  const genAlarmClusterLayer = () => {
-
-
-
-
-
-  };
+  const genAlarmClusterLayer = () => {};
   // 报警图标点击事件
   const handleAlarmIconClick = async (e: IL7LayerEventTarget) => {
     console.log('报警图标点击');
-    //阻止冒泡
+    scene.removeAllMakers();
+    const el = document.createElement('div');
+    const root = createRoot(el);
+    root.render(
+      <AlarmPanel
+        operation={() => {
+          if (!videoPanel) setVideoPanel(true);
+        }}
+      />
+    );
 
-
+    const marker = new Marker({
+      element: el,
+      anchor: 'TOP_LEFT' as anchorType,
+      offsets: [20, -20],
+    }).setLnglat(e.lngLat);
+    scene.addMarker(marker);
   };
 
   const resLayerEnter = () => {
@@ -594,9 +604,7 @@ const LaryerInit = ({ scene, hoveAreaCluster, handleClusterMouseleave, handleAre
     setIsInIcon(false);
   };
   // 搜索结果点击事件
-  const searchResLayerClick = (
-    e: IL7LayerEventTarget
-  ) => {
+  const searchResLayerClick = (e: IL7LayerEventTarget) => {
     e.preventDefault();
 
     if (e.feature && e.feature.properties) {
@@ -606,14 +614,11 @@ const LaryerInit = ({ scene, hoveAreaCluster, handleClusterMouseleave, handleAre
 
   // 新建一个图层，用于展示高亮区域
   const genHoverAreas = () => {
-
-
-    // const area_hover: maplibregl.LayerSpecification = {
+    // const area_hover: mapboxgl.LayerSpecification = {
     //   id: 'area_hover',
     //   type: 'fill',
     //   source: 'area_hover',
     //   // maxzoom: clusterZoom,
-
     //   paint: {
     //     'fill-color': 'rgba(0, 120, 236, 0.70)',
     //     'fill-outline-color': 'rgba(0, 120, 236, 1)',
@@ -621,10 +626,8 @@ const LaryerInit = ({ scene, hoveAreaCluster, handleClusterMouseleave, handleAre
     //   },
     //   // filter: ['==', 'areaId', ''],
     // };
-
     // map.on('mousemove', 'zhuangzhi_v1_4', mouseInArea);
     // map.on('mouseleave', 'zhuangzhi_v1_4', mouseOutArea);
-
     // map.on('mousemove', 'zhuangzhi_v1_3', mouseInArea);
     // map.on('mouseleave', 'zhuangzhi_v1_3', mouseOutArea);
     // map.addLayer(area_hover, 'alarmIcon');
@@ -636,14 +639,14 @@ const LaryerInit = ({ scene, hoveAreaCluster, handleClusterMouseleave, handleAre
     }
   ) => {
     const geom = polygon(e.features[0].geometry.coordinates);
-    const source = map.getSource('area_hover') as maplibregl.GeoJSONSource;
+    const source = map.getSource('area_hover') as mapboxgl.GeoJSONSource;
 
     source.setData(featureCollection([geom]) as GeoJSON.GeoJSON);
   };
 
   // 取消高亮区域
   const mouseOutArea = () => {
-    const source = map.getSource('area_hover') as maplibregl.GeoJSONSource;
+    const source = map.getSource('area_hover') as mapboxgl.GeoJSONSource;
 
     source.setData(featureCollection([]) as GeoJSON.GeoJSON);
   };
@@ -653,13 +656,11 @@ const LaryerInit = ({ scene, hoveAreaCluster, handleClusterMouseleave, handleAre
     //   clearInterval(lineAnimateTimer.current);
     //   lineAnimateTimer.current = null;
     // }
-
     // 单独卸载three的图层
     // const line = map.getLayer('alarmLineAndPerson') as any;
     // if (line) {
     //   line.implementation.clear();
     // }
-
     // const lineNear = map.getLayer('alarmLineAndPerson_near') as any;
     // if (lineNear) {
     //   lineNear.implementation.clear();

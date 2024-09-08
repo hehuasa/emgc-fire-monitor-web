@@ -99,8 +99,8 @@ const Ptz = ({ closePtz, cameraId }: Props) => {
       //style={{ right: '0px' }}
       zIndex={4}
       h="full"
-      color="pri.white.100"
-      bg="pri.dark.700"
+      color="black"
+      bg="gray.100"
       borderRadius="10px"
       onTransitionEnd={onTransitionEnd}
       transition="right 0.15s"
