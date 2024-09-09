@@ -26,161 +26,161 @@ import { useRouter } from 'next/navigation';
 const { Item: FormItem } = Form;
 
 const Login = () => {
-	const [faceVisible, setFaceVisible] = useSafeState(false);
+  const [faceVisible, setFaceVisible] = useSafeState(false);
 
-	//登录方式
-	const [loginType, setLoginType] = useSafeState<IogingType>('normal');
-	const [loading, setLoading] = useSafeState(false);
-	const t = useTranslations('login');
-	const locale = useLocale();
-	//验证码图片
-	const [verifyImg, setVerifyImg] = useSafeState('');
+  //登录方式
+  const [loginType, setLoginType] = useSafeState<IogingType>('normal');
+  const [loading, setLoading] = useSafeState(false);
+  const t = useTranslations('login');
+  const locale = useLocale();
+  //验证码图片
+  const [verifyImg, setVerifyImg] = useSafeState('');
 
-	//图片验证码
-	const captchaKey = useRef('');
+  //图片验证码
+  const captchaKey = useRef('');
 
-	//短信登录获取二维码倒计时
-	const countDownTimer = useRef<NodeJS.Timeout>();
+  //短信登录获取二维码倒计时
+  const countDownTimer = useRef<NodeJS.Timeout>();
 
-	//倒计时时间
-	const [countDownTime, setCountDownTime] = useSafeState(0);
+  //倒计时时间
+  const [countDownTime, setCountDownTime] = useSafeState(0);
 
-	const [rememberme, setRemberme] = useLocalStorageState('rememberme', { defaultValue: false });
+  const [rememberme, setRemberme] = useLocalStorageState('rememberme', { defaultValue: false });
 
-	const [showRemberMeCheckBox, setShowRemberMeCheckBox] = useState(false);
-	const [userAndPassword, setUserAndPassword] = useLocalStorageState('userAndPassword', {
-		defaultValue: '',
-	});
-	const jsencryptRef = useRef<JSEncrypt | null>(null);
-	const [activeKey, setActiveKey] = useState('1');
+  const [showRemberMeCheckBox, setShowRemberMeCheckBox] = useState(false);
+  const [userAndPassword, setUserAndPassword] = useLocalStorageState('userAndPassword', {
+    defaultValue: '',
+  });
+  const jsencryptRef = useRef<JSEncrypt | null>(null);
+  const [activeKey, setActiveKey] = useState('1');
 
-	const router = useRouter();
-	const [_, setUserInfo] = useLocalStorageState<null | IUserRes>('emgc_web_currentUserInfo', {
-		defaultValue: null,
-	});
+  const router = useRouter();
+  const [_, setUserInfo] = useLocalStorageState<null | IUserRes>('emgc_web_currentUserInfo', {
+    defaultValue: null,
+  });
 
-	const formItemLayout = {
-		labelCol: {
-			xs: { span: 24 },
-			sm: { span: 6 },
-		},
-		wrapperCol: {
-			xs: { span: 24 },
-			sm: { span: 24 },
-		},
-	};
-	const [messageApi, contextHolder] = message.useMessage();
-	const [form] = Form.useForm();
+  const formItemLayout = {
+    labelCol: {
+      xs: { span: 24 },
+      sm: { span: 6 },
+    },
+    wrapperCol: {
+      xs: { span: 24 },
+      sm: { span: 24 },
+    },
+  };
+  const [messageApi, contextHolder] = message.useMessage();
+  const [form] = Form.useForm();
 
-	useMount(async () => {
-		localStorage.removeItem('projectId'); //清除项目信息
-		setShowRemberMeCheckBox(true);
-		const Jsencrypt = (await import('jsencrypt')).default;
-		jsencryptRef.current = new Jsencrypt();
+  useMount(async () => {
+    localStorage.removeItem('projectId'); //清除项目信息
+    setShowRemberMeCheckBox(true);
+    const Jsencrypt = (await import('jsencrypt')).default;
+    jsencryptRef.current = new Jsencrypt();
 
-		jsencryptRef.current.setPublicKey(publicKey);
-		jsencryptRef.current.setPrivateKey(privateKey);
+    jsencryptRef.current.setPublicKey(publicKey);
+    jsencryptRef.current.setPrivateKey(privateKey);
 
-		try {
-			if (rememberme && userAndPassword) {
-				const userAndPassword_ = decrypt(userAndPassword);
-				const { user, password } = JSON.parse(userAndPassword_) as unknown as {
-					user: string;
-					password: string;
-				};
+    try {
+      if (rememberme && userAndPassword) {
+        const userAndPassword_ = decrypt(userAndPassword);
+        const { user, password } = JSON.parse(userAndPassword_) as unknown as {
+          user: string;
+          password: string;
+        };
 
-				form.setFieldValue('password', password);
-				form.setFieldValue('user', user);
-			}
-		} catch (e) {
-			//
-		}
+        form.setFieldValue('password', password);
+        form.setFieldValue('user', user);
+      }
+    } catch (e) {
+      //
+    }
 
-		// getCodeImg();
-	});
+    // getCodeImg();
+  });
 
-	const encrypt = (val: string) => {
-		const newVal = jsencryptRef.current?.encrypt(val) as string;
-		return newVal;
-	};
-	const decrypt = (val: string) => {
-		const newVal = jsencryptRef.current?.decrypt(val) as string;
-		return newVal;
-	};
+  const encrypt = (val: string) => {
+    const newVal = jsencryptRef.current?.encrypt(val) as string;
+    return newVal;
+  };
+  const decrypt = (val: string) => {
+    const newVal = jsencryptRef.current?.decrypt(val) as string;
+    return newVal;
+  };
 
-	//获取验证码
-	const getCode = async () => {
-		const mobile = form.getFieldValue('mobile');
+  //获取验证码
+  const getCode = async () => {
+    const mobile = form.getFieldValue('mobile');
 
-		if (!mobile) {
-			messageApi.open({
-				type: 'error',
-				content: t('typePhoneNum'),
-			});
-			return;
-		}
+    if (!mobile) {
+      messageApi.open({
+        type: 'error',
+        content: t('typePhoneNum'),
+      });
+      return;
+    }
 
-		if (!mobile.match(/^1\d{10}$/)) {
-			messageApi.open({
-				type: 'error',
-				content: t('PhoneNumberFormatError'),
-			});
-			return;
-		}
+    if (!mobile.match(/^1\d{10}$/)) {
+      messageApi.open({
+        type: 'error',
+        content: t('PhoneNumberFormatError'),
+      });
+      return;
+    }
 
-		const url = `/ms-system/login/sendMobileVerifyCode?mobile=${mobile}`;
-		const res = await request<string>({ url });
-		console.info('============res==============', res);
-		if (res.code && res.code === 200) {
-			countDownTimer.current = setInterval(() => {
-				setCountDownTime((e) => {
-					if (e === 0) {
-						clearInterval(countDownTimer.current);
-						return 0;
-					}
-					return e - 1;
-				});
-			}, 1000);
+    const url = `/ms-gateway/ms-system/login/sendMobileVerifyCode?mobile=${mobile}`;
+    const res = await request<string>({ url });
+    console.info('============res==============', res);
+    if (res.code && res.code === 200) {
+      countDownTimer.current = setInterval(() => {
+        setCountDownTime((e) => {
+          if (e === 0) {
+            clearInterval(countDownTimer.current);
+            return 0;
+          }
+          return e - 1;
+        });
+      }, 1000);
 
-			setCountDownTime(60);
+      setCountDownTime(60);
 
-			form.setFieldValue('reqKey', res.data);
-		} else {
-			messageApi.open({
-				type: 'error',
-				content: res.msg,
-			});
-		}
-	};
+      form.setFieldValue('reqKey', res.data);
+    } else {
+      messageApi.open({
+        type: 'error',
+        content: res.msg,
+      });
+    }
+  };
 
-	//获取验证码图片
-	const getCodeImg = useMemoizedFn(async () => {
-		const { data, code } = await request<ILoginCodeImg>({
-			url: '/ms-system/login/verify',
-			options: {
-				method: 'post',
-			},
-		});
-		if (code === 200) {
-			setVerifyImg(data.captchaImg);
-			captchaKey.current = data.captchaKey;
-		}
-	});
+  //获取验证码图片
+  const getCodeImg = useMemoizedFn(async () => {
+    const { data, code } = await request<ILoginCodeImg>({
+      url: '/ms-gateway/ms-system/login/verify',
+      options: {
+        method: 'post',
+      },
+    });
+    if (code === 200) {
+      setVerifyImg(data.captchaImg);
+      captchaKey.current = data.captchaKey;
+    }
+  });
 
-	const loginItms = [
-		{
-			key: '1',
-			label: t('loginWhthPassword'),
-			children: (
-				<>
-					<FormItem name="user" rules={[{ required: true, message: t('typeAccount') }]}>
-						<Input placeholder={t('typeAccount')} />
-					</FormItem>
-					<FormItem name="password" rules={[{ required: true, message: t('typePass') }]}>
-						<Input.Password type="password" placeholder={t('typePass')} />
-					</FormItem>
+  const loginItms = [
+    {
+      key: '1',
+      label: t('loginWhthPassword'),
+      children: (
+        <>
+          <FormItem name="user" rules={[{ required: true, message: t('typeAccount') }]}>
+            <Input placeholder={t('typeAccount')} />
+          </FormItem>
+          <FormItem name="password" rules={[{ required: true, message: t('typePass') }]}>
+            <Input.Password type="password" placeholder={t('typePass')} />
+          </FormItem>
 
-					{/* <div className="flex">
+          {/* <div className="flex">
 						<div className="flex-1 mr-2">
 							<FormItem
 								name="verfiyCode"
@@ -210,304 +210,303 @@ const Login = () => {
 							) : null}
 						</div>
 					</div> */}
-				</>
-			),
-		},
-		{
-			key: '2',
-			label: t('text'),
-			children: (
-				<>
-					<FormItem name="reqKey" className="opacity-0 absolute -z-10">
-						<Input placeholder={'reqKey'} />
-					</FormItem>
-					<FormItem
-						name="mobile"
-						rules={[
-							{
-								required: true,
-								message: t('typePhoneNum'),
-							},
-							{
-								pattern: /^1\d{10}$/,
-								message: t('PhoneNumberFormatError'),
-							},
-						]}
-					>
-						<Input placeholder={t('typePhoneNum')} />
-					</FormItem>
-					<FormItem
-						name="verfiyCode"
-						rules={[{ required: true, message: t('typeVerificationCode') }]}
-					>
-						<div className="relative">
-							<Input className="relative top-0 left-0" placeholder={t('typeVerificationCode')} />
+        </>
+      ),
+    },
+    {
+      key: '2',
+      label: t('text'),
+      children: (
+        <>
+          <FormItem name="reqKey" className="opacity-0 absolute -z-10">
+            <Input placeholder={'reqKey'} />
+          </FormItem>
+          <FormItem
+            name="mobile"
+            rules={[
+              {
+                required: true,
+                message: t('typePhoneNum'),
+              },
+              {
+                pattern: /^1\d{10}$/,
+                message: t('PhoneNumberFormatError'),
+              },
+            ]}
+          >
+            <Input placeholder={t('typePhoneNum')} />
+          </FormItem>
+          <FormItem
+            name="verfiyCode"
+            rules={[{ required: true, message: t('typeVerificationCode') }]}
+          >
+            <div className="relative">
+              <Input className="relative top-0 left-0" placeholder={t('typeVerificationCode')} />
 
-							{countDownTime > 0 ? (
-								<div className="absolute cursor-pointer  right-2 top-1/2 -translate-y-1/2 text-[#3377FF] hover:text-[#6F9FFF]">
-									{countDownTime}s
-								</div>
-							) : (
-								<div
-									className=" absolute cursor-pointer  right-2 top-1/2 -translate-y-1/2 text-[#3377FF] hover:text-[#6F9FFF]"
-									onClick={getCode}
-								>
-									{t('getVerificationCode')}
-								</div>
-							)}
-						</div>
-					</FormItem>
-				</>
-			),
-		},
-	];
+              {countDownTime > 0 ? (
+                <div className="absolute cursor-pointer  right-2 top-1/2 -translate-y-1/2 text-[#3377FF] hover:text-[#6F9FFF]">
+                  {countDownTime}s
+                </div>
+              ) : (
+                <div
+                  className=" absolute cursor-pointer  right-2 top-1/2 -translate-y-1/2 text-[#3377FF] hover:text-[#6F9FFF]"
+                  onClick={getCode}
+                >
+                  {t('getVerificationCode')}
+                </div>
+              )}
+            </div>
+          </FormItem>
+        </>
+      ),
+    },
+  ];
 
-	const handlelogin = async ({
-		user,
-		password,
-		verfiyCode,
-		reqKey,
-		mobile,
-	}: {
-		user: string;
-		password: string;
-		verfiyCode: string;
-		reqKey: string;
-		mobile: string;
-	}) => {
-		setLoading(true);
-		try {
-			if (activeKey === '1') {
-				if (rememberme) {
-					const userAndPassword = encrypt(JSON.stringify({ user, password }));
-					setUserAndPassword(userAndPassword);
-				}
+  const handlelogin = async ({
+    user,
+    password,
+    verfiyCode,
+    reqKey,
+    mobile,
+  }: {
+    user: string;
+    password: string;
+    verfiyCode: string;
+    reqKey: string;
+    mobile: string;
+  }) => {
+    setLoading(true);
+    try {
+      if (activeKey === '1') {
+        if (rememberme) {
+          const userAndPassword = encrypt(JSON.stringify({ user, password }));
+          setUserAndPassword(userAndPassword);
+        }
 
-				const id = v4();
+        const id = v4();
 
-				const pubKeyRes = await request<string>({
-					// url: `/ms-system/login/getPubKey?id=${id}`,
-					url: `/ms-gateway/ms-system/user/getPubKey?id=${id}`,
+        const pubKeyRes = await request<string>({
+          // url: `/ms-gateway/ms-system/login/getPubKey?id=${id}`,
+          url: `/ms-gateway/ms-gateway/ms-system/user/getPubKey?id=${id}`,
 
-					options: {
-						dataReturnConfig: {
-							showErrorTip: true,
-							onlyReturnSuccess: true,
-						},
-					},
-				});
+          options: {
+            dataReturnConfig: {
+              showErrorTip: true,
+              onlyReturnSuccess: true,
+            },
+          },
+        });
 
-				const Jsencrypt = (await import('jsencrypt')).default;
-				const jsencrypt = new Jsencrypt();
+        const Jsencrypt = (await import('jsencrypt')).default;
+        const jsencrypt = new Jsencrypt();
 
-				jsencrypt.setPublicKey(pubKeyRes.data);
-				const password_ = jsencrypt.encrypt(password);
+        jsencrypt.setPublicKey(pubKeyRes.data);
+        const password_ = jsencrypt.encrypt(password);
 
-				const loginRes = await request<{
-					loginUser: IUserRes;
-					success: boolean;
-					errMsg: string;
-					errCode: string;
-				}>({
-					url: '/ms-gateway/ms-system/user/login',
-					options: {
-						headers: {
-							'content-type': 'application/json;charset=utf-8',
-						},
-						method: 'POST',
-						body: JSON.stringify({
-							captchaKey: captchaKey.current,
-							clientUUid: id,
-							login: user,
-							password: password_,
-							verifyCode: verfiyCode,
-						}),
-					},
-				});
+        const loginRes = await request<{
+          loginUser: IUserRes;
+          success: boolean;
+          errMsg: string;
+          errCode: string;
+        }>({
+          url: '/ms-gateway/ms-system/user/login',
+          options: {
+            headers: {
+              'content-type': 'application/json;charset=utf-8',
+            },
+            method: 'POST',
+            body: JSON.stringify({
+              captchaKey: captchaKey.current,
+              clientUUid: id,
+              login: user,
+              password: password_,
+              verifyCode: verfiyCode,
+            }),
+          },
+        });
 
-				if (loginRes && loginRes.code === 200) {
+        if (loginRes && loginRes.code === 200) {
+          //@ts-ignore
+          setUserInfo(loginRes.data);
+          router.push(`/${locale}/monitor/operation`);
+          // if (loginRes.data.success) {
+          // 	const newInfo = formatUserInfo(loginRes.data.loginUser);
+          // 	setUserInfo(newInfo);
+          // 	//设置租户ID
+          // 	localStorage.setItem('tenant_id', loginRes.data.loginUser.tenantId);
 
-					//@ts-ignore
-					setUserInfo(loginRes.data);
-					router.push('/zh/monitor/operation');
-					// if (loginRes.data.success) {
-					// 	const newInfo = formatUserInfo(loginRes.data.loginUser);
-					// 	setUserInfo(newInfo);
-					// 	//设置租户ID
-					// 	localStorage.setItem('tenant_id', loginRes.data.loginUser.tenantId);
+          // } else {
+          // 	messageApi.open({
+          // 		type: 'error',
+          // 		content: loginRes.data.errMsg,
+          // 	});
+          // }
+        } else {
+          getCodeImg();
+          messageApi.error(loginRes.msg);
+        }
+      } else {
+        const url = `/ms-gateway/ms-system/login/mobileVerifyLogin`;
+        const res = await request<{
+          loginUser: IUserRes;
+          success: boolean;
+          errMsg: string;
+          errCode: string;
+        }>({
+          url,
+          options: {
+            method: 'post',
+            body: JSON.stringify({ verfiyCode, reqKey, mobile }),
+          },
+        });
 
-					// } else {
-					// 	messageApi.open({
-					// 		type: 'error',
-					// 		content: loginRes.data.errMsg,
-					// 	});
-					// }
-				} else {
-					getCodeImg();
-					messageApi.error(loginRes.msg);
-				}
-			} else {
-				const url = `/ms-system/login/mobileVerifyLogin`;
-				const res = await request<{
-					loginUser: IUserRes;
-					success: boolean;
-					errMsg: string;
-					errCode: string;
-				}>({
-					url,
-					options: {
-						method: 'post',
-						body: JSON.stringify({ verfiyCode, reqKey, mobile }),
-					},
-				});
+        if (res.code === 200) {
+          if (res.data.success) {
+            const newInfo = formatUserInfo(res.data.loginUser);
+            setUserInfo(newInfo);
+            router.push(`/${locale}/monitor/operation`);
+          } else {
+            messageApi.open({
+              type: 'error',
+              content: res.data.errMsg,
+            });
+          }
+        } else {
+          messageApi.open({
+            type: 'error',
+            content: res.msg,
+          });
+        }
+      }
+    } catch (e) {
+      //
+    }
+    setLoading(false);
+  };
 
-				if (res.code === 200) {
-					if (res.data.success) {
-						const newInfo = formatUserInfo(res.data.loginUser);
-						setUserInfo(newInfo);
-						router.push('/zh/montior/operation');
-					} else {
-						messageApi.open({
-							type: 'error',
-							content: res.data.errMsg,
-						});
-					}
-				} else {
-					messageApi.open({
-						type: 'error',
-						content: res.msg,
-					});
-				}
-			}
-		} catch (e) {
-			//
-		}
-		setLoading(false);
-	};
+  const handleRemberMe = () => {
+    setRemberme(!rememberme);
+  };
 
-	const handleRemberMe = () => {
-		setRemberme(!rememberme);
-	};
+  useUnmount(() => {
+    clearInterval(countDownTimer.current);
+  });
 
-	useUnmount(() => {
-		clearInterval(countDownTimer.current);
-	});
+  const changeLoginType = useMemoizedFn(() => {
+    if (loginType === 'normal') {
+      setLoginType('platformSacn');
+    } else {
+      setLoginType('normal');
+    }
+  });
 
-	const changeLoginType = useMemoizedFn(() => {
-		if (loginType === 'normal') {
-			setLoginType('platformSacn');
-		} else {
-			setLoginType('normal');
-		}
-	});
+  return (
+    <>
+      <LoginTempl>
+        <>
+          {contextHolder}
+          <div className="flex justify-between items-start">
+            <div className="text-[24px] font-bold">{t('welcomeLogin')}</div>
+            <div
+              className="cursor-pointer w-[57px] h-[57px]"
+              title={t('login_QR_code')}
+              onClick={changeLoginType}
+            >
+              <Image
+                src={loginType === 'normal' ? login_QR_code : platform_back}
+                width={57}
+                height={57}
+                alt={t('login_QR_code')}
+              />
+            </div>
+          </div>
+          {loginType === 'normal' ? (
+            <>
+              <Form
+                onFinish={handlelogin}
+                form={form}
+                {...formItemLayout}
+                variant="filled"
+                style={{ maxWidth: 600 }}
+              >
+                <Tabs
+                  defaultActiveKey="1"
+                  destroyInactiveTabPane
+                  items={loginItms}
+                  onChange={(activeKey) => {
+                    setShowRemberMeCheckBox(activeKey === '1');
+                    setActiveKey(activeKey);
+                  }}
+                />
 
-	return (
-		<>
-			<LoginTempl>
-				<>
-					{contextHolder}
-					<div className="flex justify-between items-start">
-						<div className="text-[24px] font-bold">{t('welcomeLogin')}</div>
-						<div
-							className="cursor-pointer w-[57px] h-[57px]"
-							title={t('login_QR_code')}
-							onClick={changeLoginType}
-						>
-							<Image
-								src={loginType === 'normal' ? login_QR_code : platform_back}
-								width={57}
-								height={57}
-								alt={t('login_QR_code')}
-							/>
-						</div>
-					</div>
-					{loginType === 'normal' ? (
-						<>
-							<Form
-								onFinish={handlelogin}
-								form={form}
-								{...formItemLayout}
-								variant="filled"
-								style={{ maxWidth: 600 }}
-							>
-								<Tabs
-									defaultActiveKey="1"
-									destroyInactiveTabPane
-									items={loginItms}
-									onChange={(activeKey) => {
-										setShowRemberMeCheckBox(activeKey === '1');
-										setActiveKey(activeKey);
-									}}
-								/>
+                <FormItem wrapperCol={{ offset: 0, span: 24 }}>
+                  <Button
+                    type="primary"
+                    className="w-full mt-4 h-12"
+                    htmlType="submit"
+                    loading={loading}
+                  >
+                    {t('login')}
+                  </Button>
+                </FormItem>
+              </Form>
+              <div className="flex justify-between">
+                <div>
+                  {showRemberMeCheckBox && (
+                    <Checkbox checked={rememberme} onChange={handleRemberMe}>
+                      {t('rememberme')}
+                    </Checkbox>
+                  )}
+                </div>
 
-								<FormItem wrapperCol={{ offset: 0, span: 24 }}>
-									<Button
-										type="primary"
-										className="w-full mt-4 h-12"
-										htmlType="submit"
-										loading={loading}
-									>
-										{t('login')}
-									</Button>
-								</FormItem>
-							</Form>
-							<div className="flex justify-between">
-								<div>
-									{showRemberMeCheckBox && (
-										<Checkbox checked={rememberme} onChange={handleRemberMe}>
-											{t('rememberme')}
-										</Checkbox>
-									)}
-								</div>
+                <div className="flex text-[#6E788E]">
+                  <Link href={'/' + locale + '/forgetpass'}>{t('forgotPass')}</Link>
+                  <div className="mx-2">|</div>
+                  <Link href={'/' + locale + '/register'}>{t('register')}</Link>
+                </div>
+              </div>
 
-								<div className="flex text-[#6E788E]">
-									<Link href={'/' + locale + '/forgetpass'}>{t('forgotPass')}</Link>
-									<div className="mx-2">|</div>
-									<Link href={'/' + locale + '/register'}>{t('register')}</Link>
-								</div>
-							</div>
+              <div className=" w-full text-center mt-14 text-[#6E788E]">{t('otherLoginWays')}</div>
+            </>
+          ) : (
+            <PlatformScan />
+          )}
 
-							<div className=" w-full text-center mt-14 text-[#6E788E]">{t('otherLoginWays')}</div>
-						</>
-					) : (
-						<PlatformScan />
-					)}
+          <div className="flex justify-center mt-5">
+            <Link
+              href={'/' + locale + '/register'}
+              title={t('loginWhthWechat')}
+              className="p-3.5 bg-[#F1F4F6] rounded-lg mr-5"
+            >
+              <Image src={wechat} width={24} height={20} alt={t('loginWhthWechat')} />
+            </Link>
 
-					<div className="flex justify-center mt-5">
-						<Link
-							href={'/' + locale + '/register'}
-							title={t('loginWhthWechat')}
-							className="p-3.5 bg-[#F1F4F6] rounded-lg mr-5"
-						>
-							<Image src={wechat} width={24} height={20} alt={t('loginWhthWechat')} />
-						</Link>
+            <div
+              className=" p-3.5 bg-[#F1F4F6] rounded-lg ml-5 cursor-pointer"
+              onClick={async () => {
+                try {
+                  await hasCameraAccess();
+                  setFaceVisible(true);
+                } catch (e) {
+                  messageApi.error(t('failed-to-obtain-permission'));
+                }
+              }}
+            >
+              <Image src={face} width={21} height={21} alt={t('loginWhthFace')} />
+            </div>
+          </div>
+        </>
+      </LoginTempl>
 
-						<div
-							className=" p-3.5 bg-[#F1F4F6] rounded-lg ml-5 cursor-pointer"
-							onClick={async () => {
-								try {
-									await hasCameraAccess();
-									setFaceVisible(true);
-								} catch (e) {
-									messageApi.error(t('failed-to-obtain-permission'));
-								}
-							}}
-						>
-							<Image src={face} width={21} height={21} alt={t('loginWhthFace')} />
-						</div>
-					</div>
-				</>
-			</LoginTempl>
-
-			{/* 人脸识别 */}
-			{/* <FaceWeb
+      {/* 人脸识别 */}
+      {/* <FaceWeb
 				open={faceVisible}
 				closeModal={() => setFaceVisible(false)}
 				title="人脸登录"
 				checkType={0}
 			/> */}
-		</>
-	);
+    </>
+  );
 };
 
 export default Login;

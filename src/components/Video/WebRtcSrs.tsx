@@ -40,7 +40,9 @@ const WebRtcSrs = ({ cameraId, history, start, end, contentStyle }: Iprops) => {
     }
   });
   const getPlayUrl = async () => {
-    const url = history ? '/device-manger/camera/rtsp_history_play' : '/device-manger/camera/rtsp_live_play';
+    const url = history
+      ? '/ms-gateway/device-manger/camera/rtsp_history_play'
+      : '/ms-gateway/device-manger/camera/rtsp_live_play';
 
     const obj: Iprops & { playProtocol: string } = {
       playProtocol: 'WEBRTC',
@@ -55,7 +57,7 @@ const WebRtcSrs = ({ cameraId, history, start, end, contentStyle }: Iprops) => {
 
     if (dev) {
       const res = await request<any>({
-        url: '/video-server/api/rtsp_play',
+        url: '/ms-gateway/video-server/api/rtsp_play',
         options: {
           method: 'post',
           body: JSON.stringify({
@@ -68,7 +70,11 @@ const WebRtcSrs = ({ cameraId, history, start, end, contentStyle }: Iprops) => {
 
       console.info('res', res);
       if (res.code == 200) {
-        return 'webrtc:' + process.env.NEXT_PUBLIC_ANALYTICS_WebRtcApi?.substring('http:'.length) + res.data.playUrl;
+        return (
+          'webrtc:' +
+          process.env.NEXT_PUBLIC_ANALYTICS_WebRtcApi?.substring('http:'.length) +
+          res.data.playUrl
+        );
       } else {
         return '';
       }
@@ -93,16 +99,23 @@ const WebRtcSrs = ({ cameraId, history, start, end, contentStyle }: Iprops) => {
       clearInterval(timer.current);
       timer.current = null;
 
-      timer.current = setInterval(() => {
-        pingUrl({ id: urlRes.data.id, playUrl: urlRes.data.playUrl });
-      }, 5 * 1000 * 60);
+      timer.current = setInterval(
+        () => {
+          pingUrl({ id: urlRes.data.id, playUrl: urlRes.data.playUrl });
+        },
+        5 * 1000 * 60
+      );
     }
-    return 'webrtc:' + process.env.NEXT_PUBLIC_ANALYTICS_WebRtcApi?.substring('http:'.length) + urlRes?.data?.playUrl;
+    return (
+      'webrtc:' +
+      process.env.NEXT_PUBLIC_ANALYTICS_WebRtcApi?.substring('http:'.length) +
+      urlRes?.data?.playUrl
+    );
   };
 
   const pingUrl = async ({ id, playUrl }: { id: string; playUrl: string }) => {
     const urlRes = await request<{ id: string; playUrl: string }>({
-      url: '/video-server/api/alive',
+      url: '/ms-gateway/video-server/api/alive',
       options: {
         method: 'post',
         body: JSON.stringify({ id, playUrl }),
@@ -110,14 +123,39 @@ const WebRtcSrs = ({ cameraId, history, start, end, contentStyle }: Iprops) => {
     });
   };
   return (
-    <Box w="full" h="full" bg="pri.dark.100" position="relative" borderRadius="10px" overflow="hidden" {...contentStyle}>
+    <Box
+      w="full"
+      h="full"
+      bg="pri.dark.100"
+      position="relative"
+      borderRadius="10px"
+      overflow="hidden"
+      {...contentStyle}
+    >
       <video
         ref={videoDom}
         autoPlay
         muted
-        style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0, zIndex: 1, objectFit: 'fill' }}
+        style={{
+          width: '100%',
+          height: '100%',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          zIndex: 1,
+          objectFit: 'fill',
+        }}
       />
-      {loading && <Spinner size="xl" color="pri.white.100" zIndex={2} position="absolute" top="50%" left="50%" />}
+      {loading && (
+        <Spinner
+          size="xl"
+          color="pri.white.100"
+          zIndex={2}
+          position="absolute"
+          top="50%"
+          left="50%"
+        />
+      )}
     </Box>
   );
 };

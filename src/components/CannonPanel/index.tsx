@@ -1,8 +1,20 @@
 'use client';
 import { useTranslations } from 'next-intl';
 import DraggablePanel from '../DraggablePanel';
-import { useEffect, useState } from 'react';
+import { SetStateAction, useEffect, useState } from 'react';
 import { ImArrowDown, ImArrowLeft, ImArrowRight, ImArrowUp } from 'react-icons/im';
+import { useMount } from 'ahooks';
+
+const operationsMapping = {
+  right: 16128, // 00100000 00000000
+  left: 7936, // 00010000 00000000
+  down: 65280, // 10000000 00000000
+  up: 32512, // 01000000 00000000
+  mist: 1792, // 00000100 00000000
+  stream: 3840, // 00001000 00000000
+  openValve: -192, // 00000000 01000000
+  closeValve: -128, // 00000000 10000000
+};
 interface ArrowButtonProps {
   onDirectionChange: (direction: string) => void;
 }
@@ -10,11 +22,18 @@ interface ButtonGroupProps {
   setState: (state: string) => void;
   states: string[];
 }
-const Select = () => {
+const Select = ({
+  options = ['Garbage Sorting Pit B Southwest Corner HK0396'],
+}: {
+  options?: string[];
+}) => {
   return (
     <select className="w-full bg-[#FFFFFF1C] px-4 py-1" aria-label="select">
-      <option className="bg-[#0000001c]">1</option>
-      <option className="bg-[#0000001c]">2</option>
+      {options.map((item) => (
+        <option className="bg-[#0000001c]" key={item}>
+          {item}
+        </option>
+      ))}
     </select>
   );
 };
@@ -44,35 +63,36 @@ const Status = ({ status }: { status: string }) => {
   );
 };
 
-const ArrowPanel = ({ onDirectionChange }: ArrowButtonProps) => {
-  const [selectedDirection, setSelectedDirection] = useState<string | null>(null);
+const ArrowPanel = ({
+  direction,
+  setDirection,
+}: {
+  direction: string | null;
+  setDirection: React.Dispatch<SetStateAction<string | null>>;
+}) => {
   const formatMessage = useTranslations('panel');
   const handleButtonClick = (direction: string) => {
-    if (selectedDirection === direction) {
-      setSelectedDirection(null);
-      onDirectionChange('');
+    if (direction === direction) {
+      setDirection(null);
     } else {
-      setSelectedDirection(direction);
-      onDirectionChange(direction);
+      setDirection(direction);
     }
   };
 
   const handleMouseDown = (direction: string) => {
-    setSelectedDirection(direction);
-    onDirectionChange(direction);
+    setDirection(direction);
   };
 
   const handleMouseUp = () => {
-    setSelectedDirection(null);
-    onDirectionChange('');
+    setDirection(null);
   };
 
-  useEffect(() => {
+  useMount(() => {
     document.addEventListener('mouseup', handleMouseUp);
     return () => {
       document.removeEventListener('mouseup', handleMouseUp);
     };
-  }, []);
+  });
 
   return (
     <div className="flex flex-col items-center justify-center gap-1">
@@ -82,7 +102,7 @@ const ArrowPanel = ({ onDirectionChange }: ArrowButtonProps) => {
         aria-label="up"
       >
         <ImArrowUp
-          className={`${selectedDirection === 'up' ? 'text-[#0078EC]' : 'text-white'} w-[22px] h-[28px] m-auto`}
+          className={`${direction === 'up' ? 'text-[#0078EC]' : 'text-white'} w-[22px] h-[28px] m-auto`}
         />
       </button>
 
@@ -93,13 +113,10 @@ const ArrowPanel = ({ onDirectionChange }: ArrowButtonProps) => {
           aria-label="left"
         >
           <ImArrowLeft
-            className={`${selectedDirection === 'left' ? 'text-[#0078EC]' : 'text-white'} w-[22px] h-[28px] m-auto`}
+            className={`${direction === 'left' ? 'text-[#0078EC]' : 'text-white'} w-[22px] h-[28px] m-auto`}
           />
         </button>
-        <button
-          className={`rounded-full w-[69px] h-[36px] bg-[#FFFFFF3F]`}
-          onClick={() => handleButtonClick('right')}
-        >
+        <button className={`rounded-full w-[69px] h-[36px] bg-[#FFFFFF3F] cursor-default`}>
           {formatMessage('operation-cannon-direction')}
         </button>
         <button
@@ -108,7 +125,7 @@ const ArrowPanel = ({ onDirectionChange }: ArrowButtonProps) => {
           aria-label="right"
         >
           <ImArrowRight
-            className={`${selectedDirection === 'right' ? 'text-[#0078EC]' : 'text-white'} w-[22px] h-[28px] m-auto`}
+            className={`${direction === 'right' ? 'text-[#0078EC]' : 'text-white'} w-[22px] h-[28px] m-auto`}
           />
         </button>
       </div>
@@ -119,7 +136,7 @@ const ArrowPanel = ({ onDirectionChange }: ArrowButtonProps) => {
         aria-label="down"
       >
         <ImArrowDown
-          className={`${selectedDirection === 'down' ? 'text-[#0078EC]' : 'text-white'} w-[22px] h-[28px] m-auto`}
+          className={`${direction === 'down' ? 'text-[#0078EC]' : 'text-white'} w-[22px] h-[28px] m-auto`}
         />
       </button>
     </div>
@@ -154,19 +171,25 @@ const ButtonGroup = ({ setState, states }: ButtonGroupProps) => {
   );
 };
 
-const CannonPanel = () => {
+const CannonPanel = ({ pos = { x: 0, y: 0 } }: { pos?: { x: number; y: number } }) => {
   const formatMessage = useTranslations('panel');
+  const [direction, setDirection] = useState<string | null>(null);
   const [spray, setSpray] = useState('spray');
   const [valve, setValve] = useState('openValve');
   const [stream, setStream] = useState('mist');
+  useEffect(() => {
+    const value =
+      (spray === 'spray' ? 1 : 0) |
+      operationsMapping[valve as keyof typeof operationsMapping] |
+      operationsMapping[stream as keyof typeof operationsMapping] |
+      operationsMapping[direction as keyof typeof operationsMapping];
+  }, [spray, valve, stream, direction]);
   return (
-    <DraggablePanel>
+    <DraggablePanel pos={pos}>
       <div className="flex flex-col px-11 py-4 items-center gap-y-4 text-white text-[14px]">
         <Select />
         <Status status={'running'} />
-        <ArrowPanel
-          onDirectionChange={(direction) => console.log('Direction changed:', direction)}
-        />
+        <ArrowPanel direction={direction} setDirection={setDirection} />
         <div className="grid grid-cols-3 gap-4">
           <ButtonGroup setState={setSpray} states={['spray', 'stopSpray']} />
           <ButtonGroup setState={setValve} states={['openValve', 'closeValve']} />

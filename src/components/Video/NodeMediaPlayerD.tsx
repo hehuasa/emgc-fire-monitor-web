@@ -97,9 +97,12 @@ const NodeMediaPlayerD = ({ cameraIds, history, start, end, contentStyle }: Ipro
     if (cameraIds.length > 1) {
       switchVideo();
     } else {
-      switchTimer.current = setInterval(() => {
-        playVideo(cameraIds[0]);
-      }, 1000 * 12 * 1);
+      switchTimer.current = setInterval(
+        () => {
+          playVideo(cameraIds[0]);
+        },
+        1000 * 12 * 1
+      );
     }
     // 弹窗的播放器
 
@@ -164,7 +167,7 @@ const NodeMediaPlayerD = ({ cameraIds, history, start, end, contentStyle }: Ipro
       // playerRef.current.clearView()
     }
     // request({
-    //   url: "/video-server/api/forced_shutdown", options: {
+    //   url: "/ms-gateway/video-server/api/forced_shutdown", options: {
     //     method: "post",
     //     body: JSON.stringify(obj)
     //   }
@@ -199,10 +202,10 @@ const NodeMediaPlayerD = ({ cameraIds, history, start, end, contentStyle }: Ipro
 
   const getPlayUrlWs = async (cameraId: string) => {
     const url = history
-      ? '/device-manger/camera/rtsp_history_play'
-      : '/device-manger/camera/rtsp_live_play';
+      ? '/ms-gateway/device-manger/camera/rtsp_history_play'
+      : '/ms-gateway/device-manger/camera/rtsp_live_play';
 
-    const wsUrl = `/device-manger/camera/live_url?playProtocol=ws&cameraId=${cameraId}&streamType=0`;
+    const wsUrl = `/ms-gateway/device-manger/camera/live_url?playProtocol=ws&cameraId=${cameraId}&streamType=0`;
     const dev = process.env.NODE_ENV !== 'production';
 
     const obj: any & { playProtocol: string; cameraIds: string[] } = {
@@ -224,9 +227,12 @@ const NodeMediaPlayerD = ({ cameraIds, history, start, end, contentStyle }: Ipro
         clearInterval(timer.current);
         timer.current = null;
 
-        timer.current = setInterval(() => {
-          pingUrl({ id: urlRes.data.id, playUrl: urlRes.data.playUrl });
-        }, 5 * 1000 * 60);
+        timer.current = setInterval(
+          () => {
+            pingUrl({ id: urlRes.data.id, playUrl: urlRes.data.playUrl });
+          },
+          5 * 1000 * 60
+        );
       }
     }
 
@@ -251,7 +257,7 @@ const NodeMediaPlayerD = ({ cameraIds, history, start, end, contentStyle }: Ipro
     //   ? "ws://" + "10.21.64.3" + ':9192' + urlRes.data.playUrl
     //   : "ws://" + window.location.hostname + ':9192' + urlRes.data.playUrl;
     // const res = await request<any>({
-    //   url: '/video-server/api/rtsp_play',
+    //   url: '/ms-gateway/video-server/api/rtsp_play',
     //   options: {
     //     method: 'post',
     //     body: JSON.stringify({
@@ -269,8 +275,8 @@ const NodeMediaPlayerD = ({ cameraIds, history, start, end, contentStyle }: Ipro
   };
   const getPlayUrl = async (cameraId: string) => {
     const url = history
-      ? '/device-manger/camera/rtsp_history_play'
-      : '/device-manger/camera/rtsp_live_play';
+      ? '/ms-gateway/device-manger/camera/rtsp_history_play'
+      : '/ms-gateway/device-manger/camera/rtsp_live_play';
     const dev = process.env.NODE_ENV !== 'production';
 
     const obj: any & { playProtocol: string; cameraIds: string[] } = {
@@ -336,7 +342,7 @@ const NodeMediaPlayerD = ({ cameraIds, history, start, end, contentStyle }: Ipro
     //   ? "ws://" + "10.21.64.3" + ':9192' + urlRes.data.playUrl
     //   : "ws://" + window.location.hostname + ':9192' + urlRes.data.playUrl;
     // const res = await request<any>({
-    //   url: '/video-server/api/rtsp_play',
+    //   url: '/ms-gateway/video-server/api/rtsp_play',
     //   options: {
     //     method: 'post',
     //     body: JSON.stringify({
@@ -355,7 +361,7 @@ const NodeMediaPlayerD = ({ cameraIds, history, start, end, contentStyle }: Ipro
 
   const pingUrl = async ({ id, playUrl }: { id: string; playUrl: string }) => {
     const urlRes = await request<{ id: string; playUrl: string }>({
-      url: '/video-server/api/alive',
+      url: '/ms-gateway/video-server/api/alive',
       options: {
         method: 'post',
         body: JSON.stringify({ id, playUrl }),

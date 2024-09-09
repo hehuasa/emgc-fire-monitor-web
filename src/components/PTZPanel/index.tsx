@@ -14,10 +14,12 @@ import { request } from '@/utils/request';
 import { useMemoizedFn, useSafeState } from 'ahooks';
 import arrowPanel from '@/assets/panel/arrowPanel.png';
 import reset from '@/assets/panel/reset.png';
+import resetActive from '@/assets/panel/resetActive.png';
 import Image from 'next/image';
 interface Props {
   closePtz: () => void;
   cameraId: string;
+  pos?: { x: number; y: number };
 }
 interface ArrowButtonProps {
   onDirectionChange: (direction: string) => void;
@@ -32,28 +34,32 @@ type PTZebum =
   | 'RIGHT_UP'
   | 'UP'
   | 'ZOOM_IN'
-  | 'ZOOM_OUT';
-const ArrowPanel = ({ onDirectionChange }: ArrowButtonProps) => {
-  const [selectedDirection, setSelectedDirection] = useState<string | null>(null);
-  const formatMessage = useTranslations('panel');
-  const handleButtonClick = (direction: string) => {
-    if (selectedDirection === direction) {
-      setSelectedDirection(null);
-      onDirectionChange('');
+  | 'ZOOM_OUT'
+  | 'RESET';
+const ArrowPanel = ({
+  startPtz,
+  stopPtz,
+}: {
+  startPtz: (ptzEnum: PTZebum) => void;
+  stopPtz: (ptzEnum: PTZebum) => void;
+}) => {
+  const [direction, setDirection] = useState<PTZebum | null>(null);
+  const directionRef = useRef(direction);
+
+  const handleMouseDown = (direction: PTZebum) => {
+    directionRef.current = direction;
+    setDirection(direction);
+    if (direction === 'RESET') {
+      //todo
     } else {
-      setSelectedDirection(direction);
-      onDirectionChange(direction);
+      startPtz(direction);
     }
   };
 
-  const handleMouseDown = (direction: string) => {
-    setSelectedDirection(direction);
-    onDirectionChange(direction);
-  };
-
   const handleMouseUp = () => {
-    setSelectedDirection(null);
-    onDirectionChange('');
+    if (directionRef.current) stopPtz(directionRef.current);
+    directionRef.current = null;
+    setDirection(null);
   };
 
   useEffect(() => {
@@ -70,53 +76,55 @@ const ArrowPanel = ({ onDirectionChange }: ArrowButtonProps) => {
     >
       <button
         className="w-[55px] h-[40px]"
-        onMouseDown={() => handleMouseDown('up')}
+        onMouseDown={() => handleMouseDown('UP')}
         aria-label="up"
       >
         <BiSolidUpArrow
-          className={`${selectedDirection === 'up' ? 'text-[#0078EC]' : 'text-white'} w-[22px] h-[28px] m-auto`}
+          className={`${direction === 'UP' ? 'text-[#0078EC]' : 'text-white'} w-[22px] h-[28px] m-auto`}
         />
       </button>
 
       <div className="flex gap-4 items-center">
         <button
           className="w-[40px] h-[55px]"
-          onMouseDown={() => handleMouseDown('left')}
+          onMouseDown={() => handleMouseDown('LEFT')}
           aria-label="left"
         >
           <BiSolidLeftArrow
-            className={`${selectedDirection === 'left' ? 'text-[#0078EC]' : 'text-white'} w-[22px] h-[28px] m-auto`}
+            className={`${direction === 'LEFT' ? 'text-[#0078EC]' : 'text-white'} w-[22px] h-[28px] m-auto`}
           />
         </button>
-        <button
-          className={`rounded-full w-[52px] h-[52px] relative`}
-          onClick={() => {}}
-          aria-label="reset"
-        >
+        <button className={`rounded-full w-[52px] h-[52px] relative`} aria-label="reset">
           <div className="absolute w-[7px] h-[7px] -top-[20px] -left-[20px] rounded-full bg-white" />
           <div className="absolute w-[7px] h-[7px] -top-[20px] -right-[20px] rounded-full bg-white" />
           <div className="absolute w-[7px] h-[7px] -bottom-[20px] -right-[20px] rounded-full bg-white" />
           <div className="absolute w-[7px] h-[7px] -bottom-[20px] -left-[20px] rounded-full bg-white" />
-          <Image src={reset} alt="reset" draggable={false} className="m-auto" />
+          <Image
+            src={direction === 'RESET' ? resetActive : reset}
+            alt="reset"
+            draggable={false}
+            onMouseDown={() => handleMouseDown('RESET')}
+            className="m-auto"
+          />
         </button>
         <button
           className="w-[40px] h-[55px]"
-          onMouseDown={() => handleMouseDown('right')}
+          onMouseDown={() => handleMouseDown('RIGHT')}
           aria-label="right"
         >
           <BiSolidRightArrow
-            className={`${selectedDirection === 'right' ? 'text-[#0078EC]' : 'text-white'} w-[22px] h-[28px] m-auto`}
+            className={`${direction === 'RIGHT' ? 'text-[#0078EC]' : 'text-white'} w-[22px] h-[28px] m-auto`}
           />
         </button>
       </div>
 
       <button
         className="w-[55px] h-[40px]"
-        onMouseDown={() => handleMouseDown('down')}
+        onMouseDown={() => handleMouseDown('DOWN')}
         aria-label="down"
       >
         <BiSolidDownArrow
-          className={`${selectedDirection === 'down' ? 'text-[#0078EC]' : 'text-white'} w-[22px] h-[28px] m-auto`}
+          className={`${direction === 'DOWN' ? 'text-[#0078EC]' : 'text-white'} w-[22px] h-[28px] m-auto`}
         />
       </button>
     </div>
@@ -131,8 +139,9 @@ const Select = () => {
   );
 };
 
-const PTZPanel = ({ closePtz, cameraId }: Props) => {
+const PTZPanel = ({ closePtz, cameraId, pos = { x: 0, y: 0 } }: Props) => {
   const deviceName = 'Garbage Sorting Pit B Southwest Corner HK0396';
+  const [zoom, setZoom] = useState('');
   const formatMessage = useTranslations('panel');
   const [animate, setAnimate] = useSafeState(false);
   const postion = useRef<{ name: PTZebum; deg: string }[]>([
@@ -164,7 +173,7 @@ const PTZPanel = ({ closePtz, cameraId }: Props) => {
   });
 
   const startPtz = (ptzEnum: PTZebum) => {
-    const url = '/device-manger/camera/controlling';
+    const url = '/ms-gateway/device-manger/camera/controlling';
     request({
       url,
       options: {
@@ -178,7 +187,7 @@ const PTZPanel = ({ closePtz, cameraId }: Props) => {
     });
   };
   const stopPtz = (ptzEnum: PTZebum) => {
-    const url = '/device-manger/camera/controlling';
+    const url = '/ms-gateway/device-manger/camera/controlling';
     request({
       url,
       options: {
@@ -193,25 +202,27 @@ const PTZPanel = ({ closePtz, cameraId }: Props) => {
   };
 
   return (
-    <DraggablePanel>
+    <DraggablePanel pos={pos}>
       <div className="flex flex-col px-8 py-5 items-center gap-y-5 text-white text-[14px]">
         {deviceName}
-        <ArrowPanel
-          onDirectionChange={(direction) => console.log('Direction changed:', direction)}
-        />
+        <ArrowPanel startPtz={startPtz} stopPtz={stopPtz} />
         <div className="grid grid-cols-3 gap-4 items-center justify-items-center">
           <button
+            className={`${zoom === 'out' ? 'text-[#0078EC]' : 'text-white'}`}
             aria-label="zoom-out"
             onMouseDown={() => {
+              setZoom('out');
               mouseDown.current = true;
               startPtz('ZOOM_OUT');
             }}
             onMouseUp={() => {
+              setZoom('');
               mouseDown.current = false;
               stopPtz('ZOOM_OUT');
             }}
             onMouseLeave={() => {
               if (mouseDown.current) {
+                setZoom('');
                 mouseDown.current = false;
                 stopPtz('ZOOM_OUT');
               }
@@ -221,17 +232,21 @@ const PTZPanel = ({ closePtz, cameraId }: Props) => {
           </button>
           {formatMessage('operation-PTZ-zoom')}
           <button
+            className={`${zoom === 'in' ? 'text-[#0078EC]' : 'text-white'}`}
             aria-label="zoom-in"
             onMouseDown={() => {
+              setZoom('in');
               mouseDown.current = true;
               startPtz('ZOOM_IN');
             }}
             onMouseUp={() => {
+              setZoom('');
               mouseDown.current = false;
               stopPtz('ZOOM_IN');
             }}
             onMouseLeave={() => {
               if (mouseDown.current) {
+                setZoom('');
                 mouseDown.current = false;
                 stopPtz('ZOOM_IN');
               }

@@ -2,9 +2,15 @@
 import { useMount } from 'ahooks';
 import { useState, useRef } from 'react';
 
-const DraggablePanel = ({ children }: { children?: JSX.Element }) => {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const positionRef = useRef({ x: 0, y: 0 });
+const DraggablePanel = ({
+  children,
+  pos = { x: 0, y: 0 },
+}: {
+  children?: JSX.Element;
+  pos?: { x: number; y: number };
+}) => {
+  const [position, setPosition] = useState(pos);
+  const positionRef = useRef(pos);
   const panelRef = useRef<HTMLDivElement>(null);
 
   useMount(() => {

@@ -4,6 +4,7 @@ const json = {
     'alarm-panel-content': 'Landfill Site B Pit',
     'alarm-panel-time': 'Alarm Time',
     'alarm-panel-operation': 'Handle',
+
     'operation-cannon-direction': 'Direction',
     'operation-cannon-spray': 'spray',
     'operation-cannon-openValve': 'Open Valve',
@@ -16,6 +17,10 @@ const json = {
     'operation-cannon-notConnected': 'Not Connected',
     'operation-PTZ-zoom': 'Zoom',
     'operation-PTZ-preset': 'Preset Position',
+
+    'video-panel-PTZ': 'Pan-tilt',
+    'video-panel-cannon': 'Fire Cannon',
+    'video-panel-exit': 'exit',
   },
 };
 export default json;

@@ -16,8 +16,6 @@ import { flagMenuFn } from '@/utils/util';
 import config from '@/assets/header/config.png';
 import user from '@/assets/header/user.png';
 
-
-
 import { useLocalStorageState, useMount, useUnmount } from 'ahooks';
 import type { JSEncrypt } from 'jsencrypt';
 import { useLocale, useTranslations } from 'next-intl';
@@ -41,8 +39,6 @@ const Header = () => {
   const formatMessage = useTranslations('base');
   const [currentUserInfo] = useLocalStorageState<null | IUserInfo>('emgc_web_currentUserInfo');
 
-
-
   const timer = useRef<NodeJS.Timeout | null>(null); // api数据数据请求定时器
 
   useUnmount(() => {
@@ -63,7 +59,6 @@ const Header = () => {
 
   const flagMenu = flagMenuFn(links);
 
-
   const loginOut = async () => {
     router.replace('/login');
 
@@ -79,11 +74,7 @@ const Header = () => {
     setIsSpaceQuerying(false);
   };
 
-
-  useMount(async () => {
-
-
-  });
+  useMount(async () => {});
 
   const encrypt = (val: string) => {
     const newVal = jsencryptRef.current?.encrypt(val) as string;
@@ -93,7 +84,6 @@ const Header = () => {
     const newVal = jsencryptRef.current?.decrypt(val) as string;
     return newVal;
   };
-
 
   return (
     <>

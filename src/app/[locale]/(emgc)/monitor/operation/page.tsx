@@ -23,37 +23,10 @@ import { FeatureCollection, Point, Polygon } from 'geojson';
 import { Scene } from '@antv/l7';
 import Videos from './Videos';
 import { videoPanelModal } from '@/models/video';
-import { IVideoItem } from '@/components/VideoPanel/VideoList';
 
 // const MapToolBar = dynamic(() => import('@/components/MapTools/MaptoolBar'), { ssr: false });
 const BaseMap = dynamic(() => import('./Map'), { ssr: false });
 const VideoPanel = dynamic(() => import('@/components/VideoPanel'), { ssr: false });
-const videoItems: IVideoItem[] = [
-  {
-    index: 1,
-    cameraId: 'camera-001',
-    isNVR: true,
-    rtspIndex: -1,
-  },
-  {
-    index: 2,
-    cameraId: '',
-    isNVR: false,
-    rtspIndex: 1002,
-  },
-  {
-    index: 3,
-    cameraId: 'camera-003',
-    isNVR: true,
-    rtspIndex: -1,
-  },
-  {
-    index: 4,
-    cameraId: '',
-    isNVR: false,
-    rtspIndex: 1004,
-  },
-];
 export interface IAlarmClusterItem {
   alarmCount: number;
   areaId: string;
@@ -89,6 +62,23 @@ const Page = () => {
 
   const [videoPanel, setVideoPanel] = useRecoilState(videoPanelModal);
 
+  useEffect(() => {
+    if (videoPanel) {
+      if (mapScene) {
+        const zoom = mapScene.getControlByName('zoom');
+        const scale = mapScene.getControlByName('scale');
+        zoom?.hide();
+        scale?.hide();
+      }
+    } else {
+      if (mapScene) {
+        const zoom = mapScene.getControlByName('zoom');
+        const scale = mapScene.getControlByName('scale');
+        zoom?.show();
+        scale?.show();
+      }
+    }
+  }, [videoPanel]);
   // 报警列表
   const getAlalrmList = async () => {
     const res = await request<IAlarm[]>({

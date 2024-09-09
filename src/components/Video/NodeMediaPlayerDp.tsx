@@ -87,8 +87,8 @@ const NodeMediaPlayerDp = ({ cameraId, history, start, end, contentStyle, stream
 
   const getPlayUrl = async () => {
     const url = history
-      ? '/device-manger/camera/rtsp_history_play'
-      : '/device-manger/camera/rtsp_live_play';
+      ? '/ms-gateway/device-manger/camera/rtsp_history_play'
+      : '/ms-gateway/device-manger/camera/rtsp_live_play';
     const dev = process.env.NODE_ENV !== 'production';
 
     const obj: Iprops & { playProtocol: string } = {
@@ -115,9 +115,12 @@ const NodeMediaPlayerDp = ({ cameraId, history, start, end, contentStyle, stream
         clearInterval(timer.current);
         timer.current = null;
 
-        timer.current = setInterval(() => {
-          pingUrl({ id: urlRes.data.id, playUrl: urlRes.data.playUrl });
-        }, 5 * 1000 * 60);
+        timer.current = setInterval(
+          () => {
+            pingUrl({ id: urlRes.data.id, playUrl: urlRes.data.playUrl });
+          },
+          5 * 1000 * 60
+        );
       }
       const path = window.location.host;
       const protocol = window.location.protocol.indexOf('https') !== -1 ? 'https://' : 'http://';
@@ -152,7 +155,7 @@ const NodeMediaPlayerDp = ({ cameraId, history, start, end, contentStyle, stream
       playerRef.current.clearView();
     }
     // request({
-    //   url: '/video-server/api/forced_shutdown',
+    //   url: '/ms-gateway/video-server/api/forced_shutdown',
     //   options: {
     //     method: 'post',
     //     body: JSON.stringify(obj),
@@ -162,7 +165,7 @@ const NodeMediaPlayerDp = ({ cameraId, history, start, end, contentStyle, stream
 
   const pingUrl = async ({ id, playUrl }: { id: string; playUrl: string }) => {
     const urlRes = await request<{ id: string; playUrl: string }>({
-      url: '/video-server/api/alive',
+      url: '/ms-gateway/video-server/api/alive',
       options: {
         method: 'post',
         body: JSON.stringify({ id, playUrl }),
