@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 declare namespace Jessibuca {
   /** 超时信息 */
   enum TIMEOUT {
@@ -616,8 +617,7 @@ declare class Jessibuca {
    @example
    jessibuca.on("load",function(){console.log('load')})
    */
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  on(event: string, callback: Function): void;
+  on(event: string, callback: () => void): void;
 }
 declare const SoundRecognizer: any;
 

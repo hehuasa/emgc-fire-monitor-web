@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { request } from '@/utils/request';
 import { Box, Spinner } from '@chakra-ui/react';
 import { useRef, useEffect, useCallback, useState } from 'react';

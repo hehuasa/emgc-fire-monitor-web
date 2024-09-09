@@ -12,8 +12,8 @@ export type Refs = {
 };
 interface Iprops {
   cameraId: string;
-  isNVR: boolean;
-  rtspIndex: number;
+  isNVR?: boolean;
+  rtspIndex?: number;
   history?: boolean;
   start?: string;
   end?: string;
@@ -155,7 +155,7 @@ const NodeMediaPlayer = (
     }
   };
   const getPlayUrl_fat = async () => {
-    const url = videoObjsRef.current.rtspVideos[rtspIndex];
+    const url = videoObjsRef.current.rtspVideos[rtspIndex || 0];
     const res = await request<any>({
       url: '/video-server/api/rtsp_play',
       options: {

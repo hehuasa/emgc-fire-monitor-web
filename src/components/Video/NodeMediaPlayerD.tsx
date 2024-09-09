@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { request } from '@/utils/request';
 import { dev, videoSwitchTime } from '@/utils/util';
 import {
@@ -22,6 +23,7 @@ interface Iprops {
   end?: string;
   contentStyle?: BoxProps;
 }
+
 const NodeMediaPlayerD = ({ cameraIds, history, start, end, contentStyle }: Iprops) => {
   const id = useRef<string>('video' + uuidv4());
   const ids = useRef<string[]>(['video' + uuidv4(), 'video' + uuidv4()]);
@@ -34,8 +36,8 @@ const NodeMediaPlayerD = ({ cameraIds, history, start, end, contentStyle }: Ipro
   const playerRef = useRef<null | NodePlayer>(null);
   const playersRef = useRef<NodePlayer[]>([]);
 
-  const timer = useRef<null | NodeJS.Timer>(null);
-  const switchTimer = useRef<null | NodeJS.Timer>(null);
+  const timer = useRef<null | NodeJS.Timeout>(null);
+  const switchTimer = useRef<null | NodeJS.Timeout>(null);
 
   const currentIndex = useRef<number>(0); // 轮询的摄像头Id
   const currentVideo = useRef<{ id: string; playUrl: string; url: string }>({
@@ -312,7 +314,7 @@ const NodeMediaPlayerD = ({ cameraIds, history, start, end, contentStyle }: Ipro
         const url_ = dev
           ? // ? "ws://" + "192.168.0.16" + ':9192' + urlRes.data.playUrl
 
-            'ws://' + '10.21.64.3' + ':9192' + urlRes.data.playUrl
+          'ws://' + '10.21.64.3' + ':9192' + urlRes.data.playUrl
           : 'ws://' + window.location.hostname + ':9192' + urlRes.data.playUrl;
 
         return { id: urlRes.data.id, playUrl: urlRes.data.playUrl, url: url_ };

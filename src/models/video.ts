@@ -1,4 +1,4 @@
-import { Position } from '@turf/turf';
+import { Position } from 'geojson';
 import { atom } from 'recoil';
 
 export const videoPanelModal = atom<boolean>({

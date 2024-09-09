@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { request } from '@/utils/request';
 import { videoSwitchTime } from '@/utils/util';
@@ -25,8 +26,8 @@ const NodeMediaPlayerD = ({ cameraIds, history, start, end, contentStyle }: Ipro
     const playerRef = useRef<null | NodePlayer>(null)
     const playersRef = useRef<NodePlayer[]>([])
 
-    const timer = useRef<null | NodeJS.Timer>(null)
-    const switchTimer = useRef<null | NodeJS.Timer>(null)
+    const timer = useRef<null | NodeJS.Timeout>(null)
+    const switchTimer = useRef<null | NodeJS.Timeout>(null)
 
 
 

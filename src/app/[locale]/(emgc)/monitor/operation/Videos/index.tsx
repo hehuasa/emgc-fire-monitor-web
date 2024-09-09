@@ -5,7 +5,6 @@ import { CircleClose, PtzIcon1, VideotapeIcon, VideoZoomOut } from '@/components
 // import WebRtcPlayer from '@/components/Video/WebRtcPlayer';
 import NodeMediaPlayer, { Refs as VideoRefs } from '@/components/Video/NodeMediaPlayer';
 import Ptz from '@/components/Video/Ptz';
-import WebRtcSrs from '@/components/Video/WebRtcSrs';
 import { IPlayVideoItem, playVideosModel } from '@/models/video';
 import {
   Box,
@@ -145,15 +144,8 @@ const Videos = () => {
                     />
                   </Flex>
                 </Flex>
-                {currentVideo ? (
-                  process.env.NEXT_PUBLIC_ANALYTICS_Ms_type === 'cx' ? (
-                    <>
-                      <NodeMediaPlayer cameraId={currentVideo.cameraId} streamType={0} />
-                    </>
-                  ) : (
-                    <WebRtcSrs cameraId={currentVideo.cameraId} />
-                  )
-                ) : null}
+                {currentVideo ? <NodeMediaPlayer isNVR cameraId={currentVideo.cameraId} streamType={0} /> : null}
+
 
                 <Flex
                   position="absolute"
@@ -433,18 +425,13 @@ const CusTomMoveable = ({
               />
             </Flex>
           </Flex>
-          {process.env.NEXT_PUBLIC_ANALYTICS_Ms_type === 'cx' ? (
-            <>
-              <NodeMediaPlayer
-                cameraId={cameraId}
-                contentStyle={{ borderRadius: isfullCcreen ? '0px' : '10px' }}
-                ref={videoRef}
-              />
-              {/* <PlayComponent cameraId={cameraId} index={index} /> */}
-            </>
-          ) : (
-            <WebRtcSrs cameraId={cameraId} />
-          )}
+
+          <NodeMediaPlayer
+            cameraId={cameraId}
+            contentStyle={{ borderRadius: isfullCcreen ? '0px' : '10px' }}
+            ref={videoRef}
+          />
+
         </Box>
       </Box>
 
