@@ -100,6 +100,7 @@ const appSetHeader = (options: IFetchOp) => {
 
 //跳转到401页面
 const go401 = () => {
+  return;
   const intl = `/${localStorage.getItem('intl') || 'zh'}`;
 
   const newUrl =

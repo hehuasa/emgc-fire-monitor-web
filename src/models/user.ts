@@ -12,7 +12,7 @@ export interface IMenuItem {
   fullname?: string;
   permissionCode: string;
   parentNames?: { name: string; url: string }[];
-  children: IMenuItem[];
+  children?: IMenuItem[];
   funType: number; //1 | 2 | 3
   isEnable: number; //0 | 1
   menuType: number | null; //0 | 1 | 2 | string  类别 1为后台管理功能菜单 2为前端菜单功能 3为移动端菜单

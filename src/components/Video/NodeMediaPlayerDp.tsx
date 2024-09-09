@@ -19,7 +19,7 @@ const NodeMediaPlayerDp = ({ cameraId, history, start, end, contentStyle, stream
   //正在播放
   const [isPlaying, setIsPlaying] = useSafeState(false);
   // const toast = useToast();
-  const timer = useRef<null | NodeJS.Timer>(null);
+  const timer = useRef<null | NodeJS.Timeout>(null);
   const playerRef = useRef<null | NodePlayer>(null);
 
   const currentVideo = useRef<{ id: string; playUrl: string }>({

@@ -1,23 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { mapOp } from '@/components/Map';
-import AlarmAnimateIcon from '@/components/Map/AlarmAnimateIcon';
 import { createRoot } from 'react-dom/client';
-import CustomAlarmIcon from '@/components/Map/CustomAlarmIcon';
 import { alarmTypeModel, currentAlarmModel } from '@/models/alarm';
 import { isInIconModel, isSpaceQueryingModel } from '@/models/map';
-import {
-  currentGpsInfoModel,
-  currentResModel,
-  IGpsDetail,
-  IGpsInfo,
-  IResItem,
-} from '@/models/resource';
+import { currentGpsInfoModel, currentResModel, IResItem } from '@/models/resource';
 import { initGeoJson } from '@/utils/mapUtils';
-import { request } from '@/utils/request';
-import { featureCollection, polygon } from '@turf/turf';
 import { useMount, useUnmount } from 'ahooks';
-import { MapMouseEvent } from 'mapbox-gl';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { IAlarmClusterItem } from '../page';
 import { anchorType, LineLayer, Marker, PointLayer, PolygonLayer, Scene } from '@antv/l7';
@@ -148,111 +137,6 @@ const LaryerInit = ({
   }, [locale]);
 
   // 自定义报警图标
-  const genAlarmImgs = () => {
-    // 首先加载一个默认图标
-    map.loadImage(
-      `${process.env.NEXT_PUBLIC_ANALYTICS_BasePath}/map/${'OTH_ALA'}.png`,
-      (error, defaultImage) => {
-        if (error) {
-          return;
-        }
-
-        for (const { alarmType, iconPlaySpeed, iconColour } of alarmTypes) {
-          // 图标背后扩散
-
-          const imgname = alarmType + '_';
-          const animateImgname = alarmType + '_animate';
-          if (!map.hasImage(animateImgname)) {
-            const alarmAnimateImage = new AlarmAnimateIcon({
-              color: iconColour,
-              speed: iconPlaySpeed,
-              size: 70,
-            });
-
-            map.addImage(animateImgname, alarmAnimateImage);
-          }
-
-          if (!map.hasImage(imgname)) {
-            map.loadImage(
-              `${process.env.NEXT_PUBLIC_ANALYTICS_BasePath}/map/${alarmType}.png`,
-              (error, image) => {
-                if (error) {
-                  console.info('============alarmType==error============', alarmType);
-                  if (defaultImage) {
-                    const imgname = alarmType + '_';
-                    const customAlarmIcon = new CustomAlarmIcon({
-                      size: 48,
-                      image: defaultImage,
-                      color: iconColour,
-                    });
-                    map.addImage(imgname, customAlarmIcon);
-                  }
-
-                  return;
-                }
-
-                if (image) {
-                  // 报警图标
-                  const imgname = alarmType + '_';
-                  const customAlarmIcon = new CustomAlarmIcon({
-                    size: 48,
-                    image,
-                    color: iconColour,
-                  });
-                  map.addImage(imgname, customAlarmIcon);
-                }
-              }
-            );
-          }
-        }
-      }
-    );
-  };
-  const genAlarmLayers = () => {
-    map.addSource('test', initGeoJson());
-    const animateCircle: mapboxgl.LayerSpecification = {
-      id: 'animateCircle',
-      type: 'symbol',
-      source: 'test',
-      // minzoom: clusterZoom,
-      layout: {
-        'icon-image': ['concat', ['get', 'alarmType'], '_animate'],
-        // 'icon-image': 'FAS_animate',
-
-        'icon-allow-overlap': true,
-        'icon-offset': [-4, -6],
-      },
-    };
-
-    const alarmIconLayer: mapboxgl.LayerSpecification = {
-      type: 'symbol',
-      id: 'alarmIconLayer',
-      source: 'test',
-      layout: {
-        // "icon-image": "FAS_",
-
-        'icon-image': ['concat', ['get', 'alarmType'], '_'],
-        'icon-allow-overlap': true,
-
-        // "visibility": "none"
-      },
-    };
-
-    map.addLayer(animateCircle);
-    map.addLayer(alarmIconLayer);
-  };
-  //
-  const addNewAlarms = async () => {
-    const res = await request({ url: '/mockalarm.json' });
-
-    console.info('============res==============', res);
-    const source = map.getSource('test') as mapboxgl.GeoJSONSource;
-    console.info('============source==============', source);
-
-    if (source) {
-      source.setData(res as unknown as GeoJSON.GeoJSON);
-    }
-  };
 
   // 人员定位图层
   // const genGpsLayer = () => {
@@ -295,26 +179,6 @@ const LaryerInit = ({
   //   map.addLayer(gpsLayer);
   //   map.addLayer(gpsLayer_h);
   // };
-
-  const handleGpsLayerClick = async (
-    e: MapMouseEvent & {
-      features?: any;
-    }
-  ) => {
-    if (e.features && e.features[0]) {
-      const properties = e.features[0].properties as IGpsInfo;
-      const url = `/cx-alarm/resource/findPositionUserInfo?resourceId=${properties.id}`;
-      const res = await request<IGpsDetail>({ url });
-      if (res.code === 200) {
-        // const detail = { ...properties, ...res.data };
-        const detail = { ...res.data, id: properties.id };
-        setCurrentGpsInfo(detail);
-      } else {
-        const detail = { ...properties };
-        setCurrentGpsInfo(detail as IGpsDetail);
-      }
-    }
-  };
 
   // 视频图标图层
   const genVideoIconLayer = () => {
@@ -688,24 +552,6 @@ const LaryerInit = ({
     // map.on('mousemove', 'zhuangzhi_v1_3', mouseInArea);
     // map.on('mouseleave', 'zhuangzhi_v1_3', mouseOutArea);
     // map.addLayer(area_hover, 'alarmIcon');
-  };
-  // 高亮区域
-  const mouseInArea = (
-    e: MapMouseEvent & {
-      features?: any;
-    }
-  ) => {
-    const geom = polygon(e.features[0].geometry.coordinates);
-    const source = map.getSource('area_hover') as mapboxgl.GeoJSONSource;
-
-    source.setData(featureCollection([geom]) as GeoJSON.GeoJSON);
-  };
-
-  // 取消高亮区域
-  const mouseOutArea = () => {
-    const source = map.getSource('area_hover') as mapboxgl.GeoJSONSource;
-
-    source.setData(featureCollection([]) as GeoJSON.GeoJSON);
   };
 
   useUnmount(() => {

@@ -1,10 +1,12 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 // 查周边逻辑组件
 import { request } from '@/utils/request';
-import { Feature, featureCollection, Point, point, polygon, Position } from '@turf/turf';
+import { featureCollection, point, polygon } from '@turf/turf';
 import { useMemoizedFn, useMount, useUnmount } from 'ahooks';
-import maplibregl, { LngLat, LngLatBounds, LngLatLike } from 'maplibre-gl';
+import { LngLat, LngLatBounds, LngLatLike } from 'mapbox-gl';
 import { forwardRef, Ref, useImperativeHandle } from 'react';
 import { IResItem } from '@/models/resource';
+import { Feature, Point, Position } from 'geojson';
 
 /** 将circle转为 包含地理范围信息的polygon
  * @param circle leaflet 的 circle对象
@@ -127,6 +129,7 @@ const LookForAround = (
 
   //画原型
   const renderCircle = (center: maplibregl.LngLat, radius: number) => {
+    // @ts-ignore
     const newBouns = LngLatBounds.fromLngLat(center, radius);
     const newGeoJson = circleTopolygon(newBouns);
     const source = map?.getSource('circleFill_source') as maplibregl.GeoJSONSource;

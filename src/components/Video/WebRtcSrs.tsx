@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { request } from '@/utils/request';
 import { Box, BoxProps, Spinner } from '@chakra-ui/react';
 import { useMount, useUnmount } from 'ahooks';
@@ -13,7 +14,7 @@ interface Iprops {
 const WebRtcSrs = ({ cameraId, history, start, end, contentStyle }: Iprops) => {
   const videoDom = useRef<HTMLVideoElement | null>(null);
   const [loading, setloading] = useState(true);
-  const timer = useRef<null | NodeJS.Timer>(null);
+  const timer = useRef<null | NodeJS.Timeout>(null);
 
   useMount(() => {
     console.info('============SrsRtcPlayerAsync==============', SrsRtcPlayerAsync);

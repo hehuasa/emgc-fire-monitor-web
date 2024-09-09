@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { request } from '@/utils/request';
 import { videoSwitchTime } from '@/utils/util';
 import { Box, BoxProps } from '@chakra-ui/react';
@@ -24,8 +26,8 @@ const NodeMediaPlayerD = ({ cameraIds, history, start, end, contentStyle }: Ipro
   const playerRef = useRef<null | NodePlayer>(null);
   const playersRef = useRef<NodePlayer[]>([]);
 
-  const timer = useRef<null | NodeJS.Timer>(null);
-  const switchTimer = useRef<null | NodeJS.Timer>(null);
+  const timer = useRef<null | NodeJS.Timeout>(null);
+  const switchTimer = useRef<null | NodeJS.Timeout>(null);
 
   const currentIndex = useRef<number>(0); // 轮询的摄像头Id
   const currentVideo = useRef<{ id: string; playUrl: string }>({

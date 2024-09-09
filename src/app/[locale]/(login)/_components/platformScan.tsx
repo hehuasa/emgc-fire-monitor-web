@@ -89,7 +89,7 @@ const PlatformScan = () => {
   return (
     <div className="w-full">
       <div className="w-[232px] h-[232px] my-7 mx-auto">
-        {qrcodeId ? <QRCode value={JSON.stringify({ qrcodeId })} size={232} /> : null}
+        {qrcodeId ? <QRCode.QRCodeCanvas value={JSON.stringify({ qrcodeId })} size={232} /> : null}
       </div>
       <div className=" text-center">点阵平台小程序扫码登录</div>
     </div>

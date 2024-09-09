@@ -1,4 +1,3 @@
-import { IOritreeData } from '@/components/Montior/Tree';
 import { atom } from 'recoil';
 import { IArea } from './map';
 
@@ -35,12 +34,6 @@ export type objectType = {
 export const dictionaryModal = atom<objectType>({
   key: 'dictionaryModal_',
   default: {},
-});
-
-//部门数据
-export const depTreeModal = atom<IOritreeData[]>({
-  key: 'depTreeModal_',
-  default: [],
 });
 
 //区域数据

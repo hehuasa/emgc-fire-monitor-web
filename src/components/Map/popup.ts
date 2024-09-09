@@ -7,7 +7,7 @@ import * as React from 'react';
 import { createPortal } from 'react-dom';
 import { useEffect, useMemo, useRef } from 'react';
 
-import * as maplibregl from 'maplibre-gl';
+import * as maplibregl from 'mapbox-gl';
 
 const unitlessNumber = /box|flex|grid|column|lineHeight|fontWeight|opacity|order|tabSize|zIndex/;
 
@@ -184,6 +184,7 @@ function Popup(props: PopupProps) {
   }, []);
 
   useEffect(() => {
+    //@ts-ignore
     applyReactStyle(popup.getElement(), props.style!);
   }, [props.style]);
 

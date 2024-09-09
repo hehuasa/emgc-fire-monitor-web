@@ -1,4 +1,4 @@
-import { Point } from '@turf/turf';
+import { Point } from 'geojson';
 import { atom } from 'recoil';
 
 export interface listType {
