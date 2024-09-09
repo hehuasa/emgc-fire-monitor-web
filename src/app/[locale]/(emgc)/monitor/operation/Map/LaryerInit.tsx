@@ -6,7 +6,7 @@ import { isInIconModel, isSpaceQueryingModel } from '@/models/map';
 import { currentGpsInfoModel, currentResModel, IResItem } from '@/models/resource';
 import { initGeoJson } from '@/utils/mapUtils';
 import { useMount, useUnmount } from 'ahooks';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { IAlarmClusterItem } from '../page';
 import { anchorType, LineLayer, Marker, PointLayer, PolygonLayer, Scene } from '@antv/l7';

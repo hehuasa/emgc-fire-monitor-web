@@ -1,5 +1,7 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
+
 const AlarmPanel = ({ operation }: { operation: () => void }) => {
   const formatMessage = useTranslations('panel');
   return (
