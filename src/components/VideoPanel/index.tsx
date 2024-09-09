@@ -7,7 +7,7 @@ import cannon from '@/assets/panel/cannon.png';
 import cannonActive from '@/assets/panel/cannonActive.png';
 import exit from '@/assets/panel/exit.png';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PTZPanel from '../PTZPanel';
 import CannonPanel from '../CannonPanel';
 import { useTranslations } from 'next-intl';
@@ -29,7 +29,20 @@ const VideoPanel = () => {
   const [cannonPanel, setCannonPanel] = useState(false);
   const [videoList, setVideoList] = useState<IVideoItem[]>();
   const formatMessage = useTranslations('panel');
-
+  const [curList, setCurList] = useState<IVideoItem[]>();
+  const addVideo = () => {
+    if (videoList && curList) {
+      for (const item of videoList) {
+        if (!curList.includes(item)) {
+          setCurList([...curList, item]);
+          break;
+        }
+      }
+    }
+  };
+  useEffect(() => {
+    console.log('change curList', curList);
+  }, [curList]);
   useMount(async () => {
     const { rtspVideos, NVRVideos } = (await request({
       url: `/mock/videos.json`,
@@ -46,21 +59,28 @@ const VideoPanel = () => {
       })
     );
     setVideoList(tmpList);
+    setCurList(tmpList.slice(0, 6));
   });
 
   return (
     <div className="w-full h-full z-10 absolute top-0 left-0">
       {ptzPanel && <PTZPanel closePtz={() => {}} cameraId={''} pos={{ x: 1450, y: 430 }} />}
       {cannonPanel && <CannonPanel pos={{ x: 1450, y: 430 }} />}
-      {videoList && (
+      {videoList && curList && (
         <>
           <NodeMediaPlayer
-            cameraId={videoList[0].cameraId}
-            isNVR={videoList[0].isNVR}
-            rtspIndex={videoList[0].rtspIndex}
+            cameraId={curList[0].cameraId}
+            isNVR={curList[0].isNVR}
+            rtspIndex={curList[0].rtspIndex}
           />
           <div className="absolute bottom-[24px] left-[27px] z-10">
-            <VideoList videoList={videoList.slice(1)} direction="row" />
+            <VideoList
+              videoList={videoList}
+              curList={curList}
+              setCurList={setCurList}
+              addVideo={addVideo}
+              direction="row"
+            />
           </div>
         </>
       )}

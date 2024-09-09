@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { SetStateAction } from 'react';
 import NodeMediaPlayer from '../Video/NodeMediaPlayer';
 import { IoIosClose } from 'react-icons/io';
 import video from '@/assets/panel/video.png';
@@ -13,29 +13,29 @@ export interface IVideoItem {
 }
 export interface ListProps {
   videoList: IVideoItem[];
+  curList: IVideoItem[];
+  setCurList: React.Dispatch<SetStateAction<IVideoItem[] | undefined>>;
+  addVideo: () => void;
   direction: 'row' | 'col';
 }
-export const VideoList = ({ videoList, direction }: ListProps) => {
-  const [curList, setCurList] = useState(videoList.slice(0, 5));
-  const addVideo = () => {
-    for (const item of videoList) {
-      if (!curList.includes(item)) {
-        setCurList([...curList, item]);
-        break;
-      }
-    }
-  };
+export const VideoList = ({
+  videoList,
+  curList,
+  setCurList,
+  addVideo,
+  direction = 'row',
+}: ListProps) => {
   return (
     <div
       className={`flex ${direction === 'row' ? 'w-full h-[135px] flex-row' : 'h-full w-[224px] flex-col'} gap-4`}
     >
-      {curList.map(({ cameraId, isNVR, rtspIndex }) => (
+      {curList.slice(1).map(({ cameraId, isNVR, rtspIndex }, index) => (
         <div
           key={`video-${isNVR ? cameraId : rtspIndex}`}
-          className="rounded-lg w-[224px] h-[135px] relative "
+          className="rounded-lg w-[224px] h-[135px] relative cursor-pointer"
         >
           <IoIosClose
-            className="absolute top-2 right-2 text-white text-2xl z-10 cursor-pointer"
+            className="absolute top-2 right-2 text-white text-2xl z-10 "
             onClick={() => {
               setCurList(
                 curList.filter((item) => {
@@ -45,10 +45,21 @@ export const VideoList = ({ videoList, direction }: ListProps) => {
               );
             }}
           />
-          <NodeMediaPlayer cameraId={cameraId} isNVR={isNVR} rtspIndex={rtspIndex} />
+          <div
+            className="rounded-lg w-[224px] h-[135px] relative "
+            onClick={() => {
+              const tmpList = [...curList];
+              const firstVideo = tmpList[0];
+              tmpList[0] = { rtspIndex, isNVR, cameraId };
+              tmpList[index + 1] = firstVideo;
+              setCurList(tmpList);
+            }}
+          >
+            <NodeMediaPlayer cameraId={cameraId} isNVR={isNVR} rtspIndex={rtspIndex} />
+          </div>
         </div>
       ))}
-      {videoList.length > 5 && curList.length < 5 ? (
+      {videoList.length > 6 && curList.length < 6 ? (
         <div
           className="rounded-lg w-[224px] h-[135px] relative bg-[#00000088] flex items-center justify-center border-1 border-[#0078EC] cursor-pointer"
           onClick={addVideo}
