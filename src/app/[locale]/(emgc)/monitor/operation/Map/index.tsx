@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { CircleClose, PhoneIcon } from '@/components/Icons';
 import { mapOp } from '@/components/Map';
 import Marker from '@/components/L7Map/Marker';
@@ -27,6 +28,7 @@ import { Scene } from '@antv/l7';
 import { useTranslations } from 'next-intl';
 import { FeatureCollection, LineString, Point, Polygon, Position } from 'geojson';
 import MapBoxMap from '@/components/L7Map/MapBoxMap';
+import { LngLatLike } from 'mapbox-gl';
 
 const { clusterZoom, flyToZoom } = mapOp;
 
@@ -150,8 +152,9 @@ const Map = ({ getMapObj }: IProps) => {
     if (e.feature && e.feature.properties) {
       rightMenuAreaName.current.areaName = e.feature.properties.areaName;
       rightMenuAreaName.current.areaId = e.feature.properties.areaId;
+      //@ts-ignore
       rightMenuAreaName.current.latlng = e.lngLat.toArray();
-
+      //@ts-ignore
       setRightMenulnglat(e.lngLat.toArray());
       changeMapRightMenuShow(true);
     }
@@ -406,25 +409,7 @@ const Map = ({ getMapObj }: IProps) => {
     setCurrentAreaData(null);
   };
 
-  // 高亮区域
-  const mouseInArea = (
-    e: MapMouseEvent & {
-      features?: any;
-    }
-  ) => {
-    const geom = polygon(e.features[0].geometry.coordinates);
-    const source = mapRef.current?.getSource('area_hover') as maplibregl.GeoJSONSource;
-
-    source.setData(featureCollection([geom]) as GeoJSON.GeoJSON);
-  };
-
   // 取消高亮区域
-  const mouseOutArea = () => {
-    const source = mapRef.current?.getSource('area_hover') as maplibregl.GeoJSONSource;
-
-    source.setData(featureCollection([]) as GeoJSON.GeoJSON);
-  };
-
   return (
     <>
       {/*   {showPopup && mapRef.current && currentAreaClusterData && ( */}
@@ -494,8 +479,10 @@ const Map = ({ getMapObj }: IProps) => {
       )}
 
       {showAreaPopup && mapRef.current && currentAreaData && (
+
         <Popup
           maxWidth="none"
+          //@ts-ignore
           closeButton={false}
           map={mapRef.current}
           onClose={handleAPopupClose}
@@ -565,6 +552,7 @@ const Map = ({ getMapObj }: IProps) => {
         </Popup>
       )}
       {showMapRightMenu && mapRef.current && (
+        //@ts-ignore
         <Marker longitude={rightMenulnglat[0]} latitude={rightMenulnglat[1]} map={mapRef.current}>
           <RightClickMenu close={() => setMapRightMenuShow(false)} {...rightMenuAreaName.current} />
         </Marker>

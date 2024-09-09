@@ -1,4 +1,4 @@
-import { LineString, Point, Polygon } from '@turf/turf';
+import { LineString, Point, Polygon } from 'geojson';
 import { createContext } from 'react';
 import { atom } from 'recoil';
 

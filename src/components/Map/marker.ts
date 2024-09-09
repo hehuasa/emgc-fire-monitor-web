@@ -1,5 +1,7 @@
-import type { MarkerOptions, PointLike } from 'maplibre-gl';
-import * as maplibregl from 'maplibre-gl';
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import type { MarkerOptions, PointLike } from 'mapbox-gl';
+import * as maplibregl from 'mapbox-gl';
 import * as React from 'react';
 import { useEffect, useMemo, useRef } from 'react';
 import { createPortal } from 'react-dom';
@@ -145,17 +147,23 @@ function Marker(props: MarkerProps) {
 
     mk.on('dragstart', (e) => {
       const evt = e;
+      //@ts-ignore
       evt.lngLat = marker.getLngLat();
+      //@ts-ignore
       thisRef.current.props.onDragStart?.(evt);
     });
     mk.on('drag', (e) => {
       const evt = e;
+      //@ts-ignore
       evt.lngLat = marker.getLngLat();
+      //@ts-ignore
       thisRef.current.props.onDrag?.(evt);
     });
     mk.on('dragend', (e) => {
       const evt = e;
+      //@ts-ignore
       evt.lngLat = marker.getLngLat();
+      //@ts-ignore
       thisRef.current.props.onDragEnd?.(evt);
     });
 

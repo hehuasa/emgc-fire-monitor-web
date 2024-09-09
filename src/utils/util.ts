@@ -184,3 +184,5 @@ export const menuGetOutNode = (flagData: { [key: string]: IMenuItem }, currentDa
 
   return father;
 };
+
+export const videoSwitchTime = 10 * 1000;

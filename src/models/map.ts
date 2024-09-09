@@ -2,15 +2,13 @@ import { Point } from 'geojson';
 import { createContext } from 'react';
 import { atom } from 'recoil';
 import { IAlarmStatus } from './alarm';
-import { IUeMap } from '@/components/UeMap';
+
 import { Scene } from '@antv/l7';
 
 export const MapSceneContext = createContext<Scene | null>(null);
 export type MapContextValue = maplibregl.Map;
 export const MapContext = createContext<MapContextValue | null>(null);
 
-type MapContext3DValue = IUeMap;
-export const MapContext3D = createContext<MapContext3DValue | null>(null);
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 export const UpdateAlarmfnContext = createContext<UpdateAlarmListFn>();

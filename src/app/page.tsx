@@ -1,8 +1,9 @@
 'use client';
+import { IUserInfo } from '@/models/user';
 import { useLocalStorageState } from 'ahooks';
 import { useRouter } from 'next/navigation';
 import { useEffect, useLayoutEffect } from 'react';
-import { IUserInfo } from './login/page';
+
 
 const Page = () => {
   const router = useRouter();

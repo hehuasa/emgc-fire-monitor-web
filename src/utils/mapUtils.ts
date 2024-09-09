@@ -1,22 +1,15 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { IAlarmClusterItem } from '@/app/(emgc)/emgc/montior/operation/page';
 import { IAlarm, IAlarmStatus } from '@/models/alarm';
 import { IResItem } from '@/models/resource';
-import {
-  center,
-  Feature,
-  feature,
-  FeatureCollection,
-  featureCollection,
-  lineString,
-  point,
-  Polygon,
-} from '@turf/turf';
+import { center, feature, featureCollection, lineString, point } from '@turf/turf';
 import { clone } from 'lodash';
-import { PointLike } from 'maplibre-gl';
+import { PointLike } from 'mapbox-gl';
 import { stringify } from 'qs';
 import { request } from './request';
-import { IEventItem } from '@/models/event';
+
+import { Feature, FeatureCollection, Polygon } from 'geojson';
+import { IAlarmClusterItem } from '@/app/[locale]/(emgc)/monitor/operation/page';
 
 const alarmTypeImgs = [
   'THU',
@@ -78,6 +71,7 @@ export const genAlarmIcons = (alarmList: IAlarm[]) => {
 
     //const level = '';
 
+    // @ts-ignore
     const feature_ = feature(alarm.coordinate, {
       layerId: genLayerIconId(alarm),
       currentAlarm: alarm,
@@ -92,6 +86,7 @@ export const genAlarmIcons = (alarmList: IAlarm[]) => {
       alarm.alarmType !== 'PON' &&
       alarm.alarmType !== 'PON_M'
     ) {
+      // @ts-ignore
       const feature_point = center(alarm.coordinate, {
         properties: {
           layerId: genLayerIconId(alarm),
@@ -129,7 +124,7 @@ export const genAlarmLineIcons = (alarmList: IAlarm[]) => {
 
     const cellId = alarm.cellId || 'N';
     const layerId = alarm.alarmType + '_' + cellId;
-
+    // @ts-ignore
     const center_ = center(alarm.coordinate, {
       properties: {
         layerId: layerId,
@@ -316,11 +311,11 @@ export function arePointsEqual(a?: PointLike, b?: PointLike): boolean {
   const by = Array.isArray(b) ? b[1] : b ? b.y : 0;
   return ax === bx && ay === by;
 }
-const genEventIcon = (event: IEventItem) => {
+const genEventIcon = (event: any) => {
   return '';
 };
 // 生成事件图标图层数据
-export const genEventIcons = (envList: IEventItem[]) => {
+export const genEventIcons = (envList: any[]) => {
   const features = [];
 
   for (const event of envList) {

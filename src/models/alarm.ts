@@ -1,7 +1,7 @@
 // import { Point } from "@turf/turf";
-import { IAlarmClusterItem } from '@/app/(emgc)/emgc/montior/operation/page';
+import { IAlarmClusterItem } from '@/app/[locale]/(emgc)/monitor/operation/page';
 import { AlarmLevelRefer } from '@/utils/util';
-import { Feature, Polygon } from '@turf/turf';
+import { Feature, Polygon } from 'geojson';
 import { atom } from 'recoil';
 
 export interface IAlarm {
@@ -341,12 +341,6 @@ export const addIncidentModel = atom<boolean>({
 export const lastUpdateIncidentModel = atom<number>({
   key: 'lastUpdateIncident_',
   default: 0,
-});
-
-// 应急事件
-export const currentIncidentIdModel = atom<any>({
-  key: 'currentIncidentId_',
-  default: null,
 });
 
 // 应急指挥

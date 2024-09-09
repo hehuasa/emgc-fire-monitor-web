@@ -6,7 +6,7 @@ import { createPortal } from "react-dom";
 
 interface IPopupProps {
   lngLat: number[];
-  maxWidth?: number;
+  maxWidth?: number | string;
   onClose?: () => void;
   children: ReactNode;
 }

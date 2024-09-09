@@ -7,7 +7,6 @@ import ptzActive from '@/assets/panel/PTZActive.png';
 import cannon from '@/assets/panel/cannon.png';
 import cannonActive from '@/assets/panel/cannonActive.png';
 import exit from '@/assets/panel/exit.png';
-import exitActive from '@/assets/panel/exitActive.png';
 import Image from 'next/image';
 import { useState } from 'react';
 import PTZPanel from '../PTZPanel';
@@ -45,7 +44,7 @@ const VideoPanel = () => {
 
   return (
     <div className="w-full h-full z-10 absolute top-0 left-0">
-      {ptzPanel && <PTZPanel closePtz={() => {}} cameraId={''} />}
+      {ptzPanel && <PTZPanel closePtz={() => { }} cameraId={''} />}
       {cannonPanel && <CannonPanel />}
       <NodeMediaPlayer cameraId={''} isNVR={false} rtspIndex={1} />
       <div className="absolute bottom-[24px] left-[27px] z-10">

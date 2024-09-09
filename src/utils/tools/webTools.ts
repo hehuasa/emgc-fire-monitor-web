@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const transformSize = (pixelsize: number) => {
   // 获取屏幕宽度
   // const width = window.screen.width;
