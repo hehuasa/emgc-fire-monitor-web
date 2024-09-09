@@ -61,7 +61,7 @@ const Ptz = ({ closePtz, cameraId }: Props) => {
   });
 
   const startPtz = (ptzEnum: PTZebum) => {
-    const url = '/device-manger/camera/controlling';
+    const url = '/ms-gateway/device-manger/camera/controlling';
     request({
       url,
       options: {
@@ -75,7 +75,7 @@ const Ptz = ({ closePtz, cameraId }: Props) => {
     });
   };
   const stopPtz = (ptzEnum: PTZebum) => {
-    const url = '/device-manger/camera/controlling';
+    const url = '/ms-gateway/device-manger/camera/controlling';
     request({
       url,
       options: {

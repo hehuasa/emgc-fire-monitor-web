@@ -22,7 +22,8 @@ const WebRtcPlayer = ({ cameraId = '', showPtz = false }: Iprops) => {
       setTimeout(function () {
         resolve(pc.localDescription);
       }, 250);
-      pc.onicegatheringstatechange = (ev) => pc.iceGatheringState === 'complete' && resolve(pc.localDescription);
+      pc.onicegatheringstatechange = (ev) =>
+        pc.iceGatheringState === 'complete' && resolve(pc.localDescription);
     });
 
     if (logPerformance) {
@@ -97,7 +98,11 @@ const WebRtcPlayer = ({ cameraId = '', showPtz = false }: Iprops) => {
         pcRefs.current.push(pc);
 
         if (pc) {
-          if (pc.iceConnectionState === 'failed' || pc.iceConnectionState === 'disconnected' || pc.iceConnectionState === 'closed') {
+          if (
+            pc.iceConnectionState === 'failed' ||
+            pc.iceConnectionState === 'disconnected' ||
+            pc.iceConnectionState === 'closed'
+          ) {
             //'failed' is also an option
             console.debug('*** restarting ice');
             pc.restartIce();
@@ -107,7 +112,10 @@ const WebRtcPlayer = ({ cameraId = '', showPtz = false }: Iprops) => {
       pcRef.current.onicecandidate = (event: any) => {
         // console.log(event);
       };
-      pcRef.current.ontrack = (event: { track: { kind: string }; streams: readonly MediaStream[] }) => {
+      pcRef.current.ontrack = (event: {
+        track: { kind: string };
+        streams: readonly MediaStream[];
+      }) => {
         if (event.track.kind == 'video' && videoDom.current) {
           // stream.current!.value = event.streams[0];
 
@@ -134,7 +142,7 @@ const WebRtcPlayer = ({ cameraId = '', showPtz = false }: Iprops) => {
   }, []);
 
   const getUrl = async () => {
-    // const url = '/device-manger/camera/rtsp_live_play';
+    // const url = '/ms-gateway/device-manger/camera/rtsp_live_play';
     // const urlRes = await request<any>({
     //   url,
     //   options: {
@@ -164,7 +172,7 @@ const WebRtcPlayer = ({ cameraId = '', showPtz = false }: Iprops) => {
     // console.info('urlRes1', urlRes1);
 
     const res = await request<any>({
-      url: '/video-server/api/rtsp_play',
+      url: '/ms-gateway/video-server/api/rtsp_play',
       options: {
         method: 'post',
         body: JSON.stringify({
@@ -224,10 +232,27 @@ const WebRtcPlayer = ({ cameraId = '', showPtz = false }: Iprops) => {
         ref={videoDom}
         autoPlay
         muted
-        style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0, zIndex: 1, borderRadius: '10px' }}
+        style={{
+          width: '100%',
+          height: '100%',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          zIndex: 1,
+          borderRadius: '10px',
+        }}
       />
 
-      {loading && <Spinner size="xl" color="pri.white.100" zIndex={2} position="absolute" top="50%" left="50%" />}
+      {loading && (
+        <Spinner
+          size="xl"
+          color="pri.white.100"
+          zIndex={2}
+          position="absolute"
+          top="50%"
+          left="50%"
+        />
+      )}
     </Box>
   );
 };

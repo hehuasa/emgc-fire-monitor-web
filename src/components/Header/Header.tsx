@@ -160,10 +160,7 @@ const Header = () => {
     router.push('/stationMessage');
   });
 
-  useMount(async () => {
-
-
-  });
+  useMount(async () => {});
 
   const encrypt = (val: string) => {
     const newVal = jsencryptRef.current?.encrypt(val) as string;
@@ -173,7 +170,6 @@ const Header = () => {
     const newVal = jsencryptRef.current?.decrypt(val) as string;
     return newVal;
   };
-
 
   //-------------------------
   const uploadCallBack = useMemoizedFn(async (e: File) => {

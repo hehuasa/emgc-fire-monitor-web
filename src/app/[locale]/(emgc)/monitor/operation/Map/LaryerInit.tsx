@@ -16,15 +16,15 @@ import { initGeoJson } from '@/utils/mapUtils';
 import { request } from '@/utils/request';
 import { featureCollection, polygon } from '@turf/turf';
 import { useMount, useUnmount } from 'ahooks';
-import { MapMouseEvent } from 'maplibre-gl';
-import { useRef } from 'react';
+import { MapMouseEvent } from 'mapbox-gl';
+import { useEffect, useRef, useState } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { IAlarmClusterItem } from '../page';
 import { anchorType, LineLayer, Marker, PointLayer, PolygonLayer, Scene } from '@antv/l7';
-
 import FASpng from '@/assets/map/fire.png';
 import AlarmPanel from '@/components/AlarmPanel';
 import { videoPanelModal } from '@/models/video';
+import { NextIntlClientProvider, useLocale } from 'next-intl';
 // import test from 'public/map/test.png'
 
 const { clusterZoom, flyToZoom } = mapOp;
@@ -75,8 +75,25 @@ const LaryerInit = ({
   // const lineAnimateTimer = useRef<NodeJS.Timer | null>(null);
 
   const [videoPanel, setVideoPanel] = useRecoilState(videoPanelModal);
+  const locale = useLocale();
+  const [messages, setMessages] = useState({
+    panel:
+      locale === 'en'
+        ? {
+            'alarm-panel-title': 'Fire Alarm',
+            'alarm-panel-content': 'Landfill Site B Pit',
+            'alarm-panel-time': 'Alarm Time',
+            'alarm-panel-operation': 'Handle',
+          }
+        : {
+            'alarm-panel-title': '火警',
+            'alarm-panel-content': '垃圾处理厂B坑',
+            'alarm-panel-time': '报警时间',
+            'alarm-panel-operation': '去处理',
+          },
+  });
 
-  useMount(() => {
+  useMount(async () => {
     console.info('=========LaryerInit===useMount==============');
     genAlarmIconLayer();
     genResLayers();
@@ -88,9 +105,47 @@ const LaryerInit = ({
     if (layerInitCallBack) {
       layerInitCallBack();
     }
+    const messagesPath = (locale: string) => `./src/locales/${locale}.ts`;
+
+    // const loadMessagesAsync = async () => {
+    //   try {
+    //     const response = await import(messagesPath(locale));
+    //     // setMessages(response.default);
+    //     console.log('???', response);
+    //   } catch (error) {
+    //     console.error('Failed to load messages:', error);
+    //   }
+    // };
+
+    // loadMessagesAsync();
     // genHoverAreas();
     // genGpsLayer();
   });
+
+  useEffect(() => {
+    switch (locale) {
+      case 'en':
+        setMessages({
+          panel: {
+            'alarm-panel-title': 'Fire Alarm',
+            'alarm-panel-content': 'Landfill Site B Pit',
+            'alarm-panel-time': 'Alarm Time',
+            'alarm-panel-operation': 'Handle',
+          },
+        });
+        break;
+      case 'zh':
+        setMessages({
+          panel: {
+            'alarm-panel-title': '火警',
+            'alarm-panel-content': '垃圾处理厂B坑',
+            'alarm-panel-time': '报警时间',
+            'alarm-panel-operation': '去处理',
+          },
+        });
+        break;
+    }
+  }, [locale]);
 
   // 自定义报警图标
   const genAlarmImgs = () => {
@@ -578,15 +633,17 @@ const LaryerInit = ({
   // 报警图标点击事件
   const handleAlarmIconClick = async (e: IL7LayerEventTarget) => {
     console.log('报警图标点击');
-    scene.removeAllMakers();
+    scene.removeAllMarkers();
     const el = document.createElement('div');
     const root = createRoot(el);
     root.render(
-      <AlarmPanel
-        operation={() => {
-          if (!videoPanel) setVideoPanel(true);
-        }}
-      />
+      <NextIntlClientProvider locale={locale} messages={messages}>
+        <AlarmPanel
+          operation={() => {
+            if (!videoPanel) setVideoPanel(true);
+          }}
+        />
+      </NextIntlClientProvider>
     );
 
     const marker = new Marker({

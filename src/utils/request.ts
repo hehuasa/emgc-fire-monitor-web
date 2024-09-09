@@ -78,7 +78,7 @@ const setHeader = (url: string, options: any) => {
   }
   const Tenant_Id = localStorage.getItem('tenant_id');
   const System_Sign = localStorage.getItem('system_sign');
-  const isLoginApi = url.includes('/ms-system/login/login');
+  const isLoginApi = url.includes('/ms-gateway/ms-system/login/login');
   if (!isLoginApi && Tenant_Id && Tenant_Id !== 'null' && Tenant_Id !== 'undefined') {
     options.headers['tenant-id'] = Tenant_Id;
   }
@@ -146,7 +146,7 @@ export const amisRequest = async <T>({
     }
 
     if (res.status === 401) {
-      go401();
+      //go401();
     }
     if (options.headers?.type === 'blob') {
       const blob = await res.blob();
@@ -248,7 +248,7 @@ export const aimsRequestDownload = async ({
   }
 
   if (res.status === 401) {
-    go401();
+    //go401();
   }
 
   if (res.status === 200) {
@@ -315,7 +315,7 @@ export const request = async <T>({
     }
 
     if (res.status === 401) {
-      go401();
+      //go401();
     }
 
     const json = (await res.json()) as IResData;
@@ -388,7 +388,7 @@ export const downloadRequest = async ({
     }
 
     if (res.status === 401) {
-      go401();
+      //go401();
     }
 
     if (res.status === 200) {

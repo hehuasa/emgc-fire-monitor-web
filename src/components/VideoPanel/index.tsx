@@ -1,56 +1,69 @@
 'use client';
 
-import NodeMediaPlayer from '../Video/NodeMediaPlayer';
 import { IVideoItem, VideoList } from './VideoList';
 import ptz from '@/assets/panel/PTZ.png';
 import ptzActive from '@/assets/panel/PTZActive.png';
 import cannon from '@/assets/panel/cannon.png';
 import cannonActive from '@/assets/panel/cannonActive.png';
 import exit from '@/assets/panel/exit.png';
-import exitActive from '@/assets/panel/exitActive.png';
 import Image from 'next/image';
 import { useState } from 'react';
 import PTZPanel from '../PTZPanel';
 import CannonPanel from '../CannonPanel';
+import { useTranslations } from 'next-intl';
+import { videoPanelModal } from '@/models/video';
+import { useRecoilState } from 'recoil';
+import { request } from '@/utils/request';
+import { useMount } from 'ahooks';
+import NodeMediaPlayer from '../Video/NodeMediaPlayer';
 
-const videoItems: IVideoItem[] = [
-  {
-    index: 1,
-    cameraId: 'camera-001',
-    isNVR: true,
-    rtspIndex: -1,
-  },
-  {
-    index: 2,
-    cameraId: '',
-    isNVR: false,
-    rtspIndex: 1002,
-  },
-  {
-    index: 3,
-    cameraId: 'camera-003',
-    isNVR: true,
-    rtspIndex: -1,
-  },
-  {
-    index: 4,
-    cameraId: '',
-    isNVR: false,
-    rtspIndex: 1004,
-  },
-];
+interface videoRes {
+  rtspVideos: string[];
+  NVRVideos: { id: string }[];
+}
+
+const getVideos = async () => {};
 const VideoPanel = () => {
+  const [videoPanel, setVideoPanel] = useRecoilState(videoPanelModal);
   const [ptzPanel, setPtzPanel] = useState(false);
   const [cannonPanel, setCannonPanel] = useState(false);
+  const [videoList, setVideoList] = useState<IVideoItem[]>();
+  const formatMessage = useTranslations('panel');
+
+  useMount(async () => {
+    const { rtspVideos, NVRVideos } = (await request({
+      url: `/mock/videos.json`,
+    })) as unknown as videoRes;
+    const tmpList = NVRVideos.map((item) => {
+      return {
+        rtspIndex: -1,
+        isNVR: true,
+        cameraId: item.id,
+      };
+    }).concat(
+      rtspVideos.map((item, index) => {
+        return { rtspIndex: index, isNVR: false, cameraId: '' };
+      })
+    );
+    setVideoList(tmpList);
+  });
 
   return (
     <div className="w-full h-full z-10 absolute top-0 left-0">
-      {ptzPanel && <PTZPanel closePtz={() => {}} cameraId={''} />}
-      {cannonPanel && <CannonPanel />}
-      <NodeMediaPlayer cameraId={''} isNVR={false} rtspIndex={1} />
-      <div className="absolute bottom-[24px] left-[27px] z-10">
-        <VideoList videoList={videoItems} direction="row" />
-      </div>
+      {ptzPanel && <PTZPanel closePtz={() => {}} cameraId={''} pos={{ x: 1450, y: 430 }} />}
+      {cannonPanel && <CannonPanel pos={{ x: 1450, y: 430 }} />}
+      {videoList && (
+        <>
+          <NodeMediaPlayer
+            cameraId={videoList[0].cameraId}
+            isNVR={videoList[0].isNVR}
+            rtspIndex={videoList[0].rtspIndex}
+          />
+          <div className="absolute bottom-[24px] left-[27px] z-10">
+            <VideoList videoList={videoList.slice(1)} direction="row" />
+          </div>
+        </>
+      )}
       <div className="absolute bottom-[24px] right-[83px] z-10 text-14px text-white flex flex-row gap-x-8">
         <div
           className="flex flex-row gap-x-4 cursor-pointer "
@@ -63,7 +76,9 @@ const VideoPanel = () => {
           ) : (
             <Image width={26} height={26} src={ptz} alt="PTZ" />
           )}
-          <div className={`${ptzPanel ? 'text-[#0078EC]' : 'text-white'}`}>云台</div>
+          <div className={`${ptzPanel ? 'text-[#0078EC]' : 'text-white'}`}>
+            {formatMessage('video-panel-PTZ')}
+          </div>
         </div>
         <div
           className="flex flex-row gap-x-4 cursor-pointer"
@@ -76,11 +91,13 @@ const VideoPanel = () => {
           ) : (
             <Image width={26} height={26} src={cannon} alt="cannon" />
           )}
-          <div className={`${cannonPanel ? 'text-[#0078EC]' : 'text-white'}`}>消防炮</div>
+          <div className={`${cannonPanel ? 'text-[#0078EC]' : 'text-white'}`}>
+            {formatMessage('video-panel-cannon')}
+          </div>
         </div>
-        <div className="flex flex-row gap-x-4">
+        <div className="flex flex-row gap-x-4 cursor-pointer" onClick={() => setVideoPanel(false)}>
           <Image width={26} height={26} src={exit} alt="exit" />
-          退出
+          {formatMessage('video-panel-exit')}
         </div>
       </div>
     </div>

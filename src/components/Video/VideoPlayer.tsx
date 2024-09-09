@@ -24,7 +24,7 @@ const VideoPlayer = ({ cameraId }: IProps) => {
       // const dom = createDom();
       palyer.current = initPlayer();
       request<any>({
-        url: '/video-server/api/rtsp_play',
+        url: '/ms-gateway/video-server/api/rtsp_play',
         options: {
           method: 'post',
           body: JSON.stringify({

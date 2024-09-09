@@ -105,8 +105,8 @@ const NodeMediaPlayer = (
 
   const getPlayUrl = async () => {
     const url = history
-      ? '/device-manger/camera/rtsp_history_play'
-      : '/device-manger/camera/rtsp_live_play';
+      ? '/ms-gateway/device-manger/camera/rtsp_history_play'
+      : '/ms-gateway/device-manger/camera/rtsp_live_play';
 
     // @ts-ignore
     const obj: Iprops & { playProtocol: string } = {
@@ -157,7 +157,7 @@ const NodeMediaPlayer = (
   const getPlayUrl_fat = async () => {
     const url = videoObjsRef.current.rtspVideos[rtspIndex];
     const res = await request<any>({
-      url: '/video-server/api/rtsp_play',
+      url: '/ms-gateway/video-server/api/rtsp_play',
       options: {
         method: 'post',
         body: JSON.stringify({
@@ -202,7 +202,7 @@ const NodeMediaPlayer = (
       playerRef.current.clearView();
       if (history) {
         request({
-          url: '/video-server/api/forced_shutdown',
+          url: '/ms-gateway/video-server/api/forced_shutdown',
           options: {
             method: 'post',
             body: JSON.stringify(obj),
@@ -211,7 +211,7 @@ const NodeMediaPlayer = (
       }
     }
     // request({
-    //   url: '/video-server/api/forced_shutdown',
+    //   url: '/ms-gateway/video-server/api/forced_shutdown',
     //   options: {
     //     method: 'post',
     //     body: JSON.stringify(obj),
@@ -221,7 +221,7 @@ const NodeMediaPlayer = (
 
   const pingUrl = async ({ id, playUrl }: { id: string; playUrl: string }) => {
     const urlRes = await request<{ id: string; playUrl: string }>({
-      url: '/video-server/api/alive',
+      url: '/ms-gateway/video-server/api/alive',
       options: {
         method: 'post',
         body: JSON.stringify({ id, playUrl }),
