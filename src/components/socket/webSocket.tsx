@@ -258,7 +258,11 @@ const Websocket = (_: object, refs: Ref<Refs>) => {
     const userId =
       currentUserInfo && currentUserInfo.userId ? currentUserInfo.userId : userInfo.userId;
 
-    const url = `${protocol}://${process.env.NEXT_PUBLIC_ANALYTICS_Pt_message}/websocket?userId=${userId}&clientType=${clientType}`;
+    const url = dev
+      ? `${protocol}://${process.env.NEXT_PUBLIC_ANALYTICS_Pt_message_dev}/websocket?userId=${userId}&clientType=${clientType}`
+      : `${protocol}://${
+          path + process.env.NEXT_PUBLIC_ANALYTICS_Pt_message
+        }/websocket?userId=${userId}&clientType=${clientType}`;
 
     socket.current = new WebSocket(url);
     const ping = () => {
