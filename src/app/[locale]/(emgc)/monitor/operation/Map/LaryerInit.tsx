@@ -61,7 +61,7 @@ const LaryerInit = ({
   const setCurrentAlarmDeatil = useSetRecoilState(currentAlarmModel);
 
   // 线图层动画timer
-  // const lineAnimateTimer = useRef<NodeJS.Timer | null>(null);
+  // const lineAnimateTimer = useRef<NodeJS.Timeout | null>(null);
 
   const [videoPanel, setVideoPanel] = useRecoilState(videoPanelModal);
   const locale = useLocale();

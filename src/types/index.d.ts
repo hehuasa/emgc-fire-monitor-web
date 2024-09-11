@@ -730,7 +730,7 @@ v0.5.41及以后版本
   on(event: 'start', callback: () => void): void;
 }
 
-declare let gpsTimer: NodeJS.Timer | null;
+declare let gpsTimer: NodeJS.Timeout | null;
 interface Window {
-  gpsTimer: NodeJS.Timer | null;
+  gpsTimer: NodeJS.Timeout | null;
 }

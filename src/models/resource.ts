@@ -76,7 +76,7 @@ export interface IGpsList {
   resourceId: string;
 }
 
-export const TimerContext = createContext<NodeJS.Timer | null>(null);
+export const TimerContext = createContext<NodeJS.Timeout | null>(null);
 
 export const currentResModel = atom<IResItem | null>({
   key: 'currentRes_',
@@ -146,7 +146,7 @@ export const checkedLayersModel = atom<string[]>({
   default: [],
 });
 
-export const emgcGpsTimerModel = atom<NodeJS.Timer | null>({
+export const emgcGpsTimerModel = atom<NodeJS.Timeout | null>({
   key: 'emgcGpsTimer_',
   default: null,
 });

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import { NewAlarmIcon, UpdateaAlarmIcon } from '@/components/Icons';
 import {
@@ -30,8 +31,8 @@ const Websocket = (_: object, refs: Ref<Refs>) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const toast = useToast();
   const socketTimer = useRef(1000);
-  const pingTimer = useRef<NodeJS.Timer | null>(null);
-  const reconencTimer = useRef<NodeJS.Timer | null>(null);
+  const pingTimer = useRef<NodeJS.Timeout | null>(null);
+  const reconencTimer = useRef<NodeJS.Timeout | null>(null);
 
   // 超过5个弹窗，就关闭之前的
   const toasts = useRef<ToastId[]>([]);
@@ -77,8 +78,14 @@ const Websocket = (_: object, refs: Ref<Refs>) => {
   });
 
   const clearAllTimer = useMemoizedFn(() => {
-    pingTimer.current && clearInterval(pingTimer.current);
-    reconencTimer.current && clearTimeout(reconencTimer.current);
+    if (pingTimer.current) {
+      clearInterval(pingTimer.current);
+      pingTimer.current = null;
+    }
+    if (reconencTimer.current) {
+      clearTimeout(reconencTimer.current);
+      reconencTimer.current = null;
+    }
   });
 
   useEffect(() => {
