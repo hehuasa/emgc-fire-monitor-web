@@ -26,7 +26,7 @@ const NoAuth = () => {
               color: 'pri.blue.400',
             }}
             onClick={() => {
-              router.push('/emgc/montior/operation');
+              router.push('/emgc/monitor/operation');
             }}
           >
             返回首页
