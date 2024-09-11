@@ -17,7 +17,7 @@ const Page = () => {
   useLayoutEffect(() => {
     if (currentUserInfo && currentUserInfo.userId) {
       console.info('============currentUserInfo==============', currentUserInfo);
-      router.push('/emgc/montior/operation');
+      router.push('/emgc/monitor/operation');
     } else {
       if (process.env.NEXT_PUBLIC_ANALYTICS_Ms_type === 'yb') {
         router.push('/singleLogin');

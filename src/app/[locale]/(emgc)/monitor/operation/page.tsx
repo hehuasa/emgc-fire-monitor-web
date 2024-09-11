@@ -11,18 +11,18 @@ import {
   lastUpdateAlarmTimeWithNotNewModel,
 } from '@/models/alarm';
 import { IArea, MapSceneContext, UpdateAlarmfnContext } from '@/models/map';
+import { videoPanelModal } from '@/models/video';
 import { genAlarmClusterData, genAlarmIcons, genAlarmLineIcons } from '@/utils/mapUtils';
 import { request } from '@/utils/request';
+import { Scene } from '@antv/l7';
 import { featureCollection } from '@turf/turf';
 import { useUnmount } from 'ahooks';
+import { FeatureCollection, Point, Polygon } from 'geojson';
 import dynamic from 'next/dynamic';
 import { stringify } from 'qs';
 import { useEffect, useRef, useState } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import { FeatureCollection, Point, Polygon } from 'geojson';
-import { Scene } from '@antv/l7';
 import Videos from './Videos';
-import { videoPanelModal } from '@/models/video';
 
 // const MapToolBar = dynamic(() => import('@/components/MapTools/MaptoolBar'), { ssr: false });
 const BaseMap = dynamic(() => import('./Map'), { ssr: false });
@@ -81,9 +81,21 @@ const Page = () => {
   }, [videoPanel]);
   // 报警列表
   const getAlalrmList = async () => {
+    const obj = {
+      status: '01',
+    };
+
     const res = await request<IAlarm[]>({
-      url: `/mock/alarmList.json`,
+      url: `/ms-gateway/ms-monitor-alarm/alm/alarm/findList`,
+      options: {
+        method: 'POST',
+        body: JSON.stringify({ ...obj }),
+      },
     });
+
+    // const res = await request<IAlarm[]>({
+    //   url: `/mock/alarmList.json`,
+    // });
 
     if (res.code === 200) {
       setAlarmList(res.data);
@@ -192,7 +204,7 @@ const Page = () => {
   // 报警太频繁，非首次报警，5秒更新一次
   useEffect(() => {
     if (lastUpdateAlarmTimeWithNotNew) {
-      if (mapRef.current) {
+      if (mapSceneRef.current) {
         getAlalrmList();
       }
     }
