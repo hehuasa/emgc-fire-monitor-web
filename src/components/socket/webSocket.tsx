@@ -93,9 +93,9 @@ const Websocket = (_: object, refs: Ref<Refs>) => {
   }, [alarmList]);
 
   const renderToast = useMemoizedFn((type: 'ALARM' | 'CLOSE_ALARM', newAlarm: IAlarmDetail) => {
-    if (!showAlarmToast) {
-      return;
-    }
+    // if (!showAlarmToast) {
+    //   return;
+    // }
     const isAdd = type === 'ALARM';
 
     //toast持续时长
@@ -193,7 +193,7 @@ const Websocket = (_: object, refs: Ref<Refs>) => {
         return;
       }
 
-      if (topic === 'cx-alarm') {
+      if (topic === 'ALARM_HAPPEN_AND_DEAL_TOPIC') {
         const {
           data: newMsg,
           remark,
@@ -215,6 +215,7 @@ const Websocket = (_: object, refs: Ref<Refs>) => {
           case 'ALARM':
             //播放语音
             addAlarm(newMsg as IAlarmDetail);
+            renderToast('ALARM', newMsg as IAlarmDetail);
             if (newMsg.firstAlarm) {
               if (audioRef.current) {
                 if (!audioRef.current.paused) {
@@ -294,7 +295,7 @@ const Websocket = (_: object, refs: Ref<Refs>) => {
           JSON.stringify({
             id: userId,
             featureType: 'TOPIC_SUBSCRIBE',
-            topics: ['cx-alarm', 'slave_large_status', 'incident_info'],
+            topics: ['ALARM_HAPPEN_AND_DEAL_TOPIC', 'slave_large_status', 'incident_info'],
           })
         );
         if (pingTimer.current) {
