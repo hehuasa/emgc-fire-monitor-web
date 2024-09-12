@@ -22,7 +22,16 @@ interface videoRes {
   NVRVideos: { id: string }[];
 }
 
-const getVideos = async () => {};
+// const getVideos = async () => {};
+const FirstVideo = ({ nodeplayer }: { nodeplayer: IVideoItem }) => {
+  return (
+    <NodeMediaPlayer
+      cameraId={nodeplayer.cameraId}
+      isNVR={nodeplayer.isNVR}
+      rtspIndex={nodeplayer.rtspIndex}
+    />
+  );
+};
 const VideoPanel = () => {
   const [videoPanel, setVideoPanel] = useRecoilState(videoPanelModal);
   const [ptzPanel, setPtzPanel] = useState(false);
@@ -68,11 +77,12 @@ const VideoPanel = () => {
       {cannonPanel && <CannonPanel pos={{ x: 1450, y: 430 }} />}
       {videoList && curList && (
         <>
-          <NodeMediaPlayer
+          <FirstVideo nodeplayer={curList[0]} />
+          {/* <NodeMediaPlayer
             cameraId={curList[0].cameraId}
             isNVR={curList[0].isNVR}
             rtspIndex={curList[0].rtspIndex}
-          />
+          /> */}
           <div className="absolute bottom-[24px] left-[27px] z-10">
             <VideoList
               videoList={videoList}
@@ -84,9 +94,9 @@ const VideoPanel = () => {
           </div>
         </>
       )}
-      <div className="absolute bottom-[24px] right-[83px] z-10 text-14px text-white flex flex-row gap-x-8">
+      <div className="absolute bottom-[24px] right-[83px] z-10 text-14px text-white flex flex-row gap-x-4">
         <div
-          className="flex flex-row gap-x-4 cursor-pointer "
+          className={`flex flex-row gap-x-4 cursor-pointer  px-4 py-2 rounded-md ${ptzPanel ? 'bg-[#0000001C]' : 'bg-[#00000088]'}`}
           onClick={() => {
             setPtzPanel(!ptzPanel);
           }}
@@ -101,7 +111,7 @@ const VideoPanel = () => {
           </div>
         </div>
         <div
-          className="flex flex-row gap-x-4 cursor-pointer"
+          className={`flex flex-row gap-x-4 cursor-pointer  px-4 py-2 rounded-md ${cannonPanel ? 'bg-[#0000001C]' : 'bg-[#00000088]'}`}
           onClick={() => {
             setCannonPanel(!cannonPanel);
           }}
@@ -115,7 +125,10 @@ const VideoPanel = () => {
             {formatMessage('video-panel-cannon')}
           </div>
         </div>
-        <div className="flex flex-row gap-x-4 cursor-pointer" onClick={() => setVideoPanel(false)}>
+        <div
+          className="flex flex-row gap-x-4 cursor-pointer  px-4 py-2 rounded-md bg-[#00000088]"
+          onClick={() => setVideoPanel(false)}
+        >
           <Image width={26} height={26} src={exit} alt="exit" />
           {formatMessage('video-panel-exit')}
         </div>

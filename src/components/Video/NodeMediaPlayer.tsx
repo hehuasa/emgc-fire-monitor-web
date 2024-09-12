@@ -56,6 +56,7 @@ const NodeMediaPlayer = (
   });
 
   useMount(() => {
+    // console.log('new render', cameraId, isNVR, rtspIndex);
     if (id.current) {
       NodePlayer.load(() => {
         playerRef.current = new NodePlayer();
