@@ -86,9 +86,9 @@ const Websocket = (_: object, refs: Ref<Refs>) => {
   }, [alarmList]);
 
   const renderToast = useMemoizedFn((type: 'ALARM' | 'CLOSE_ALARM', newAlarm: IAlarmDetail) => {
-    if (!showAlarmToast) {
-      return;
-    }
+    // if (!showAlarmToast) {
+    //   return;
+    // }
     const isAdd = type === 'ALARM';
 
     //toast持续时长
@@ -208,6 +208,7 @@ const Websocket = (_: object, refs: Ref<Refs>) => {
           case 'ALARM':
             //播放语音
             addAlarm(newMsg as IAlarmDetail);
+            renderToast('ALARM', newMsg as IAlarmDetail);
             if (newMsg.firstAlarm) {
               if (audioRef.current) {
                 if (!audioRef.current.paused) {
