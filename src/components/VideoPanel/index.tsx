@@ -23,15 +23,6 @@ interface videoRes {
 }
 
 // const getVideos = async () => {};
-const FirstVideo = ({ nodeplayer }: { nodeplayer: IVideoItem }) => {
-  return (
-    <NodeMediaPlayer
-      cameraId={nodeplayer.cameraId}
-      isNVR={nodeplayer.isNVR}
-      rtspIndex={nodeplayer.rtspIndex}
-    />
-  );
-};
 const VideoPanel = () => {
   const [videoPanel, setVideoPanel] = useRecoilState(videoPanelModal);
   const [ptzPanel, setPtzPanel] = useState(false);
@@ -77,8 +68,8 @@ const VideoPanel = () => {
       <CannonPanel pos={{ x: 1450, y: 430 }} visible={cannonPanel} />
       {videoList && curList && (
         <>
-          {/* <FirstVideo nodeplayer={curList[0]} /> */}
           <NodeMediaPlayer
+            key={`defaultVideo-${curList[0].cameraId}-${curList[0].isNVR}-${curList[0].rtspIndex}`}
             cameraId={curList[0].cameraId}
             isNVR={curList[0].isNVR}
             rtspIndex={curList[0].rtspIndex}
