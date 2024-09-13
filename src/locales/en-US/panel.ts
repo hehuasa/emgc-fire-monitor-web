@@ -6,7 +6,7 @@ const json = {
     'alarm-panel-operation': 'Handle',
 
     'operation-cannon-direction': 'Direction',
-    'operation-cannon-spray': 'spray',
+    'operation-cannon-spray': 'Spray',
     'operation-cannon-openValve': 'Open Valve',
     'operation-cannon-mist': 'Mist',
     'operation-cannon-stopSpray': 'Stop Spray',
