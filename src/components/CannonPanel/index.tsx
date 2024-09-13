@@ -180,10 +180,21 @@ const ButtonGroup = ({ setState, states, curState }: ButtonGroupProps) => {
     </div>
   );
 };
-
+const switchCannon = async () => {
+  const params = {
+    deviceId: 'f282ebd6-6dd4-1802-126b-a9ebd4aa02e2',
+    metaFunId: 'e7167c18-8611-f41c-38e2-a3e1010893eb',
+    subDeviceCode: '1',
+  };
+  const res = await request({
+    url: '/ms-gateway/device-manger/product_fun/execute',
+    options: { method: 'POST', body: JSON.stringify(params) },
+  });
+  console.log('switch cannon');
+};
 const setCannon = async (params: any) => {
   const res = await request({
-    url: '/ms-gateway/IoT/device-manger/product_fun/execute_change',
+    url: '/ms-gateway/device-manger/product_fun/execute_change',
     options: { method: 'POST', body: JSON.stringify(params) },
   });
   console.log('set cannon', params);
@@ -200,6 +211,9 @@ const CannonPanel = ({
   const [spray, setSpray] = useState('stopSpray');
   const [valve, setValve] = useState('closeValve');
   const [stream, setStream] = useState('stream');
+  useMount(() => {
+    switchCannon();
+  });
   useEffect(() => {
     const dir =
       (direction ?? '') === ''
@@ -223,14 +237,13 @@ const CannonPanel = ({
         deviceId: 'f282ebd6-6dd4-1802-126b-a9ebd4aa02e2',
         markExecutes: [
           {
-            funOperationId: '94c0950c-789e-bc83-173b-eb69ab0f7e53',
+            funOperationId: 'f903d251-44c9-1932-2323-821cde9edec1',
             paramPath: 'modBusFun.value',
             paramType: 'INTEGER',
             value: String(value),
           },
         ],
-        metaFunId: '4c7df12e-4ece-cbb2-9df3-6147f88437ff',
-        subDeviceCode: '1',
+        metaFunId: '14685d2f-e0cc-0d11-eee6-f3d4e5e036d3',
       };
       setCannon(params);
     } else if (dir != 0) {
@@ -238,14 +251,27 @@ const CannonPanel = ({
         deviceId: 'f282ebd6-6dd4-1802-126b-a9ebd4aa02e2',
         markExecutes: [
           {
-            funOperationId: '94c0950c-789e-bc83-173b-eb69ab0f7e53',
+            funOperationId: 'f903d251-44c9-1932-2323-821cde9edec1',
             paramPath: 'modBusFun.value',
             paramType: 'INTEGER',
             value: String(dir),
           },
         ],
-        metaFunId: '4c7df12e-4ece-cbb2-9df3-6147f88437ff',
-        subDeviceCode: '1',
+        metaFunId: '14685d2f-e0cc-0d11-eee6-f3d4e5e036d3',
+      };
+      setCannon(params);
+    } else {
+      const params = {
+        deviceId: 'f282ebd6-6dd4-1802-126b-a9ebd4aa02e2',
+        markExecutes: [
+          {
+            funOperationId: 'f903d251-44c9-1932-2323-821cde9edec1',
+            paramPath: 'modBusFun.value',
+            paramType: 'INTEGER',
+            value: '0',
+          },
+        ],
+        metaFunId: '14685d2f-e0cc-0d11-eee6-f3d4e5e036d3',
       };
       setCannon(params);
     }

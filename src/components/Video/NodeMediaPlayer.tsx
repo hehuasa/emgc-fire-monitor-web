@@ -3,7 +3,7 @@
 import { request } from '@/utils/request';
 import { Box, BoxProps, Spinner } from '@chakra-ui/react';
 import { useMemoizedFn, useMount, useSafeState, useUnmount } from 'ahooks';
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { VideoPlay } from '@/components/Icons';
 import { useImperativeHandle, forwardRef, Ref } from 'react';
 
@@ -56,6 +56,7 @@ const NodeMediaPlayer = (
   });
 
   useMount(() => {
+    // console.log('new render', id, cameraId, isNVR, rtspIndex);
     if (id.current) {
       NodePlayer.load(() => {
         playerRef.current = new NodePlayer();
@@ -89,43 +90,9 @@ const NodeMediaPlayer = (
       });
     }
   });
-  useEffect(() => {
-    console.log('cur video', cameraId, rtspIndex, isNVR);
-    if (id.current) {
-      NodePlayer.load(() => {
-        playerRef.current = new NodePlayer();
-        playerRef.current.useWorker();
-        playerRef.current.setBufferTime(100);
-        playerRef.current.enableAudio(false);
-
-        playerRef.current.setView(id.current);
-        playerRef.current.on('start', () => {
-          setIsPlaying(true);
-          setloading(false);
-          resize();
-        });
-
-        playerRef.current.on('stop', () => {
-          setIsPlaying(false);
-          setloading(false);
-        });
-
-        playerRef.current.on('error', () => {
-          setIsPlaying(false);
-          setloading(false);
-        });
-
-        request({ url: '/mock/videos.json' }).then((res) => {
-          const videoObj = res as unknown as IVideoObjItem;
-          videoObjsRef.current.rtspVideos = videoObj.rtspVideos;
-          videoObjsRef.current.NVRVideos = videoObj.NVRVideos;
-          playVideo();
-        });
-      });
-    }
-  }, [cameraId, rtspIndex, isNVR]);
 
   useUnmount(() => {
+    // console.log('unmount', id);
     if (currentVideo.current.id) {
       stopVideo(currentVideo.current);
     }
