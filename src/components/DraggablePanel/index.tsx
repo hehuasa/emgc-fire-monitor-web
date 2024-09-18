@@ -5,9 +5,11 @@ import { useState, useRef } from 'react';
 const DraggablePanel = ({
   children,
   pos = { x: 0, y: 0 },
+  visible = true,
 }: {
   children?: JSX.Element;
   pos?: { x: number; y: number };
+  visible?: boolean;
 }) => {
   const [position, setPosition] = useState(pos);
   const positionRef = useRef(pos);
@@ -58,7 +60,7 @@ const DraggablePanel = ({
   return (
     <div
       ref={panelRef}
-      className="w-[402px] h-[368px] bg-[#00000088] absolute z-[999]"
+      className={`${visible ? 'w-[402px] h-[368px]' : 'w-0 h-0 overflow-hidden'} bg-[#00000088] absolute z-[999]`}
       style={{
         left: `${position.x}px`,
         top: `${position.y}px`,

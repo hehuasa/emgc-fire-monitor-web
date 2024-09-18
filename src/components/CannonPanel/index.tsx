@@ -4,16 +4,27 @@ import DraggablePanel from '../DraggablePanel';
 import { SetStateAction, useEffect, useState } from 'react';
 import { ImArrowDown, ImArrowLeft, ImArrowRight, ImArrowUp } from 'react-icons/im';
 import { useMount } from 'ahooks';
+import { request } from '@/utils/request';
 
+// const operationsMapping = {
+//   right: 16128, // 00100000 00000000
+//   left: 7936, // 00010000 00000000
+//   down: 65280, // 10000000 00000000
+//   up: 32512, // 01000000 00000000
+//   mist: 1792, // 00000100 00000000
+//   stream: 3840, // 00001000 00000000
+//   openValve: -192, // 00000000 01000000
+//   closeValve: -128, // 00000000 10000000
+// };
 const operationsMapping = {
-  right: 16128, // 00100000 00000000
-  left: 7936, // 00010000 00000000
-  down: 65280, // 10000000 00000000
-  up: 32512, // 01000000 00000000
-  mist: 1792, // 00000100 00000000
-  stream: 3840, // 00001000 00000000
-  openValve: -192, // 00000000 01000000
-  closeValve: -128, // 00000000 10000000
+  right: 8192, // 00100000 00000000
+  left: 4096, // 00010000 00000000
+  down: 32768, // 10000000 00000000
+  up: 16384, // 01000000 00000000
+  mist: 1024, // 00000100 00000000
+  stream: 2048, // 00001000 00000000
+  openValve: 64, // 00000000 01000000
+  closeValve: 128, // 00000000 10000000
 };
 interface ArrowButtonProps {
   onDirectionChange: (direction: string) => void;
@@ -21,6 +32,7 @@ interface ArrowButtonProps {
 interface ButtonGroupProps {
   setState: (state: string) => void;
   states: string[];
+  curState: string;
 }
 const Select = ({
   options = ['Garbage Sorting Pit B Southwest Corner HK0396'],
@@ -143,26 +155,24 @@ const ArrowPanel = ({
   );
 };
 
-const ButtonGroup = ({ setState, states }: ButtonGroupProps) => {
-  const [selectedState, setSelectedState] = useState<string | null>(null);
+const ButtonGroup = ({ setState, states, curState }: ButtonGroupProps) => {
+  // const [selectedState, setSelectedState] = useState<string | null>(null);
   const formatMessage = useTranslations('panel');
-  const handleButtonClick = (state: string) => {
-    if (selectedState === state) {
-      setSelectedState(null);
-      setState('');
-    } else {
-      setSelectedState(state);
-      setState(state);
-    }
-  };
+  // const handleButtonClick = (state: string) => {
+  //   if (curState === state) {
+  //     setState('');
+  //   } else {
+  //     setState(state);
+  //   }
+  // };
 
   return (
     <div className="flex flex-col gap-y-3">
       {states.map((state) => (
         <button
           key={state}
-          className={`rounded-full text-[base] w-[94px] h-[36px] ${selectedState === state ? 'bg-[#0078EC]' : 'bg-[#FFFFFF1C]'}`}
-          onClick={() => handleButtonClick(state)}
+          className={`rounded-full text-[base] w-[94px] h-[36px] ${curState === state ? 'bg-[#0078EC]' : 'bg-[#FFFFFF1C]'}`}
+          onClick={() => setState(state)}
         >
           {formatMessage(`operation-cannon-${state}`)}
         </button>
@@ -170,30 +180,113 @@ const ButtonGroup = ({ setState, states }: ButtonGroupProps) => {
     </div>
   );
 };
-
-const CannonPanel = ({ pos = { x: 0, y: 0 } }: { pos?: { x: number; y: number } }) => {
+const switchCannon = async () => {
+  const params = {
+    deviceId: 'f282ebd6-6dd4-1802-126b-a9ebd4aa02e2',
+    metaFunId: 'e7167c18-8611-f41c-38e2-a3e1010893eb',
+    subDeviceCode: '1',
+  };
+  const res = await request({
+    url: '/ms-gateway/device-manger/product_fun/execute',
+    options: { method: 'POST', body: JSON.stringify(params) },
+  });
+  console.log('switch cannon');
+};
+const setCannon = async (params: any) => {
+  const res = await request({
+    url: '/ms-gateway/device-manger/product_fun/execute_change',
+    options: { method: 'POST', body: JSON.stringify(params) },
+  });
+  console.log('set cannon', params);
+};
+const CannonPanel = ({
+  pos = { x: 0, y: 0 },
+  visible = true,
+}: {
+  pos?: { x: number; y: number };
+  visible?: boolean;
+}) => {
   const formatMessage = useTranslations('panel');
   const [direction, setDirection] = useState<string | null>(null);
-  const [spray, setSpray] = useState('spray');
-  const [valve, setValve] = useState('openValve');
-  const [stream, setStream] = useState('mist');
+  const [spray, setSpray] = useState('stopSpray');
+  const [valve, setValve] = useState('closeValve');
+  const [stream, setStream] = useState('stream');
+  useMount(() => {
+    switchCannon();
+  });
   useEffect(() => {
+    const dir =
+      (direction ?? '') === ''
+        ? 0
+        : operationsMapping[direction as unknown as keyof typeof operationsMapping];
     const value =
-      (spray === 'spray' ? 1 : 0) |
       operationsMapping[valve as keyof typeof operationsMapping] |
       operationsMapping[stream as keyof typeof operationsMapping] |
-      operationsMapping[direction as keyof typeof operationsMapping];
+      dir;
+    console.log(
+      'value',
+      value,
+      operationsMapping[valve as keyof typeof operationsMapping],
+      operationsMapping[stream as keyof typeof operationsMapping],
+      (direction ?? '') === ''
+        ? 0
+        : operationsMapping[direction as unknown as keyof typeof operationsMapping]
+    );
+    if (spray === 'spray') {
+      const params = {
+        deviceId: 'f282ebd6-6dd4-1802-126b-a9ebd4aa02e2',
+        markExecutes: [
+          {
+            funOperationId: 'f903d251-44c9-1932-2323-821cde9edec1',
+            paramPath: 'modBusFun.value',
+            paramType: 'INTEGER',
+            value: String(value),
+          },
+        ],
+        metaFunId: '14685d2f-e0cc-0d11-eee6-f3d4e5e036d3',
+      };
+      setCannon(params);
+    } else if (dir != 0) {
+      const params = {
+        deviceId: 'f282ebd6-6dd4-1802-126b-a9ebd4aa02e2',
+        markExecutes: [
+          {
+            funOperationId: 'f903d251-44c9-1932-2323-821cde9edec1',
+            paramPath: 'modBusFun.value',
+            paramType: 'INTEGER',
+            value: String(dir),
+          },
+        ],
+        metaFunId: '14685d2f-e0cc-0d11-eee6-f3d4e5e036d3',
+      };
+      setCannon(params);
+    } else {
+      const params = {
+        deviceId: 'f282ebd6-6dd4-1802-126b-a9ebd4aa02e2',
+        markExecutes: [
+          {
+            funOperationId: 'f903d251-44c9-1932-2323-821cde9edec1',
+            paramPath: 'modBusFun.value',
+            paramType: 'INTEGER',
+            value: '0',
+          },
+        ],
+        metaFunId: '14685d2f-e0cc-0d11-eee6-f3d4e5e036d3',
+      };
+      setCannon(params);
+    }
   }, [spray, valve, stream, direction]);
+
   return (
-    <DraggablePanel pos={pos}>
+    <DraggablePanel pos={pos} visible={visible}>
       <div className="flex flex-col px-11 py-4 items-center gap-y-4 text-white text-[14px]">
         <Select />
         <Status status={'running'} />
         <ArrowPanel direction={direction} setDirection={setDirection} />
         <div className="grid grid-cols-3 gap-4">
-          <ButtonGroup setState={setSpray} states={['spray', 'stopSpray']} />
-          <ButtonGroup setState={setValve} states={['openValve', 'closeValve']} />
-          <ButtonGroup setState={setStream} states={['mist', 'stream']} />
+          <ButtonGroup setState={setSpray} states={['spray', 'stopSpray']} curState={spray} />
+          <ButtonGroup setState={setValve} states={['openValve', 'closeValve']} curState={valve} />
+          <ButtonGroup setState={setStream} states={['mist', 'stream']} curState={stream} />
         </div>
       </div>
     </DraggablePanel>

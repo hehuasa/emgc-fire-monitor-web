@@ -20,6 +20,7 @@ interface Props {
   closePtz: () => void;
   cameraId: string;
   pos?: { x: number; y: number };
+  visible?: boolean;
 }
 interface ArrowButtonProps {
   onDirectionChange: (direction: string) => void;
@@ -139,7 +140,7 @@ const Select = () => {
   );
 };
 
-const PTZPanel = ({ closePtz, cameraId, pos = { x: 0, y: 0 } }: Props) => {
+const PTZPanel = ({ closePtz, cameraId, pos = { x: 0, y: 0 }, visible }: Props) => {
   const deviceName = 'Garbage Sorting Pit B Southwest Corner HK0396';
   const [zoom, setZoom] = useState('');
   const formatMessage = useTranslations('panel');
@@ -202,7 +203,7 @@ const PTZPanel = ({ closePtz, cameraId, pos = { x: 0, y: 0 } }: Props) => {
   };
 
   return (
-    <DraggablePanel pos={pos}>
+    <DraggablePanel pos={pos} visible={visible}>
       <div className="flex flex-col px-8 py-5 items-center gap-y-5 text-white text-[14px]">
         {deviceName}
         <ArrowPanel startPtz={startPtz} stopPtz={stopPtz} />
