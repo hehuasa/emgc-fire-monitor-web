@@ -49,6 +49,10 @@ const nextConfig = {
         source: '/ms-gateway/:path*',
         destination: `${process.env.NEXT_PUBLIC_ANALYTICS_Ms_Gateway}/:path*`,
       },
+      {
+        source: '/httpflv/:path*',
+        destination: `${process.env.NEXT_PUBLIC_ANALYTICS_httpflv}/:path*`,
+      },
     ];
   },
   webpack: (config, op) => {
