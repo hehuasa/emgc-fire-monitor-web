@@ -149,7 +149,7 @@ const NodeMediaPlayer = (
       return {
         id: urlRes.data.id,
         playUrl: urlRes.data.playUrl,
-        url: protocol + path + '/httpflv' + urlRes.data.playUrl,
+        url: protocol + path + process.env.NEXT_PUBLIC_ANALYTICS_BasePath + '/httpflv' + urlRes.data.playUrl,
         //url: 'http://192.168.0.243:8080/live/test.flv',
       };
     } else {
